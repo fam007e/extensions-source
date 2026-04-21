@@ -72,11 +72,146 @@ for item in index:
 with REMOTE_REPO.joinpath("index.min.json").open("w", encoding="utf-8") as index_min_file:
     json.dump(index, index_min_file, ensure_ascii=False, separators=(",", ":"))
 
-# 6. Regenerate index.html listing
+# 6. Regenerate index.html listing (Modern Dashboard)
 with REMOTE_REPO.joinpath("index.html").open("w", encoding="utf-8") as index_html_file:
-    index_html_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<title>fam007e Extensions</title>\n</head>\n<body>\n<h1>fam007e Extensions</h1>\n<pre>\n')
+    index_html_file.write(f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fam007e Extensions</title>
+    <style>
+        :root {{
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #29b6f6;
+            --secondary-text: #9e9e9e;
+        }}
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }}
+        .header {{
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }}
+        .header h1 {{ color: var(--accent-color); margin-bottom: 10px; }}
+        .add-btn {{
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: black;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 0;
+            transition: opacity 0.2s;
+        }}
+        .add-btn:hover {{ opacity: 0.8; }}
+        #search {{
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: var(--card-bg);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }}
+        .grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            width: 100%;
+            max-width: 1200px;
+        }}
+        .card {{
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid transparent;
+        }}
+        .card:hover {{
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }}
+        .icon {{
+            width: 48px;
+            height: 48px;
+            margin-right: 16px;
+            border-radius: 8px;
+            background: #333;
+        }}
+        .info {{ display: flex; flex-direction: column; }}
+        .name {{ font-weight: bold; font-size: 15px; margin-bottom: 4px; }}
+        .meta {{ font-size: 12px; color: var(--secondary-text); }}
+        .lang-badge {{
+            display: inline-block;
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>fam007e Extensions</h1>
+        <p>A personal repository of extensions for Mihon and Tachiyomi.</p>
+        <a href="https://fam007e.github.io/add-repo" class="add-btn">Add to Mihon</a>
+        <p class="meta">URL: <code>https://raw.githubusercontent.com/fam007e/extensions-source/repo/index.min.json</code></p>
+    </div>
+
+    <input type="text" id="search" placeholder="Search extensions..." onkeyup="filter()">
+
+    <div class="grid" id="extension-grid">
+""")
     for entry in index:
-        apk_escaped = 'apk/' + html.escape(entry["apk"])
-        name_escaped = html.escape(entry["name"])
-        index_html_file.write(f'<a href="{apk_escaped}">{name_escaped}</a>\n')
-    index_html_file.write('</pre>\n</body>\n</html>\n')
+        apk_url = 'apk/' + html.escape(entry["apk"])
+        name = html.escape(entry["name"].replace("Tachiyomi: ", ""))
+        pkg = html.escape(entry["pkg"])
+        lang = html.escape(entry["lang"])
+        version = html.escape(entry["version"])
+        icon_url = f"icon/{pkg}.png"
+        
+        index_html_file.write(f"""
+        <a href="{apk_url}" class="card" data-name="{name.lower()}">
+            <img src="{icon_url}" class="icon" onerror="this.src='https://mihon.app/img/logo.png'">
+            <div class="info">
+                <span class="name">{name}</span>
+                <span class="meta">v{version}</span>
+                <span class="meta"><span class="lang-badge">{lang}</span></span>
+            </div>
+        </a>""")
+        
+    index_html_file.write("""
+    </div>
+
+    <script>
+        function filter() {
+            let input = document.getElementById('search').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getAttribute('data-name');
+                cards[i].style.display = name.includes(input) ? 'flex' : 'none';
+            }
+        }
+    </script>
+</body>
+</html>
+""")
