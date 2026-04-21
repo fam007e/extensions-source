@@ -134,9 +134,24 @@ jobs:
         with:
           repository: ${{ github.repository }}
           token: ${{ github.token }}
-          ref: repo
           path: repo
           persist-credentials: true
+
+      - name: Switch to repo branch
+        run: |
+          cd repo
+          git config user.name "fam007e"
+          git config user.email "19180457+fam007e@users.noreply.github.com"
+          if git fetch origin repo; then
+            git checkout repo
+          else
+            echo "Branch 'repo' not found, creating orphan branch..."
+            git checkout --orphan repo
+            git rm -rf .
+            touch .gitignore
+            git add .gitignore
+            git commit -m "Initialize repo branch"
+          fi
 
       - name: Merge and deploy repo
         env:
