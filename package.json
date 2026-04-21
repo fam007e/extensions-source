@@ -1,0 +1,14 @@
+{
+  "name": "fam007e-extensions-website",
+  "version": "1.0.0",
+  "description": "Fancy website for fam007e extensions",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.0.0-rc.45",
+    "vue": "^3.4.21"
+  }
+}
