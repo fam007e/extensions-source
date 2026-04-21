@@ -41,7 +41,7 @@ class Azuretoons :
 
     override val client = network.client.newBuilder()
         .rateLimit(2)
-        .addInterceptor(::authIntercept)
+        .addInterceptor { authIntercept(it) }
         .build()
 
     private fun authIntercept(chain: Interceptor.Chain): Response {
