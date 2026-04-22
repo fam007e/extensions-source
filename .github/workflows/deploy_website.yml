@@ -36,7 +36,7 @@ jobs:
           touch website/.vitepress/dist/.nojekyll
 
       - name: Deploy to repo branch
-        uses: peaceiris/actions-gh-pages@373f7f6102127b7597363a9fb44013989f78a3c7 # v3.9.3
+        uses: peaceiris/actions-gh-pages@4f9d881956c41fe4a965c6076a0629d0fbe050ba # v3.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: website/.vitepress/dist
