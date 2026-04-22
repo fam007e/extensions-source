@@ -25,7 +25,7 @@ class Intl(
     availableLanguages: Set<String>,
     private val baseLanguage: String,
     private val classLoader: ClassLoader,
-    private val createMessageFileName: (String) -> String = { createDefaultMessageFileName(it) },
+    private val createMessageFileName: (String) -> String = ::createDefaultMessageFileName,
 ) {
 
     val chosenLanguage: String = when (language) {
