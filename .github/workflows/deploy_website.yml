@@ -1,4 +1,4 @@
-name: Build and Deploy Website
+name: "Deploy Website"
 
 on:
   push:
@@ -13,25 +13,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout website branch
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          version: 7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 18
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
-      - name: Build site
-        run: npm run docs:build
+      - name: Build with VitePress
+        run: |
+          VITE_HOSTNAME="https://fam007e.github.io" pnpm run docs:build
+          touch website/.vitepress/dist/.nojekyll
 
       - name: Deploy to repo branch
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@373f7f6102127b7597363a9fb44013989f78a3c7 # v3.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .vitepress/dist
+          publish_dir: website/.vitepress/dist
           publish_branch: repo
-          keep_files: true # CRITICAL: Don't delete the APKs and JSONs!
+          keep_files: true

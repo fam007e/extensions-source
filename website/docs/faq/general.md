@@ -1,0 +1,15 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+title: General
+titleTemplate: Frequently asked questions
+description: Frequently asked questions about the fam007e project.
+---
+
+# General
+Frequently asked questions.
+
+## Will the extensions be maintained?
+Extensions will be maintained as long as there are contributors updating them.
+
+## Who is maintaining these extensions?
+Volunteers who spend their free time, just like the old Tachiyomi extension repo.
