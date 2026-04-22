@@ -1,0 +1,1 @@
+const n="fam007e/extensions-source",s=`https://raw.githubusercontent.com/${n}/repo`,o=`${s}/index.json`,t=`${s}/index.min.json`,N=`https://cdn.jsdelivr.net/gh/${n}@repo/index.min.json`;export{t as G,N as J,o as a,s as b};
