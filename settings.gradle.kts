@@ -1,3 +1,36 @@
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        mavenCentral()
+        google()
+        maven(url = "https://jitpack.io")
+    }
+    
+    components.all {
+        val details = this
+        if (details.id.group == "io.netty") {
+            details.allVariants {
+                withDependencies {
+                    forEach {
+                        it.version { 
+                            require("4.1.132.Final") 
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 /**
  * Add or remove modules to load as needed for local development here.
  */
