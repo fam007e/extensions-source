@@ -24,6 +24,21 @@ dependencyResolutionManagement {
         mavenCentral()
         maven(url = "https://www.jitpack.io")
     }
+
+    components.all {
+        val details = this
+        if (details.id.group == "io.netty") {
+            details.allVariants {
+                withDependencies {
+                    forEach {
+                        it.version {
+                            require("4.1.132.Final")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

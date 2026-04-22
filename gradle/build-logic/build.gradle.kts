@@ -30,6 +30,18 @@ dependencies {
     implementation(libs.spotless.gradle)
     implementation(libs.tapmoc.gradle)
 
+    implementation(platform(libs.netty.bom))
+    constraints {
+        implementation(libs.jdom2)
+        implementation(libs.jose4j)
+        implementation(libs.commons.lang3)
+        implementation(libs.httpclient)
+        implementation(libs.httpcore)
+        implementation(libs.bc.pkix)
+        implementation(libs.bc.prov)
+        implementation(libs.bc.util)
+    }
+
     // These allow us to reference the dependency catalog inside our compiled plugins
     compileOnly(files(libs::class.java.superclass.protectionDomain.codeSource.location))
     compileOnly(files(kei::class.java.superclass.protectionDomain.codeSource.location))
