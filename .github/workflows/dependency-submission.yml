@@ -13,15 +13,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  CI_CHUNK_SIZE: 65
-
 jobs:
-  prepare:
-    name: Prepare chunks
+  submit:
+    name: Submit Dependencies
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.generate-matrices.outputs.matrix || steps.empty-matrices.outputs.matrix }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -46,42 +43,25 @@ jobs:
             buildSrc/**
             .github/workflows/dependency-submission.yml
 
-      - id: generate-matrices
-        name: Create output matrices
-        if: steps.check-files.outputs.any_changed == 'true'
-        run: |
-          python ./.github/scripts/generate-build-matrices.py "$NX_BASE" Release
-
-      - id: empty-matrices
-        name: Empty output matrices
-        if: steps.check-files.outputs.any_changed != 'true'
-        run: |
-          echo "matrix={\"chunk\": []}" >> $GITHUB_OUTPUT
-
-  submit:
-    name: Submit Chunks (${{ matrix.chunk.number }})
-    needs: prepare
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: ${{ toJson(fromJson(needs.prepare.outputs.matrix).chunk) != '[]' }}
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
       - name: Set up JDK
+        if: steps.check-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: 17
           distribution: temurin
 
+      - name: Resolve Representative Modules
+        if: steps.check-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
+        id: modules
+        run: |
+          # Find all libraries in lib/ and format them as :lib:name
+          LIBS=$(find lib -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sed 's/^/:lib:/' | tr '\n' ' ')
+          # Combine with :core and :src:all:mangadex
+          echo "list=:core :src:all:mangadex $LIBS" >> $GITHUB_OUTPUT
+
       - name: Submit Dependencies
+        if: steps.check-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
         uses: gradle/actions/dependency-submission@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
           additional-arguments: |
-            ${{ join(matrix.chunk.modules, ' ') }}
+             ${{ steps.modules.outputs.list }}
