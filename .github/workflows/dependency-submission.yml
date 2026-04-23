@@ -1,13 +1,17 @@
 name: Dependency Submission
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight UTC
   workflow_dispatch:
 
 permissions:
   contents: write
+
+# Prevent multiple runs from clogging the queue
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   CI_CHUNK_SIZE: 65
@@ -17,7 +21,7 @@ jobs:
     name: Prepare chunks
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.generate-matrices.outputs.matrix }}
+      matrix: ${{ steps.generate-matrices.outputs.matrix || steps.empty-matrices.outputs.matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
@@ -29,10 +33,29 @@ jobs:
         with:
           fallback-sha: 4b825dc642cb6eb9a060e54bf8d69288fbee4904
 
+      - name: Check for relevant file changes
+        id: check-files
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          base_sha: ${{ env.NX_BASE }}
+          files: |
+            gradle/libs.versions.toml
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/**
+            .github/workflows/dependency-submission.yml
+
       - id: generate-matrices
         name: Create output matrices
+        if: steps.check-files.outputs.any_changed == 'true'
         run: |
           python ./.github/scripts/generate-build-matrices.py "$NX_BASE" Release
+
+      - id: empty-matrices
+        name: Empty output matrices
+        if: steps.check-files.outputs.any_changed != 'true'
+        run: |
+          echo "matrix={\"chunk\": []}" >> $GITHUB_OUTPUT
 
   submit:
     name: Submit Chunks (${{ matrix.chunk.number }})
