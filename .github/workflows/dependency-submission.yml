@@ -1,0 +1,59 @@
+name: Dependency Submission
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CI_CHUNK_SIZE: 65
+
+jobs:
+  prepare:
+    name: Prepare chunks
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.generate-matrices.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Get last successful CI commit
+        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v4.1.7
+        with:
+          fallback-sha: 4b825dc642cb6eb9a060e54bf8d69288fbee4904
+
+      - id: generate-matrices
+        name: Create output matrices
+        run: |
+          python ./.github/scripts/generate-build-matrices.py "$NX_BASE" Release
+
+  submit:
+    name: Submit Chunks (${{ matrix.chunk.number }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    if: ${{ toJson(fromJson(needs.prepare.outputs.matrix).chunk) != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+
+      - name: Set up JDK
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v4.2.0
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Submit Dependencies
+        uses: gradle/actions/dependency-submission@0723195856401067f7a2779048b490ace7a47d7c # v4.3.0
+        with:
+          additional-arguments: |
+            ${{ join(matrix.chunk.modules, ' ') }}
