@@ -139,6 +139,9 @@ class PluginExtensionLegacy : Plugin<Project> {
         }
 
         dependencies {
+            implementation(platform(libs.netty.bom))
+            implementation(libs.bundles.security)
+
             if (theme != null) implementation(theme) // Overrides core launcher icons
             implementation(project(":core"))
             compileOnly(libs.bundles.common)
