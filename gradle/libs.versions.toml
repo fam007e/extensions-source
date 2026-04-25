@@ -14,7 +14,7 @@ tapmoc = "0.4.2"
 # noinspection NewerVersionAvailable
 serialization = "1.7.3"
 
-# Security fixes
+# Security fixes - enforced strictly
 netty = "4.1.132.Final"
 jdom2 = "2.0.6.1"
 jose4j = "0.9.6"
@@ -47,16 +47,16 @@ tachiyomi-lib = { module = "com.github.keiyoushi:extensions-lib", version = "18a
 # Required by Kotlin 2.x compiler to resolve type-use annotations (e.g. org.jspecify.annotations.Nullable) used in Jsoup's API signatures
 jspecify = { module = "org.jspecify:jspecify", version = "1.0.0" }
 
-# Security fixes
-netty-bom = { module = "io.netty:netty-bom", version.ref = "netty" }
-jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom2" }
-jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
-httpclient = { module = "org.apache.httpcomponents:httpclient", version.ref = "httpclient" }
-httpcore = { module = "org.apache.httpcomponents:httpcore", version.ref = "httpcore" }
-bc-pkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle" }
-bc-prov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
-bc-util = { module = "org.bouncycastle:bcutil-jdk18on", version.ref = "bouncycastle" }
+# Security fixes (Strict overrides)
+netty-bom = { module = "io.netty:netty-bom", version = { strictly = "4.1.132.Final" } }
+jdom2 = { module = "org.jdom:jdom2", version = { strictly = "2.0.6.1" } }
+jose4j = { module = "org.bitbucket.b_c:jose4j", version = { strictly = "0.9.6" } }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version = { strictly = "3.18.0" } }
+httpclient = { module = "org.apache.httpcomponents:httpclient", version = { strictly = "4.5.13" } }
+httpcore = { module = "org.apache.httpcomponents:httpcore", version = { strictly = "4.4.13" } }
+bc-pkix = { module = "org.bouncycastle:bcpkix-jdk18on", version = { strictly = "1.84" } }
+bc-prov = { module = "org.bouncycastle:bcprov-jdk18on", version = { strictly = "1.84" } }
+bc-util = { module = "org.bouncycastle:bcutil-jdk18on", version = { strictly = "1.84" } }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
@@ -68,3 +68,4 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [bundles]
 common = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "injekt-core", "rxjava", "kotlin-protobuf", "kotlin-json", "kotlin-json-okio", "jsoup", "jspecify", "okhttp", "tachiyomi-lib", "quickjs"]
+security = ["jdom2", "jose4j", "commons-lang3", "httpclient", "httpcore", "bc-pkix", "bc-prov", "bc-util"]

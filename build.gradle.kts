@@ -1,6 +1,10 @@
 buildscript {
     dependencies {
         classpath(libs.kotlin.gradle)
+
+        // Apply strict security overrides to all build tools
+        classpath(platform(libs.netty.bom))
+        classpath(libs.bundles.security)
     }
 }
 

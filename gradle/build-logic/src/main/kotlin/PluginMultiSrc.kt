@@ -38,6 +38,9 @@ class PluginMultiSrc : Plugin<Project> {
         }
 
         dependencies {
+            implementation(platform(libs.netty.bom))
+            implementation(libs.bundles.security)
+
             compileOnly(libs.bundles.common)
             implementation(project(":core"))
         }
