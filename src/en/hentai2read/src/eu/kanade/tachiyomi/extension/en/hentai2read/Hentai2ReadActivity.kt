@@ -15,9 +15,28 @@ class Hentai2ReadActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val pathSegments = intent?.data?.pathSegments
-        if (pathSegments != null) {
-            // TODO: filter standard paths
+        if (pathSegments != null && pathSegments.isNotEmpty()) {
             val id = pathSegments[0]
+
+            // Filter standard paths
+            if (id in listOf(
+                    "hentai-list",
+                    "hentai-search",
+                    "user",
+                    "login",
+                    "register",
+                    "contact",
+                    "privacy-policy",
+                    "terms-of-service",
+                    "latest-releases",
+                    "most-popular",
+                    "advanced-search",
+                )
+            ) {
+                finish()
+                exitProcess(0)
+            }
+
             val mainIntent = Intent().apply {
                 action = "eu.kanade.tachiyomi.SEARCH"
                 putExtra("query", "${Hentai2Read.PREFIX_ID_SEARCH}$id")
