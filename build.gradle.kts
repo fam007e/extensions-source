@@ -9,5 +9,9 @@ buildscript {
         classpath(libs.gradle.kotlin)
         classpath(libs.gradle.serialization)
         classpath(libs.spotless.gradle)
+        
+        // Apply strict security overrides to all build tools
+        classpath(platform(libs.netty.bom))
+        classpath(libs.bundles.security)
     }
 }
