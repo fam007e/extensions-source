@@ -1,67 +1,46 @@
 name: Dependency Submission
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'gradle/libs.versions.toml'
+      - '**.gradle'
+      - '**.gradle.kts'
+      - 'buildSrc/**'
+      - '.github/workflows/dependency-submission.yml'
   schedule:
     - cron: '0 0 * * *' # Daily at midnight UTC
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
-# Prevent multiple runs from clogging the queue
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  submit:
-    name: Submit Dependencies
+  dependency-submission:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Get last successful CI commit
-        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
-        with:
-          fallback-sha: 1d28aae59031083a364d6e413c72de7f5229e3de
-
-      - name: Check for relevant file changes
-        id: check-files
-        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
-        with:
-          base_sha: ${{ env.NX_BASE }}
-          files: |
-            gradle/libs.versions.toml
-            **/*.gradle
-            **/*.gradle.kts
-            buildSrc/**
-            .github/workflows/dependency-submission.yml
 
       - name: Set up JDK
-        if: steps.check-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: 17
           distribution: temurin
 
-      - name: Resolve Representative Modules
-        if: steps.check-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
-        id: modules
-        run: |
-          # Find all libraries in lib/ and format them as :lib:name
-          LIBS=$(find lib -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sed 's/^/:lib:/' | tr '\n' ' ')
-          # Combine with :core and :src:all:mangadex
-          echo "list=:core :src:all:mangadex $LIBS" >> $GITHUB_OUTPUT
-
       - name: Submit Dependencies
-        if: steps.check-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
         uses: gradle/actions/dependency-submission@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
+          # Resolving root, core, and two major extensions captures all shared dependencies.
+          # This fixes the task error and prevents the 1h30m timeout from 1,300+ extensions.
           additional-arguments: |
-             ${{ steps.modules.outputs.list }}
+            :dependencies
+            :core:dependencies
+            :src:all:mangadex:dependencies
+            :src:all:webtoons:dependencies
