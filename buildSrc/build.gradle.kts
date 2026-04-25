@@ -8,7 +8,16 @@ dependencies {
     implementation(libs.gradle.serialization)
     implementation(libs.spotless.gradle)
     
-    // Strict security overrides for buildSrc
+    // Direct security overrides for buildSrc tools
     implementation(platform(libs.netty.bom))
-    implementation(libs.bundles.security)
+    constraints {
+        implementation(libs.jdom2)
+        implementation(libs.jose4j)
+        implementation(libs.commons.lang3)
+        implementation(libs.httpclient)
+        implementation(libs.httpcore)
+        implementation(libs.bc.pkix)
+        implementation(libs.bc.prov)
+        implementation(libs.bc.util)
+    }
 }

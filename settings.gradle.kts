@@ -7,6 +7,23 @@ pluginManagement {
     }
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        // Direct overrides for the settings classpath to satisfy Dependabot
+        // These use the versions from the catalog implicitly where possible
+        classpath("org.jdom:jdom2:2.0.6.1")
+        classpath("org.bitbucket.b_c:jose4j:0.9.6")
+        classpath("org.apache.commons:commons-lang3:3.18.0")
+        classpath("org.apache.httpcomponents:httpclient:4.5.13")
+        classpath("org.bouncycastle:bcpkix-jdk18on:1.84")
+        classpath("org.bouncycastle:bcprov-jdk18on:1.84")
+    }
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
