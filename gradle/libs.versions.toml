@@ -18,7 +18,7 @@ httpcore = "4.4.13"
 bouncycastle = "1.84"
 
 [libraries]
-gradle-agp = { module = "com.android.tools.build:gradle", version = "9.1.1" }
+gradle-agp = { module = "com.android.tools.build:gradle", version = "9.2.0" }
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 
