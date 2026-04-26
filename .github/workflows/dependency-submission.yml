@@ -39,10 +39,10 @@ jobs:
       - name: Submit Dependencies
         uses: gradle/actions/dependency-submission@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
-          # Resolving root, core, and two major extensions captures all shared dependencies.
+          # Resolving root, core, and one major extension captures all shared dependencies.
           # This fixes the task error and prevents the 1h30m timeout from 1,300+ extensions.
+          dependency-graph-include-projects: "^(:|:core|:src:all:mangadex)$"
           additional-arguments: |
             :dependencies
             :core:dependencies
             :src:all:mangadex:dependencies
-            :src:all:webtoons:dependencies
