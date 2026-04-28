@@ -1,0 +1,51 @@
+name: CI Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build artifacts and create draft release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ${{ github.ref }}
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4 # v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Generate android.jar
+        run: |
+          ./AndroidCompat/getAndroid.sh
+
+      - name: Build project
+        uses: gradle/gradle-command-action@982da8e78c05368c70dac0351bb82647a9e9a5d2 # v2
+        with:
+          arguments: :inspector:shadowJar
+
+      - name: Upload Release
+        uses: xresloader/upload-to-github-release@2290df57aa316d1dae840ca57126a33bda98f45f # v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "server/build/*.jar"
+          tags: true
+          draft: true
+          verbose: true
