@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: inspector.MainKt
-Implementation-Title: Tachiyomi Extensions Inspector
-Implementation-Vendor: The Keiyoushi Project
-Specification-Version: v1.4.9
-Implementation-Version: r1
-
