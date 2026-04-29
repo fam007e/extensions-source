@@ -295,10 +295,10 @@
   {
     "name": "Tachiyomi: 3600000 Beauty",
     "pkg": "eu.kanade.tachiyomi.extension.all.beauty3600000",
-    "apk": "tachiyomi-all.beauty3600000-v1.4.4.apk",
+    "apk": "tachiyomi-all.beauty3600000-v1.4.5.apk",
     "lang": "all",
-    "code": 4,
-    "version": "1.4.4",
+    "code": 5,
+    "version": "1.4.5",
     "nsfw": 1,
     "sources": [
       {
@@ -14555,10 +14555,10 @@
   {
     "name": "Tachiyomi: Toonily",
     "pkg": "eu.kanade.tachiyomi.extension.en.toonily",
-    "apk": "tachiyomi-en.toonily-v1.4.61.apk",
+    "apk": "tachiyomi-en.toonily-v1.4.62.apk",
     "lang": "en",
-    "code": 61,
-    "version": "1.4.61",
+    "code": 62,
+    "version": "1.4.62",
     "nsfw": 1,
     "sources": [
       {
