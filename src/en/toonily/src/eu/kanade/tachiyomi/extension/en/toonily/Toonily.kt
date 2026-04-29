@@ -31,6 +31,22 @@ class Toonily :
     override val sendViewCount = false
     override val useLoadMoreRequest = LoadMoreStrategy.Always
 
+    override val mangaDetailsSelectorDescription = "div.description-summary div.summary__content, div.summary_content div.post-content_item > h5 + div, div.summary_content div.manga-excerpt, .summary__content"
+    override val mangaDetailsSelectorTag = "div.tags-content a, .wp-manga-tags-list a"
+
+    override fun mangaDetailsParse(document: org.jsoup.nodes.Document): SManga = super.mangaDetailsParse(document).apply {
+        description = description?.let { desc ->
+            val paragraphs = desc.split("\n\n")
+            if (paragraphs.size > 1) {
+                val synopsis = paragraphs[0]
+                val altNames = paragraphs.find { it.startsWith(altName) }
+                if (altNames != null) "$synopsis\n\n$altNames" else synopsis
+            } else {
+                desc
+            }
+        }
+    }
+
     override fun searchMangaSelector() = "div.page-item-detail.manga"
 
     override fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request = super.searchMangaRequest(
