@@ -189,7 +189,7 @@ class Beauty3600000 : HttpSource() {
             headers,
         )
         return client.newCall(request).awaitSuccess()
-            .parseAs<List<TermDto>>()
+            .parseAsClean<List<TermDto>>()
     }
 
     private suspend fun getTag(slug: String): List<TermDto> {
@@ -202,7 +202,7 @@ class Beauty3600000 : HttpSource() {
             headers,
         )
         return client.newCall(request).awaitSuccess()
-            .parseAs<List<TermDto>>()
+            .parseAsClean<List<TermDto>>()
     }
 
     override suspend fun fetchRelatedMangaList(manga: SManga): List<SManga> {
@@ -238,14 +238,10 @@ class Beauty3600000 : HttpSource() {
     private fun Response.toPost(): PostDto {
         val slugParam = request.url.queryParameter("slug")
         return if (slugParam != null) {
-            val body = body.string()
-            jsonArrayRegex.find(body)
-                ?.value
-                ?.parseAs<List<PostDto>>()
-                ?.firstOrNull()
+            parseAsClean<List<PostDto>>().firstOrNull()
                 ?: throw IllegalArgumentException("Post not found")
         } else {
-            parseAs<PostDto>()
+            parseAsClean<PostDto>()
         }
     }
 
@@ -276,7 +272,7 @@ class Beauty3600000 : HttpSource() {
     )
 
     override fun pageListParse(response: Response): List<Page> {
-        val post = response.parseAs<PostDto>()
+        val post = response.parseAsClean<PostDto>()
         val document = Jsoup.parseBodyFragment(post.content.rendered)
         return document.select("img").mapIndexed { i, it ->
             Page(i, imageUrl = it.attr("src"))
@@ -288,11 +284,7 @@ class Beauty3600000 : HttpSource() {
     // ========================= Helpers =========================
 
     private fun parseMangasPage(response: Response): MangasPage {
-        val body = response.body.string()
-        val posts = jsonArrayRegex.find(body)
-            ?.value
-            ?.parseAs<List<PostDto>>()
-            ?: return MangasPage(emptyList(), false)
+        val posts = response.parseAsClean<List<PostDto>>()
         val mangas = posts.map { it.toSManga() }
         val totalPages = response.header("X-WP-TotalPages")?.toIntOrNull() ?: 0
         val currentPage = response.request.url.queryParameter("page")?.toIntOrNull() ?: 1
@@ -314,6 +306,21 @@ class Beauty3600000 : HttpSource() {
                 }
             }
         }.awaitAll().flatten()
+    }
+
+    private inline fun <reified T> Response.parseAsClean(): T = parseAs<T> {
+        val firstBrace = it.indexOf('{')
+        val firstBracket = it.indexOf('[')
+        if (firstBrace == -1 && firstBracket == -1) {
+            it
+        } else {
+            val start = if (firstBrace != -1 && firstBracket != -1) {
+                minOf(firstBrace, firstBracket)
+            } else {
+                maxOf(firstBrace, firstBracket)
+            }
+            it.substring(start)
+        }
     }
 
     // disable suggested mangas on Komikku
