@@ -123,7 +123,7 @@ class Beauty3600000 : HttpSource() {
         headers,
     )
 
-    override fun mangaDetailsParse(response: Response): SManga = response.parseAs<PostDto>().toSManga()
+    override fun mangaDetailsParse(response: Response): SManga = response.parseAsClean<PostDto>().toSManga()
 
     override fun getMangaUrl(manga: SManga): String = "$baseUrl/?p=${manga.url}"
 
@@ -132,7 +132,7 @@ class Beauty3600000 : HttpSource() {
     override fun chapterListRequest(manga: SManga): Request = mangaDetailsRequest(manga)
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val post = response.parseAs<PostDto>()
+        val post = response.parseAsClean<PostDto>()
         return listOf(
             post.toSChapter().apply {
                 date_upload = DATE_FORMAT.tryParse(post.date)
@@ -154,7 +154,7 @@ class Beauty3600000 : HttpSource() {
     )
 
     override fun pageListParse(response: Response): List<Page> {
-        val post = response.parseAs<PostDto>()
+        val post = response.parseAsClean<PostDto>()
         val document = Jsoup.parseBodyFragment(post.content.rendered)
         return document.select("img").mapIndexed { i, it ->
             Page(i, imageUrl = it.attr("src"))
@@ -166,11 +166,26 @@ class Beauty3600000 : HttpSource() {
     // ========================= Helpers =========================
 
     private fun parseMangasPage(response: Response): MangasPage {
-        val posts = response.parseAs<List<PostDto>>()
+        val posts = response.parseAsClean<List<PostDto>>()
         val mangas = posts.map { it.toSManga() }
         val totalPages = response.header("X-WP-TotalPages")?.toIntOrNull() ?: 0
         val currentPage = response.request.url.queryParameter("page")?.toIntOrNull() ?: 1
         return MangasPage(mangas, currentPage < totalPages)
+    }
+
+    private inline fun <reified T> Response.parseAsClean(): T = parseAs<T> {
+        val firstBrace = it.indexOf('{')
+        val firstBracket = it.indexOf('[')
+        if (firstBrace == -1 && firstBracket == -1) {
+            it
+        } else {
+            val start = if (firstBrace != -1 && firstBracket != -1) {
+                minOf(firstBrace, firstBracket)
+            } else {
+                maxOf(firstBrace, firstBracket)
+            }
+            it.substring(start)
+        }
     }
 
     // disable suggested mangas on Komikku
