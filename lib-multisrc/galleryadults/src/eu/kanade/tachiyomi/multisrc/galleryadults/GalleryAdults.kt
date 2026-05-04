@@ -788,7 +788,7 @@ abstract class GalleryAdults(
     protected open fun imageUrlParse(document: Document): String = document.selectFirst("img#gimg, img#fimg")?.imgAttr() ?: ""
 
     /* Filters */
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
     private fun launchIO(block: () -> Unit) = scope.launch { block() }
     private var tagsFetched = false
     private var tagsFetchAttempt = 0

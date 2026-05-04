@@ -593,7 +593,7 @@ abstract class LibGroup(
     private fun urlChangedError(sourceName: String): String = "URL серии изменился. Перенесите/мигрируйте с $sourceName " +
         "на $sourceName, чтобы список глав обновился."
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
     private fun launchIO(block: () -> Unit) = scope.launch { block() }
 
     companion object {
