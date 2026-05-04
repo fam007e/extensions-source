@@ -1160,7 +1160,7 @@ abstract class Madara(
 
     protected val salted = "Salted__".toByteArray(Charsets.UTF_8)
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
 
     protected fun launchIO(block: () -> Unit) = scope.launch { block() }
 

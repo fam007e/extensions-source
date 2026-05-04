@@ -428,7 +428,7 @@ constructor(
 
     private var fetchFiltersStatus = FetchFilterStatus.NOT_FETCHED
     private var fetchFiltersAttempts = 0
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
 
     protected open fun fetchFilterOptions() {
         if (!fetchFilterOptions) {
