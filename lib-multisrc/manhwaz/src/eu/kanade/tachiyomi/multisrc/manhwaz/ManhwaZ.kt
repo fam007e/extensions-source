@@ -230,7 +230,7 @@ abstract class ManhwaZ(
     private var fetchGenreStatus = FetchGenreStatus.NOT_FETCHED
     private var fetchGenreAttempts = 0
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
 
     private fun fetchGenreList() {
         if (fetchGenreStatus != FetchGenreStatus.NOT_FETCHED || fetchGenreAttempts >= 3) {

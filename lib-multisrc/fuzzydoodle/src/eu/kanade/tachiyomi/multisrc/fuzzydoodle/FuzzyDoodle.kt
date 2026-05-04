@@ -172,7 +172,7 @@ abstract class FuzzyDoodle(
         return FilterList(filters)
     }
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
 
     protected fun launchIO(block: suspend () -> Unit) = scope.launch { block() }
 
