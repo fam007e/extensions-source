@@ -239,6 +239,8 @@ public final class SQLiteDatabase extends SQLiteClosable {
     }
 
     @Override
+    @Deprecated
+    @SuppressWarnings("removal")
     protected void finalize() throws Throwable {
         try {
             dispose(true);

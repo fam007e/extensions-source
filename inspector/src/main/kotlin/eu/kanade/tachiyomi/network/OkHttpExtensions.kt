@@ -28,9 +28,9 @@ suspend fun Call.await(): Response {
                         return
                     }
 
-                    continuation.resume(response) {
-                        response.body?.closeQuietly()
-                    }
+                    continuation.resume(response, onCancellation = { _, res, _ ->
+                        res.body.closeQuietly()
+                    })
                 }
 
                 override fun onFailure(

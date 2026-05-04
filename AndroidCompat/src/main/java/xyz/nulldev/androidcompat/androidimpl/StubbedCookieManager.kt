@@ -4,6 +4,7 @@ import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebView
 
+@Suppress("DEPRECATION")
 class StubbedCookieManager : CookieManager() {
     override fun setAcceptCookie(accept: Boolean) {
         throw NotImplementedError()
@@ -30,19 +31,24 @@ class StubbedCookieManager : CookieManager() {
         throw NotImplementedError()
     }
 
+    @Deprecated("")
     override fun getCookie(url: String?, privateBrowsing: Boolean): String {
         throw NotImplementedError()
     }
 
+    @Deprecated("")
     override fun removeSessionCookie() {
     }
 
+    @Deprecated("")
     override fun removeSessionCookies(callback: ValueCallback<Boolean>?) {
     }
 
+    @Deprecated("")
     override fun removeAllCookie() {
     }
 
+    @Deprecated("")
     override fun removeAllCookies(callback: ValueCallback<Boolean>?) {
     }
 
@@ -50,10 +56,12 @@ class StubbedCookieManager : CookieManager() {
         throw NotImplementedError()
     }
 
+    @Deprecated("")
     override fun hasCookies(privateBrowsing: Boolean): Boolean {
         throw NotImplementedError()
     }
 
+    @Deprecated("")
     override fun removeExpiredCookie() {
     }
 

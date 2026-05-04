@@ -119,6 +119,6 @@ tasks {
     }
 
     withType<ProcessResources> {
-        duplicatesStrategy = DuplicatesStrategy.WARN
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 }

@@ -1396,9 +1396,9 @@ public class XmlUtils {
             } else if (tagName.equals("long")) {
                 return Long.valueOf(parser.getAttributeValue(null, "value"));
             } else if (tagName.equals("float")) {
-                return new Float(parser.getAttributeValue(null, "value"));
+                return Float.valueOf(parser.getAttributeValue(null, "value"));
             } else if (tagName.equals("double")) {
-                return new Double(parser.getAttributeValue(null, "value"));
+                return Double.valueOf(parser.getAttributeValue(null, "value"));
             } else if (tagName.equals("boolean")) {
                 return Boolean.valueOf(parser.getAttributeValue(null, "value"));
             } else {

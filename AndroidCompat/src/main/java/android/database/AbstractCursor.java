@@ -382,6 +382,8 @@ public abstract class AbstractCursor implements CrossProcessCursor {
         }
     }
     @Override
+    @Deprecated
+    @SuppressWarnings("removal")
     protected void finalize() {
         if (mSelfObserver != null && mSelfObserverRegistered == true) {
             mContentResolver.unregisterContentObserver(mSelfObserver);
