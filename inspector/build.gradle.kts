@@ -84,6 +84,10 @@ tasks {
         archiveBaseName.set(rootProject.name)
         archiveVersion.set(inspectorVersion)
         archiveClassifier.set(inspectorRevision)
+
+        relocate("kotlinx.coroutines", "inspector.kotlinx.coroutines")
+        relocate("okhttp3", "inspector.okhttp3")
+        relocate("okio", "inspector.okio")
     }
 
     withType<KotlinCompile> {
