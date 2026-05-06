@@ -15,7 +15,7 @@ tapmoc = "0.4.2"
 serialization = "1.7.3"
 
 # Security fixes - enforced strictly
-netty = "4.2.12.Final"
+netty = "4.2.13.Final"
 jdom2 = "2.0.6.1"
 jose4j = "0.9.6"
 commons-lang3 = "3.20.0"
@@ -48,7 +48,7 @@ tachiyomi-lib = { module = "com.github.keiyoushi:extensions-lib", version = "18a
 jspecify = { module = "org.jspecify:jspecify", version = "1.0.0" }
 
 # Security fixes (Strict overrides)
-netty-bom = { module = "io.netty:netty-bom", version = { strictly = "4.2.12.Final" } }
+netty-bom = { module = "io.netty:netty-bom", version = { strictly = "4.2.13.Final" } }
 jdom2 = { module = "org.jdom:jdom2", version = { strictly = "2.0.6.1" } }
 jose4j = { module = "org.bitbucket.b_c:jose4j", version = { strictly = "0.9.6" } }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version = { strictly = "3.20.0" } }
