@@ -20,11 +20,11 @@ buildscript {
         classpath("org.apache.httpcomponents:httpclient:4.5.13")
         classpath("org.bouncycastle:bcpkix-jdk18on:1.84")
         classpath("org.bouncycastle:bcprov-jdk18on:1.84")
-        classpath("io.netty:netty-codec-http2:4.2.12.Final")
-        classpath("io.netty:netty-handler:4.2.12.Final")
-        classpath("io.netty:netty-codec-http:4.2.12.Final")
-        classpath("io.netty:netty-codec:4.2.12.Final")
-        classpath("io.netty:netty-common:4.2.12.Final")
+        classpath("io.netty:netty-codec-http2:4.2.13.Final")
+        classpath("io.netty:netty-handler:4.2.13.Final")
+        classpath("io.netty:netty-codec-http:4.2.13.Final")
+        classpath("io.netty:netty-codec:4.2.13.Final")
+        classpath("io.netty:netty-common:4.2.13.Final")
     }
 }
 
