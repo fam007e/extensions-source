@@ -115,7 +115,7 @@ class CryptoHelper(
         }
         if (request.url.fragment == "DECRYPT") {
             val response = chain.proceed(request)
-            if (!response.isSuccessful || response.body == null) throw Exception("Failed to decrypt image")
+            if (!response.isSuccessful) throw Exception("Failed to decrypt image")
 
             val decryptedBytes = decryptImage(response.body.bytes())
             return response.newBuilder()

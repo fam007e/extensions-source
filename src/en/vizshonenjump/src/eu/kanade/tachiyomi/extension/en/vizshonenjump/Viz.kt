@@ -149,13 +149,13 @@ open class Viz(
             status = SManga.ONGOING
             description = seriesIntro.selectFirst("div.line-solid")?.text()
             thumbnail_url = if (!mangaFromList?.thumbnail_url.isNullOrEmpty()) {
-                mangaFromList!!.thumbnail_url // Can't be null in this branch
+                mangaFromList.thumbnail_url
             } else {
                 document.selectFirst("section.section_chapters td a > img")?.attr("data-original") ?: ""
             }
             url = mangaUrl
             title = if (!mangaFromList?.title.isNullOrEmpty()) {
-                mangaFromList!!.title // Can't be null in this branch
+                mangaFromList.title
             } else {
                 seriesIntro.selectFirst("h2.type-lg")?.text() ?: ""
             }

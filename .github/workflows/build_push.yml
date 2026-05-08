@@ -140,7 +140,7 @@ jobs:
         run: |
           cd main
           python ./.github/scripts/move-built-apks.py
-          java -jar ./Inspector.jar "repo/apk" "output.json" "tmp"
+          java -noverify -jar ./Inspector.jar "repo/apk" "output.json" "tmp"
           python ./.github/scripts/create-repo.py
 
       - name: Checkout repo branch

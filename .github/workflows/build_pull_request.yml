@@ -111,5 +111,5 @@ jobs:
         run: |
           mkdir -p apk
           find ~/apk-artifacts -name "*.apk" -type f -exec mv {} apk/ \;
-          java -jar ./Inspector.jar "apk" "output.json" "tmp"
+          java -noverify -jar ./Inspector.jar "apk" "output.json" "tmp"
           jq . output.json
