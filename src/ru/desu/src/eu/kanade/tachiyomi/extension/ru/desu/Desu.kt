@@ -207,7 +207,7 @@ class Desu :
 
     override fun mangaDetailsRequest(manga: SManga): Request = GET(baseUrl + "/manga" + manga.url, headers)
 
-    override fun mangaDetailsParse(response: Response) = SManga.create().apply {
+    override fun mangaDetailsParse(response: Response): SManga {
         val responseString = response.body.string()
         val series = json.decodeFromString<SeriesWrapperDto<MangaDetDto>>(responseString)
         val genresStr = json.decodeFromString<SeriesWrapperDto<MangaDetGenresDto>>(responseString).response.genres!!.joinToString { it.russian }

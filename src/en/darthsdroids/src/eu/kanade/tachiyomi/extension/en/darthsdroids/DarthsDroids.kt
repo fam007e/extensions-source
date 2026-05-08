@@ -213,12 +213,12 @@ class DarthsDroids : HttpSource() {
                 // null for »Intermission«, main archive, dateless archive,…
                 if (pageAnchor != null) {
                     SChapter.create().apply {
-                        name = pageAnchor!!.text()
+                        name = pageAnchor.text()
                         chapter_number = (i++).toFloat()
                         date_upload = runCatching {
                             DATE_FMT.parse(pageData[0].text())!!.time
                         }.getOrDefault(0L)
-                        setUrlWithoutDomain(pageAnchor!!.absUrl("href"))
+                        setUrlWithoutDomain(pageAnchor.absUrl("href"))
                     }
                 } else if (!pageData.hasAttr("colspan")) {
                     // Are we in a dateless archive?

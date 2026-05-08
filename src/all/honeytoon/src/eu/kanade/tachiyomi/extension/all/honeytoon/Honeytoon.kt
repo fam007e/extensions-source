@@ -134,7 +134,7 @@ class Honeytoon(
         val document = response.asJsoup()
         title = document.selectFirst("h1")!!.text()
 
-        author = document.select(".comic-book__story-art a")?.joinToString { it.text() }
+        author = document.select(".comic-book__story-art a").joinToString { it.text() }
         description = document.selectFirst(".comic-book__desc")?.text()
         genre = document.select(".comic-book-content a[href*=genre], .comic-tag").joinToString { it.text() }
         status = when {
@@ -168,7 +168,7 @@ class Honeytoon(
 
                     date_upload = dateFormat.tryParse(element.selectFirst(".comic-list__title-date")?.text())
                     setUrlWithoutDomain(
-                        element.absUrl("href")?.takeIf { !isLocked }
+                        element.absUrl("href").takeIf { !isLocked }
                             ?: (document.location() + "/$index#locked"),
                     )
                 }
