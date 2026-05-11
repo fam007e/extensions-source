@@ -24059,24 +24059,6 @@
     ]
   },
   {
-    "name": "Tachiyomi: Sakura Mangás",
-    "pkg": "eu.kanade.tachiyomi.extension.pt.sakuramangas",
-    "apk": "tachiyomi-pt.sakuramangas-v1.4.5.apk",
-    "lang": "pt-BR",
-    "code": 5,
-    "version": "1.4.5",
-    "nsfw": 1,
-    "sources": [
-      {
-        "name": "Sakura Mangás",
-        "lang": "pt-BR",
-        "id": "5312747352055987615",
-        "baseUrl": "https://sakuramangas.org",
-        "versionId": 1
-      }
-    ]
-  },
-  {
     "name": "Tachiyomi: Shirai Scans",
     "pkg": "eu.kanade.tachiyomi.extension.pt.shiraiscans",
     "apk": "tachiyomi-pt.shiraiscans-v1.4.1.apk",
