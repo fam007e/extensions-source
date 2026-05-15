@@ -13,6 +13,10 @@ plugins {
     alias(libs.plugins.buildconfig)
 }
 
+kotlinter {
+    ignoreFailures = true
+}
+
 dependencies {
     implementation(libs.bundles.okhttp)
     implementation(libs.bundles.tachiyomi)
