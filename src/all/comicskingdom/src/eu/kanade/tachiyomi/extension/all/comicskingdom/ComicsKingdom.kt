@@ -164,11 +164,10 @@ class ComicsKingdom(override val lang: String) :
 
         val chapters = mutableListOf<SChapter>()
         var pageNum = 1
-
         var chapterData = getChapterList(mangaName, pageNum)
         var chapterNum = 0.0F
 
-        while (chapterData != null) {
+        while (chapterData != null && chapterData.isNotEmpty()) {
             val list = chapterData.map {
                 chapterNum += 0.01F
                 SChapter.create().apply {
@@ -180,7 +179,7 @@ class ComicsKingdom(override val lang: String) :
                         }
                             .toString(),
                     )
-                    date_upload = dateFormat.parse(it.date).time
+                    date_upload = dateFormat.parse(it.date)?.time ?: 0L
                     name = it.date.substringBefore("T")
                 }
             }
