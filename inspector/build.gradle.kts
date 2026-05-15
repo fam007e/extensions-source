@@ -13,10 +13,6 @@ plugins {
     alias(libs.plugins.buildconfig)
 }
 
-kotlinter {
-    ignoreFailures = true
-}
-
 dependencies {
     implementation(libs.bundles.okhttp)
     implementation(libs.bundles.tachiyomi)
@@ -41,10 +37,8 @@ sourceSets {
     }
 }
 
-// should be bumped with each stable release
 val inspectorVersion = "v1.4.9"
 
-// counts commit count on master
 val inspectorRevision = runCatching {
     System.getenv("ProductRevision") ?: Runtime
         .getRuntime()
@@ -107,19 +101,14 @@ tasks {
 
     withType<ShadowJar> {
         destinationDirectory.set(File("$rootDir/server/build"))
-        dependsOn("formatKotlin", "lintKotlin")
     }
-
-    named("run") {
-        dependsOn("formatKotlin", "lintKotlin")
-    }
-
+    
     withType<LintTask> {
-        source(files("src/main/kotlin"))
+        exclude("**/BuildConfig.kt")
     }
 
     withType<FormatTask> {
-        source(files("src/main/kotlin"))
+        exclude("**/BuildConfig.kt")
     }
 
     withType<ProcessResources> {
