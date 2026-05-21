@@ -117,6 +117,7 @@ class PluginExtensionLegacy : Plugin<Project> {
 
             packaging {
                 resources.excludes.add("kotlin-tooling-metadata.json")
+                resources.excludes.add("META-INF/DEPENDENCIES")
             }
         }
 
