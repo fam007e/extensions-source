@@ -37,7 +37,7 @@ abstract class Senkuro(
     override val supportsLatest = false
 
     override fun headersBuilder(): Headers.Builder = super.headersBuilder()
-        .set("User-Agent", "Tachiyomi (+https://github.com/keiyoushi/extensions-source)")
+        .set("User-Agent", "Tachiyomi (+https://github.com/fam007e/extensions-source)")
         .add("Content-Type", "application/json")
         .add("App-Id", if (name == "Senkuro") "4026531840100" else "5033164800100")
         .add("App-Version", "060626")

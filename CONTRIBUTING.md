@@ -1,11 +1,11 @@
 # Contributing
 
-This guide has some instructions and tips on how to create a new Keiyoushi extension. Please **read
+This guide has some instructions and tips on how to create a new extension. Please **read
 it carefully** if you're a new contributor or don't have any experience on the required languages
 and knowledges.
 
 This guide is not definitive and it's being updated over time. If you find any issues in it, feel
-free to report it through a [Meta Issue](https://github.com/keiyoushi/extensions-source/issues/new?assignees=&labels=Meta+request&template=06_request_meta.yml)
+free to report it through a [Meta Issue](https://github.com/fam007e/extensions-source/issues/new?assignees=&labels=Meta+request&template=06_request_meta.yml)
 or fixing it directly by submitting a Pull Request.
 
 ## Table of Contents
@@ -28,7 +28,7 @@ or fixing it directly by submitting a Pull Request.
       - [Available libs](#available-libs)
       - [Adding a lib dependency](#adding-a-lib-dependency)
       - [Creating a new lib](#creating-a-new-lib)
-      - [keiyoushi.utils (core utilities)](#keiyoushiutils-core-utilities)
+      - [fam007e.utils (core utilities)](#fam007eutils-core-utilities)
         - [JSON parsing - `parseAs`](#json-parsing---parseas)
         - [JSON serialization - `toJsonString` / `toJsonRequestBody`](#json-serialization---tojsonstring--tojsonrequestbody)
         - [JSON models (DTOs) and serialization](#json-models-dtos-and-serialization)
@@ -168,7 +168,7 @@ navigate and build. This will also reduce disk usage and network traffic.
 
     ```bash
     # add upstream
-    git remote add upstream <keiyoushi-repo-url>
+    git remote add upstream <fam007e-repo-url>
     # optionally disable push to upstream
     git remote set-url --push upstream no_pushing
     # optionally fetch main only (ignore all other branches)
@@ -207,7 +207,7 @@ and [negative refspecs](https://github.blog/2020-10-19-git-2-29-released/#user-c
 
 ## Getting help
 
-- Join [the Discord server](https://discord.gg/3FbCpdKbdY) for online help and to ask questions while
+- Join [the Discord server](https://discord.gg/F34duNjTqn) for online help and to ask questions while
 developing your extension. When doing so, please ask them in the `#programming` channel.
 - There are some features and tricks that are not explored in this document. Refer to existing
 extension code for examples.
@@ -326,14 +326,14 @@ use case. Each lib is self-documented via KDoc comments and/or a README in its o
 
 | Module | Description |
 |---|---|
-| [`lib-cookieinterceptor`](https://github.com/keiyoushi/extensions-source/tree/main/lib/cookieinterceptor) | Injects cookies into OkHttp requests for a given domain |
-| [`lib-cryptoaes`](https://github.com/keiyoushi/extensions-source/tree/main/lib/cryptoaes) | AES-CBC decryption compatible with CryptoJS; JSFuck deobfuscation |
-| [`lib-dataimage`](https://github.com/keiyoushi/extensions-source/tree/main/lib/dataimage) | Decodes base64 `data:image` strings into mock URLs that OkHttp can handle |
-| [`lib-randomua`](https://github.com/keiyoushi/extensions-source/tree/main/lib/randomua) | Fetches and rotates real-world User-Agent strings (requires overriding `getMangaUrl()`) |
-| [`lib-synchrony`](https://github.com/keiyoushi/extensions-source/tree/main/lib/synchrony) | JavaScript deobfuscation via the Synchrony engine (QuickJS sandbox) |
-| [`lib-textinterceptor`](https://github.com/keiyoushi/extensions-source/tree/main/lib/textinterceptor) | Renders plain text or HTML as a PNG image page |
-| [`lib-unpacker`](https://github.com/keiyoushi/extensions-source/tree/main/lib/unpacker) | Unpacks Dean Edwards-packed JavaScript; substring extraction helpers |
-| [`lib-zipinterceptor`](https://github.com/keiyoushi/extensions-source/tree/main/lib/zipinterceptor) | Decodes, stitches, and processes multi-page ZIP/AVIF/SVG image archives |
+| [`lib-cookieinterceptor`](https://github.com/fam007e/extensions-source/tree/main/lib/cookieinterceptor) | Injects cookies into OkHttp requests for a given domain |
+| [`lib-cryptoaes`](https://github.com/fam007e/extensions-source/tree/main/lib/cryptoaes) | AES-CBC decryption compatible with CryptoJS; JSFuck deobfuscation |
+| [`lib-dataimage`](https://github.com/fam007e/extensions-source/tree/main/lib/dataimage) | Decodes base64 `data:image` strings into mock URLs that OkHttp can handle |
+| [`lib-randomua`](https://github.com/fam007e/extensions-source/tree/main/lib/randomua) | Fetches and rotates real-world User-Agent strings (requires overriding `getMangaUrl()`) |
+| [`lib-synchrony`](https://github.com/fam007e/extensions-source/tree/main/lib/synchrony) | JavaScript deobfuscation via the Synchrony engine (QuickJS sandbox) |
+| [`lib-textinterceptor`](https://github.com/fam007e/extensions-source/tree/main/lib/textinterceptor) | Renders plain text or HTML as a PNG image page |
+| [`lib-unpacker`](https://github.com/fam007e/extensions-source/tree/main/lib/unpacker) | Unpacks Dean Edwards-packed JavaScript; substring extraction helpers |
+| [`lib-zipinterceptor`](https://github.com/fam007e/extensions-source/tree/main/lib/zipinterceptor) | Decodes, stitches, and processes multi-page ZIP/AVIF/SVG image archives |
 
 > [!IMPORTANT]
 > If your module uses `:lib:randomua`, the Spotless check requires your extension to override the `getMangaUrl()` method in your main class, or the build will fail.
@@ -373,7 +373,7 @@ A lib follows this structure:
 lib/<mylibname>/
 ├── build.gradle.kts
 └── src
-    └── keiyoushi
+    └── fam007e
         └── lib
             └── <mylibname>
                 └── MyLib.kt
@@ -399,21 +399,21 @@ dependencies {
 }
 ```
 
-Place your code in the package `keiyoushi.lib.<mylibname>`. Document public API with KDoc so
+Place your code in the package `fam007e.lib.<mylibname>`. Document public API with KDoc so
 contributors can understand the lib without needing to read `CONTRIBUTING.md`.
 
-#### keiyoushi.utils (core utilities)
+#### fam007e.utils (core utilities)
 
 The `core/utils` module provides a set of shared extension functions that are available to all extensions
 without any extra Gradle dependency. Prefer using these helpers instead of implementing your own equivalents, as they provide standardized and maintained solutions.
-The utilities live in the `keiyoushi.utils` package and are imported individually.
+The utilities live in the `fam007e.utils` package and are imported individually.
 
 ##### JSON parsing - `parseAs`
 
-Use `keiyoushi.utils.parseAs` to deserialize JSON. It works on `String`, `Response`, `InputStream`, and `JsonElement` receivers and uses the shared `jsonInstance` (a pre-configured `Json` with `ignoreUnknownKeys = true`). The `Response` and `InputStream` variants use efficient stream decoding and automatically close the stream after reading.
+Use `fam007e.utils.parseAs` to deserialize JSON. It works on `String`, `Response`, `InputStream`, and `JsonElement` receivers and uses the shared `jsonInstance` (a pre-configured `Json` with `ignoreUnknownKeys = true`). The `Response` and `InputStream` variants use efficient stream decoding and automatically close the stream after reading.
 
 ```kotlin
-import keiyoushi.utils.parseAs
+import fam007e.utils.parseAs
 
 // From a Response (uses streaming and consumes the body):
 val dto = response.parseAs<MyDto>()
@@ -429,11 +429,11 @@ val dto = response.parseAs<MyDto> { it.substringAfter("callback(").dropLast(1) }
 
 ##### JSON serialization - `toJsonString` / `toJsonRequestBody`
 
-Use `keiyoushi.utils.toJsonString` to serialize an object to a JSON string. If you are sending a POST/PUT request, use `keiyoushi.utils.toJsonRequestBody` to directly convert your object into an OkHttp `RequestBody` with the correct `application/json` media type.
+Use `fam007e.utils.toJsonString` to serialize an object to a JSON string. If you are sending a POST/PUT request, use `fam007e.utils.toJsonRequestBody` to directly convert your object into an OkHttp `RequestBody` with the correct `application/json` media type.
 
 ```kotlin
-import keiyoushi.utils.toJsonRequestBody
-import keiyoushi.utils.toJsonString
+import fam007e.utils.toJsonRequestBody
+import fam007e.utils.toJsonString
 
 // To a RequestBody for OkHttp (recommended for APIs):
 val body = myRequestDto.toJsonRequestBody()
@@ -480,12 +480,12 @@ class MyDto(
 
 ##### Protobuf parsing and serialization - `parseAsProto` / `toRequestBodyProto`
 
-If a source's API uses Protocol Buffers (Protobuf) instead of JSON, use the `keiyoushi.utils` helpers to decode and encode the data. These extensions use a shared `protoInstance` and automatically handle resource management.
+If a source's API uses Protocol Buffers (Protobuf) instead of JSON, use the `fam007e.utils` helpers to decode and encode the data. These extensions use a shared `protoInstance` and automatically handle resource management.
 
 ```kotlin
-import keiyoushi.utils.parseAsProto
-import keiyoushi.utils.toRequestBodyProto
-import keiyoushi.utils.decodeProtoBase64
+import fam007e.utils.parseAsProto
+import fam007e.utils.toRequestBodyProto
+import fam007e.utils.decodeProtoBase64
 
 // From a Response (automatically closes the body):
 val dto = response.parseAsProto<MyProtoDto>()
@@ -506,11 +506,11 @@ Do not create a local `private val proto: ProtoBuf by injectLazy()` unless you s
 
 ##### Date parsing - `tryParse`
 
-Use `keiyoushi.utils.tryParse` on a `SimpleDateFormat` instance to safely parse a date string.
+Use `fam007e.utils.tryParse` on a `SimpleDateFormat` instance to safely parse a date string.
 It returns `0L` on failure or when the input is `null`, which is exactly what the app expects.
 
 ```kotlin
-import keiyoushi.utils.tryParse
+import fam007e.utils.tryParse
 
 // Declare dateFormat at class/file level - creating SimpleDateFormat is expensive:
 private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ROOT).apply {
@@ -545,8 +545,8 @@ Two common mistakes to avoid:
 Use these instead of `filterIsInstance<T>().first()` / `filterIsInstance<T>().firstOrNull()`.
 
 ```kotlin
-import keiyoushi.utils.firstInstance
-import keiyoushi.utils.firstInstanceOrNull
+import fam007e.utils.firstInstance
+import fam007e.utils.firstInstanceOrNull
 
 val genreFilter = filters.firstInstanceOrNull<GenreFilter>()
 ```
@@ -556,8 +556,8 @@ val genreFilter = filters.firstInstanceOrNull<GenreFilter>()
 Use these instead of accessing `Injekt` manually.
 
 ```kotlin
-import keiyoushi.utils.getPreferences
-import keiyoushi.utils.getPreferencesLazy
+import fam007e.utils.getPreferences
+import fam007e.utils.getPreferencesLazy
 
 // Eager:
 private val preferences = getPreferences()
@@ -568,12 +568,12 @@ private val preferences by getPreferencesLazy()
 
 ##### Next.js data extraction - `extractNextJs` / `extractNextJsRsc`
 
-If the site is built with Next.js, use `keiyoushi.utils.extractNextJs` on a `Document` or `Response`,
-or `keiyoushi.utils.extractNextJsRsc` on a raw RSC response string to pull typed data out of the
+If the site is built with Next.js, use `fam007e.utils.extractNextJs` on a `Document` or `Response`,
+or `fam007e.utils.extractNextJsRsc` on a raw RSC response string to pull typed data out of the
 hydration payload without fragile HTML scraping.
 
 ```kotlin
-import keiyoushi.utils.extractNextJs
+import fam007e.utils.extractNextJs
 
 val data = response.extractNextJs<MyDto>()
 // Or with an explicit predicate:
@@ -600,13 +600,13 @@ setUrlWithoutDomain(element.absUrl("href"))
 
 ##### GraphQL Requests - `graphQLPost` / `parseGraphQLAs`
 
-If a source uses a GraphQL API, use the dedicated `keiyoushi.utils` helpers to build requests and
+If a source uses a GraphQL API, use the dedicated `fam007e.utils` helpers to build requests and
 parse responses. These utilities automatically serialize variables, encode payload structures, and
 throw a `GraphQLException` if the response contains GraphQL errors.
 
 ```kotlin
-import keiyoushi.utils.graphQLPost
-import keiyoushi.utils.parseGraphQLAs
+import fam007e.utils.graphQLPost
+import fam007e.utils.parseGraphQLAs
 
 // Define your variables as a @Serializable class
 val variables = MyVariablesDto(page = 1)
@@ -702,10 +702,10 @@ either `SourceFactory` or `HttpSource`.
   // Prefer:
   return GET("$baseUrl/manga", headers)
   ```
-- **GraphQL Queries:** If you are sending GraphQL requests, use Kotlin's raw multi-dollar string interpolation (`$$"""..."""`) for your queries. This prevents having to escape every JSON variable `$` symbol manually. For building the request and parsing the response, prefer the `graphQLPost` and `parseGraphQLAs` helpers in `keiyoushi.utils`.
+- **GraphQL Queries:** If you are sending GraphQL requests, use Kotlin's raw multi-dollar string interpolation (`$$"""..."""`) for your queries. This prevents having to escape every JSON variable `$` symbol manually. For building the request and parsing the response, prefer the `graphQLPost` and `parseGraphQLAs` helpers in `fam007e.utils`.
 - **Empty checks on `.text()`:** Because Jsoup's `.text()` automatically trims whitespace, you can use `.isNotEmpty()` instead of `.isNotBlank()` when checking for empty strings. The same applies to `.ownText()`. This also means you should not use `.trim()` with these functions.
 - **Use `network.client` for Cloudflare:** When overriding the client for sources, simply use `override val client = network.client.newBuilder()...`.
-- **Never use `Thread.sleep()`:** Do not use `Thread.sleep()` for rate limiting. Use the `keiyoushi.network.rateLimit` builder extension function on your `OkHttpClient.Builder` instead.
+- **Never use `Thread.sleep()`:** Do not use `Thread.sleep()` for rate limiting. Use the `fam007e.network.rateLimit` builder extension function on your `OkHttpClient.Builder` instead.
 - **Avoid synchronous calls in `parse` methods:** Do not call `client.newCall(...).execute()` inside parsing methods like `pageListParse` or `chapterListParse`. Make the request part of the standard flow by overriding the corresponding request method (e.g., `pageListRequest`) or `fetchImageUrl`.
 - **Pass `HttpUrl` directly:** The `GET()` and `POST()` helpers accept an `HttpUrl` object. Do not call `.toString()` on a built `HttpUrl` before passing it.
 - **Use `HttpUrl` for URL manipulation:** When parsing or extracting parts of a URL, prefer using `HttpUrl` methods (like `pathSegments()` or `queryParameter()`) over manual string splitting (e.g., `.split("/")`) or regex. This ensures proper separation of concerns and protects against unexpected inputs-such as URL fragments or query parameters-without you needing to manually account for all edge cases.
@@ -803,7 +803,7 @@ will be cached.
   the example below.
 
     ```kotlin
-    import keiyoushi.utils.tryParse
+    import fam007e.utils.tryParse
 
     chapter.date_upload = dateFormat.tryParse(dateStr)
 
@@ -987,7 +987,7 @@ you can use the `adb` command below.
 adb shell am start -d "<your-link>" -a android.intent.action.VIEW
 ```
 
-You can find a complete example of how URLs work in the [Riztranslation extension](https://github.com/keiyoushi/extensions-source/tree/main/src/id/riztranslation).
+You can find a complete example of how URLs work in the [Riztranslation extension](https://github.com/fam007e/extensions-source/tree/main/src/id/riztranslation).
 
 #### Update strategy
 
@@ -1010,7 +1010,7 @@ There are some cases where existing sources change their names on the website. T
 these changes in the extension, you need to explicitly set the `id` to the same old value, otherwise
 it will get changed by the new `name` value and users will be forced to migrate back to the source.
 
-To get the current `id` value before the name change, you can search the source name in the [repository JSON file](https://github.com/keiyoushi/extensions/blob/repo/index.json)
+To get the current `id` value before the name change, you can search the source name in the [repository JSON file](https://github.com/fam007e/extensions-source/blob/repo/index.json)
 by looking at the `sources` attribute of the extension. When you have the `id` copied, you can
 override it in the source:
 
