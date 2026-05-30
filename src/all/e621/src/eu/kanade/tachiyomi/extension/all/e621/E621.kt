@@ -38,7 +38,7 @@ class E621 :
 
     // e621 needs a custom User-Agent header
     override fun headersBuilder() = Headers.Builder()
-        .add("User-Agent", "E621/1.4.${BuildConfig.VERSION_CODE} Keiyoushi (https://github.com/keiyoushi/extensions-source)")
+        .add("User-Agent", "E621/1.4.${BuildConfig.VERSION_CODE} fam007e (https://github.com/fam007e/extensions-source)")
 
     private val artistFilter = setOf(
         "conditional_dnp",

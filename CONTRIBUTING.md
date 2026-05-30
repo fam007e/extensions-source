@@ -1,11 +1,11 @@
 # Contributing
 
-This guide has some instructions and tips on how to create a new Keiyoushi extension. Please **read
+This guide has some instructions and tips on how to create a new extension. Please **read
 it carefully** if you're a new contributor or don't have any experience on the required languages
 and knowledges.
 
 This guide is not definitive and it's being updated over time. If you find any issues in it, feel
-free to report it through a [Meta Issue](https://github.com/keiyoushi/extensions-source/issues/new?assignees=&labels=Meta+request&template=06_request_meta.yml)
+free to report it through a [Meta Issue](https://github.com/fam007e/extensions-source/issues/new?assignees=&labels=Meta+request&template=06_request_meta.yml)
 or fixing it directly by submitting a Pull Request.
 
 ## Table of Contents
@@ -207,7 +207,7 @@ and [negative refspecs](https://github.blog/2020-10-19-git-2-29-released/#user-c
 
 ## Getting help
 
-- Join [the Discord server](https://discord.gg/3FbCpdKbdY) for online help and to ask questions while
+- Join [the Discord server](https://discord.gg/F34duNjTqn) for online help and to ask questions while
 developing your extension. When doing so, please ask them in the `#programming` channel.
 - There are some features and tricks that are not explored in this document. Refer to existing
 extension code for examples.
@@ -326,12 +326,12 @@ use case. Each lib is self-documented via KDoc comments and/or a README in its o
 
 | Module                                                                                                    | Description                                                          |
 |-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| [`lib-cookieinterceptor`](https://github.com/keiyoushi/extensions-source/tree/main/lib/cookieinterceptor) | Injects cookies into OkHttp requests for a given domain              |
-| [`lib-cryptoaes`](https://github.com/keiyoushi/extensions-source/tree/main/lib/cryptoaes)                 | AES-CBC decryption compatible with CryptoJS; JSFuck deobfuscation    |
-| [`lib-randomua`](https://github.com/keiyoushi/extensions-source/tree/main/lib/randomua)                   | Fetches and rotates real-world User-Agent strings                    |
-| [`lib-synchrony`](https://github.com/keiyoushi/extensions-source/tree/main/lib/synchrony)                 | JavaScript deobfuscation via the Synchrony engine (QuickJS sandbox)  |
-| [`lib-textinterceptor`](https://github.com/keiyoushi/extensions-source/tree/main/lib/textinterceptor)     | Renders plain text or HTML as a PNG image page                       |
-| [`lib-unpacker`](https://github.com/keiyoushi/extensions-source/tree/main/lib/unpacker)                   | Unpacks Dean Edwards-packed JavaScript; substring extraction helpers |
+| [`lib-cookieinterceptor`](https://github.com/fam007e/extensions-source/tree/main/lib/cookieinterceptor) | Injects cookies into OkHttp requests for a given domain              |
+| [`lib-cryptoaes`](https://github.com/fam007e/extensions-source/tree/main/lib/cryptoaes)                 | AES-CBC decryption compatible with CryptoJS; JSFuck deobfuscation    |
+| [`lib-randomua`](https://github.com/fam007e/extensions-source/tree/main/lib/randomua)                   | Fetches and rotates real-world User-Agent strings                    |
+| [`lib-synchrony`](https://github.com/fam007e/extensions-source/tree/main/lib/synchrony)                 | JavaScript deobfuscation via the Synchrony engine (QuickJS sandbox)  |
+| [`lib-textinterceptor`](https://github.com/fam007e/extensions-source/tree/main/lib/textinterceptor)     | Renders plain text or HTML as a PNG image page                       |
+| [`lib-unpacker`](https://github.com/fam007e/extensions-source/tree/main/lib/unpacker)                   | Unpacks Dean Edwards-packed JavaScript; substring extraction helpers |
 
 > [!NOTE]
 > The table above highlights the most commonly used libraries. Check the `lib/` directory for the full list of available modules and their specific READMEs.
@@ -956,7 +956,7 @@ you can use the `adb` command below.
 adb shell am start -d "<your-link>" -a android.intent.action.VIEW
 ```
 
-You can find a complete example of how URLs work in the [Riztranslation extension](https://github.com/keiyoushi/extensions-source/tree/main/src/id/riztranslation).
+You can find a complete example of how URLs work in the [Riztranslation extension](https://github.com/fam007e/extensions-source/tree/main/src/id/riztranslation).
 
 #### Update strategy
 
@@ -979,7 +979,7 @@ There are some cases where existing sources change their names on the website. T
 these changes in the extension, you need to explicitly set the `id` to the same old value, otherwise
 it will get changed by the new `name` value and users will be forced to migrate back to the source.
 
-To get the current `id` value before the name change, you can search the source name in the [repository JSON file](https://github.com/keiyoushi/extensions/blob/repo/index.json)
+To get the current `id` value before the name change, you can search the source name in the [repository JSON file](https://github.com/fam007e/extensions-source/blob/repo/index.json)
 by looking at the `sources` attribute of the extension. When you have the `id` copied, you can
 override it in the source:
 
