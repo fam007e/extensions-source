@@ -4513,12 +4513,12 @@
       "name": "Manhuarm",
       "packageName": "eu.kanade.tachiyomi.extension.all.manhuarm",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-all.manhuarm-v1.4.70.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-all.manhuarm-v1.4.71.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.all.manhuarm.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 70,
-      "versionName": "1.4.70",
+      "versionCode": 71,
+      "versionName": "1.4.71",
       "sources": [
         {
           "id": "797946349800265191",
@@ -4695,6 +4695,33 @@
           "name": "Manhwa-raw",
           "language": "all",
           "homeUrl": "https://manhwa-raw.com",
+          "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
+        }
+      ]
+    },
+    {
+      "name": "Manta Comics",
+      "packageName": "eu.kanade.tachiyomi.extension.all.manta",
+      "resources": {
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-all.manta-v1.4.7.apk",
+        "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.all.manta.png"
+      },
+      "extensionLib": "1.4",
+      "versionCode": 7,
+      "versionName": "1.4.7",
+      "sources": [
+        {
+          "id": "8753096034341798862",
+          "name": "Manta",
+          "language": "en",
+          "homeUrl": "https://manta.net/en",
+          "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
+        },
+        {
+          "id": "2857546552946901153",
+          "name": "Manta",
+          "language": "es",
+          "homeUrl": "https://manta.net/es",
           "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
         }
       ]
@@ -8153,12 +8180,12 @@
       "name": "Atsumaru",
       "packageName": "eu.kanade.tachiyomi.extension.en.atsumaru",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.atsumaru-v1.4.17.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.atsumaru-v1.4.18.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.en.atsumaru.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 17,
-      "versionName": "1.4.17",
+      "versionCode": 18,
+      "versionName": "1.4.18",
       "sources": [
         {
           "id": "2327480808438768017",
@@ -8720,12 +8747,12 @@
       "name": "Comix",
       "packageName": "eu.kanade.tachiyomi.extension.en.comix",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.comix-v1.4.24.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.comix-v1.4.25.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.en.comix.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 24,
-      "versionName": "1.4.24",
+      "versionCode": 25,
+      "versionName": "1.4.25",
       "sources": [
         {
           "id": "7537715367149829912",
@@ -11205,6 +11232,26 @@
       ]
     },
     {
+      "name": "Manga-Bay",
+      "packageName": "eu.kanade.tachiyomi.extension.en.mangabay",
+      "resources": {
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.mangabay-v1.4.1.apk",
+        "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.en.mangabay.png"
+      },
+      "extensionLib": "1.4",
+      "versionCode": 1,
+      "versionName": "1.4.1",
+      "sources": [
+        {
+          "id": "2338066431666790211",
+          "name": "Manga-Bay",
+          "language": "en",
+          "homeUrl": "https://read.manga-bay.org",
+          "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
+        }
+      ]
+    },
+    {
       "name": "MangaBlaze",
       "packageName": "eu.kanade.tachiyomi.extension.en.mangablaze",
       "resources": {
@@ -11266,12 +11313,12 @@
       "name": "MangaK",
       "packageName": "eu.kanade.tachiyomi.extension.en.mangabuddy",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.mangabuddy-v1.4.26.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.mangabuddy-v1.4.27.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.en.mangabuddy.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 26,
-      "versionName": "1.4.26",
+      "versionCode": 27,
+      "versionName": "1.4.27",
       "sources": [
         {
           "id": "5020395055978987501",
@@ -14737,12 +14784,12 @@
       "name": "Reset Scans",
       "packageName": "eu.kanade.tachiyomi.extension.en.resetscans",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.resetscans-v1.4.61.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.resetscans-v1.4.62.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.en.resetscans.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 61,
-      "versionName": "1.4.61",
+      "versionCode": 62,
+      "versionName": "1.4.62",
       "sources": [
         {
           "id": "8358008083447218926",
@@ -15731,12 +15778,12 @@
       "name": "Utoon",
       "packageName": "eu.kanade.tachiyomi.extension.en.utoon",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.utoon-v1.4.53.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-en.utoon-v1.4.54.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.en.utoon.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 53,
-      "versionName": "1.4.53",
+      "versionCode": 54,
+      "versionName": "1.4.54",
       "sources": [
         {
           "id": "3650631607354829018",
@@ -16942,19 +16989,19 @@
       ]
     },
     {
-      "name": "CatManhwas",
+      "name": "Catoons",
       "packageName": "eu.kanade.tachiyomi.extension.es.catmanhwas",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-es.catmanhwas-v1.4.51.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-es.catmanhwas-v1.4.52.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.es.catmanhwas.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 51,
-      "versionName": "1.4.51",
+      "versionCode": 52,
+      "versionName": "1.4.52",
       "sources": [
         {
-          "id": "2801410029624167639",
-          "name": "CatManhwas",
+          "id": "360108012210956342",
+          "name": "Catoons",
           "language": "es",
           "homeUrl": "https://newcat1.xyz",
           "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
@@ -18395,12 +18442,12 @@
       "name": "LectorJPG",
       "packageName": "eu.kanade.tachiyomi.extension.es.lectorjpg",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-es.lectorjpg-v1.4.47.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-es.lectorjpg-v1.4.48.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.es.lectorjpg.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 47,
-      "versionName": "1.4.47",
+      "versionCode": 48,
+      "versionName": "1.4.48",
       "sources": [
         {
           "id": "4439526602175493484",
@@ -21234,12 +21281,12 @@
       "name": "Raijin Scans",
       "packageName": "eu.kanade.tachiyomi.extension.fr.raijinscans",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-fr.raijinscans-v1.4.63.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-fr.raijinscans-v1.4.64.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.fr.raijinscans.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 63,
-      "versionName": "1.4.63",
+      "versionCode": 64,
+      "versionName": "1.4.64",
       "sources": [
         {
           "id": "8373267671495516033",
@@ -25731,21 +25778,21 @@
           "id": "5583626852311652499",
           "name": "\ub291\ub300\ub2f7\ucef4 - \uc6f9\ud230",
           "language": "ko",
-          "homeUrl": "https://wfwf457.com",
+          "homeUrl": "https://wfwf458.com",
           "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
         },
         {
           "id": "7074060458114951398",
           "name": "\ub291\ub300\ub2f7\ucef4 - \ub9cc\ud654\ucc45",
           "language": "ko",
-          "homeUrl": "https://wfwf457.com",
+          "homeUrl": "https://wfwf458.com",
           "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
         },
         {
           "id": "4225505094399546613",
           "name": "\ub291\ub300\ub2f7\ucef4 - \ud3ec\ud1a0\ud230",
           "language": "ko",
-          "homeUrl": "https://wfwf457.com",
+          "homeUrl": "https://wfwf458.com",
           "contentRating": "CONTENT_RATING_PORNOGRAPHIC"
         }
       ]
@@ -26715,12 +26762,12 @@
       "name": "Little Tyrant",
       "packageName": "eu.kanade.tachiyomi.extension.pt.littletyrant",
       "resources": {
-        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-pt.littletyrant-v1.4.53.apk",
+        "apkUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/apk/tachiyomi-pt.littletyrant-v1.4.54.apk",
         "iconUrl": "https://raw.githubusercontent.com/fam007e/extensions-source/repo/icon/eu.kanade.tachiyomi.extension.pt.littletyrant.png"
       },
       "extensionLib": "1.4",
-      "versionCode": 53,
-      "versionName": "1.4.53",
+      "versionCode": 54,
+      "versionName": "1.4.54",
       "sources": [
         {
           "id": "4886334142812146511",
