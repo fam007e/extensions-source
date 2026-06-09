@@ -53,7 +53,7 @@ dependencyResolutionManagement {
                 withDependencies {
                     forEach {
                         it.version {
-                            require("4.2.13.Final")
+                            require("4.2.15.Final")
                         }
                     }
                 }
