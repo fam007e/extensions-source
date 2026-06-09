@@ -28,7 +28,7 @@ class DocumentDtoInternal<T>(
     val fields: T,
 )
 
-class DocumentSerializer(dataSerializer: KSerializer<out DocumentDto<out Any?>>) : JsonTransformingSerializer<DocumentDto<Any>>(dataSerializer as KSerializer<DocumentDto<Any>>) {
+class DocumentSerializer(dataSerializer: KSerializer<out DocumentDto<out Any?>>) : JsonTransformingSerializer<DocumentDto<Any>>(@Suppress("UNCHECKED_CAST") (dataSerializer as KSerializer<DocumentDto<Any>>)) {
 
     override fun transformDeserialize(element: JsonElement): JsonElement {
         val objMap = element.jsonObject.toMap(HashMap())

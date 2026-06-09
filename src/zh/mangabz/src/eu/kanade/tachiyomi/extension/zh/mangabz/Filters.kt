@@ -26,7 +26,7 @@ fun parseCategories(document: Document): List<CategoryData> {
 
     val result = lines.mapIndexed { filterIndex, line ->
         val options = line.select(Evaluator.Tag("a")).mapIndexed { optionIndex, option ->
-            val optionName = option.ownText()!!
+            val optionName = option.ownText()
             if (optionIndex == 0) {
                 Pair(optionName, 0) // id is unknown
             } else {

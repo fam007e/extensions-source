@@ -119,7 +119,7 @@ private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale
 
 private fun parseChapterDate(dateString: String): Long {
     if (dateString.isBlank()) return 0L
-    return dateFormat.tryParse(dateString) ?: 0L
+    return dateFormat.tryParse(dateString)
 }
 
 fun SManga.getSlug(baseUrl: String): String = "$baseUrl$url".toHttpUrl().pathSegments[1]

@@ -95,7 +95,7 @@ class MangaCrab :
     override fun latestUpdatesParse(response: Response): MangasPage {
         val document = response.asJsoup()
         val mangas = document.select(latestUpdatesSelector()).map { latestUpdatesFromElement(it) }.distinctBy { it.url }
-        val hasNextPage = latestUpdatesNextPageSelector()?.let { document.selectFirst(it) } != null
+        val hasNextPage = latestUpdatesNextPageSelector().let { document.selectFirst(it) } != null
         return MangasPage(mangas, hasNextPage)
     }
 

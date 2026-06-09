@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.multisrc.heancms
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
@@ -123,11 +124,7 @@ class HeanCmsChapterDto(
             name += " \uD83D\uDD12"
         }
 
-        date_upload = try {
-            dateFormat.parse(createdAt)?.time ?: 0L
-        } catch (_: Exception) {
-            0L
-        }
+        date_upload = dateFormat.tryParse(createdAt)
 
         url = "/$mangaSubDirectory/$seriesSlug/$slug#$id"
     }

@@ -90,7 +90,7 @@ class Schlockmercenary : HttpSource() {
                 var end = start + 1L
 
                 if (nextChapter == null) {
-                    nextChapter = currentChapter.parents()[2]?.nextElementSibling()?.selectFirst("ul.chapters > li:not(ul > li > ul > li) > a")
+                    nextChapter = currentChapter.parents()[2].nextElementSibling()?.selectFirst("ul.chapters > li:not(ul > li > ul > li) > a")
                 }
 
                 if (nextChapter != null) {

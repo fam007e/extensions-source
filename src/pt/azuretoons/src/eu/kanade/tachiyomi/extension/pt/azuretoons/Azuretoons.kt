@@ -88,7 +88,7 @@ class Azuretoons :
     }
 
     @Synchronized
-    protected open fun loginAndGetToken(email: String, password: String): String? {
+    protected fun loginAndGetToken(email: String, password: String): String? {
         try {
             val body = AzuretoonsLoginRequestDto(
                 identifier = email.trim(),

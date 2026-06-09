@@ -38,7 +38,7 @@ class GourmetScans :
 
             genreFilter?.state?.equals(0)?.not() ?: false -> {
                 url.addPathSegment("genre")
-                url.addPathSegment(genreFilter!!.toUriPart())
+                url.addPathSegment(genreFilter.toUriPart())
             }
 
             else -> {

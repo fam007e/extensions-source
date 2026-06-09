@@ -15,11 +15,11 @@ class KaynScans :
     ) {
 
     // Migrate from Keyoapp to Iken by checking non slug-only urls
-    override fun chapterListRequest(m: SManga): Request {
-        if (m.url.startsWith('/')) {
+    override fun chapterListRequest(manga: SManga): Request {
+        if (manga.url.startsWith('/')) {
             throw Exception("Migrate entry from '$name' to '$name'")
         }
-        return super.chapterListRequest(m)
+        return super.chapterListRequest(manga)
     }
 
     override fun pageListParse(r: Response): List<Page> {

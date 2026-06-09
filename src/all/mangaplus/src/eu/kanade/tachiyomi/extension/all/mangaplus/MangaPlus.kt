@@ -260,7 +260,7 @@ class MangaPlus(
 
             when {
                 error?.subject == NOT_FOUND_SUBJECT -> intl["title_removed"]
-                !error?.body.isNullOrEmpty() -> error!!.body
+                !error?.body.isNullOrEmpty() -> error.body
                 else -> intl["unknown_error"]
             }
         }
@@ -282,7 +282,7 @@ class MangaPlus(
 
             when {
                 error?.subject == NOT_FOUND_SUBJECT -> intl["title_removed"]
-                !error?.body.isNullOrEmpty() -> error!!.body
+                !error?.body.isNullOrEmpty() -> error.body
                 else -> intl["unknown_error"]
             }
         }
@@ -324,7 +324,7 @@ class MangaPlus(
 
             when {
                 error?.subject == NOT_FOUND_SUBJECT -> intl["chapter_expired"]
-                !error?.body.isNullOrEmpty() -> error!!.body
+                !error?.body.isNullOrEmpty() -> error.body
                 else -> intl["unknown_error"]
             }
         }

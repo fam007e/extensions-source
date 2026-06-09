@@ -2,7 +2,6 @@ package eu.kanade.tachiyomi.extension.fr.animesama
 
 import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.network.asObservableSuccess
-import eu.kanade.tachiyomi.network.await
 import eu.kanade.tachiyomi.source.model.Filter
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
@@ -11,11 +10,12 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.Headers
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Request
@@ -135,26 +135,36 @@ class AnimeSama : HttpSource() {
     private var genreList = listOf<Pair<String, String>>()
     private var fetchFilterAttempts = 0
 
-    private suspend fun fetchFilters() {
+    private fun fetchFilters() {
         if (fetchFilterAttempts < 3 && genreList.isEmpty()) {
-            try {
-                val response = client.newCall(GET("$baseUrl/catalogue", headers)).await().asJsoup()
-                genreList = response.select("#list_genres #genreList label").mapNotNull { labelElement ->
-                    val input = labelElement.selectFirst("input[name=genre[]]") ?: return@mapNotNull null
-                    val labelText = labelElement.selectFirst("span")?.text() ?: return@mapNotNull null
-                    val value = input.attr("value")
-                    labelText to value
+            val request = GET("$baseUrl/catalogue", headers)
+            client.newCall(request).enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        val document = response.asJsoup()
+                        genreList = document.select("#list_genres #genreList label").mapNotNull { labelElement ->
+                            val input = labelElement.selectFirst("input[name=genre[]]") ?: return@mapNotNull null
+                            val labelText = labelElement.selectFirst("span")?.text() ?: return@mapNotNull null
+                            val value = input.attr("value")
+                            labelText to value
+                        }
+                    } catch (e: Exception) {
+                        // Ignore errors
+                    }
                 }
-            } catch (e: Exception) {
-                // Ignore errors
-            }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    // Ignore errors
+                }
+            })
             fetchFilterAttempts++
         }
     }
 
     override fun getFilterList(): FilterList {
+        fetchFilters()
+
         val filters = mutableListOf<Filter<*>>()
-        GlobalScope.launch { fetchFilters() }
 
         if (genreList.isNotEmpty()) {
             filters.add(GenreFilter(genreList))
@@ -309,6 +319,20 @@ class AnimeSama : HttpSource() {
             .build()
 
         return GET(page.imageUrl!!, imgHeaders)
+    }
+
+    private interface UrlPartFilter {
+        fun addUrlParameter(url: HttpUrl.Builder)
+    }
+
+    private class GenreFilter(genres: List<Pair<String, String>>) :
+        Filter.Select<String>("Genre", genres.map { it.first }.toTypedArray()),
+        UrlPartFilter {
+        private val genreValues = genres.map { it.second }
+
+        override fun addUrlParameter(url: HttpUrl.Builder) {
+            url.addQueryParameter("genre[]", genreValues[state])
+        }
     }
 
     companion object {

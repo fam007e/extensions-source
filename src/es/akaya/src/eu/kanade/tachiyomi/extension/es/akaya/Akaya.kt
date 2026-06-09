@@ -125,7 +125,7 @@ class Akaya : HttpSource() {
                 setUrlWithoutDomain(it.selectFirst("div.name-serie-search > a")!!.attr("href"))
                 thumbnail_url = it.selectFirst("div.inner-img-search")?.attr("style")
                     ?.substringAfter("url(")?.substringBefore(")")
-                title = it.select("div.name-serie-search")?.text() ?: ""
+                title = it.select("div.name-serie-search").text()
             }
         }
 

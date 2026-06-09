@@ -98,8 +98,8 @@ class DeviantArt :
                 artistInTitle -> "$author - $galleryName"
                 else -> galleryName
             }
-            description = gallery?.selectFirst(".legacy-journal")?.wholeText()
-            thumbnail_url = gallery?.selectFirst("img[property=contentUrl]")?.absUrl("src")
+            description = gallery.selectFirst(".legacy-journal")?.wholeText()
+            thumbnail_url = gallery.selectFirst("img[property=contentUrl]")?.absUrl("src")
         }
     }
 

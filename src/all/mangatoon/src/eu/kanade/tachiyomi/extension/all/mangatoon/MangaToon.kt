@@ -104,7 +104,7 @@ open class MangaToon(
                 .joinToString("\n\n") { it.text() }
             genre = document.select("div.detail-tags-info span").text()
                 .split("/")
-                .map { it.capitalize(locale) }
+                .map { it.replaceFirstChar { char -> if (char.isLowerCase()) char.titlecase(locale) else char.toString() } }
                 .sorted()
                 .joinToString { it.trim() }
             status = document.select("div.detail-status").text().toStatus()

@@ -79,6 +79,7 @@ object ImageDecryptor {
         }
     }
 
+    @OptIn(ExperimentalUnsignedTypes::class)
     private fun blockCipherDecrypt(data: ByteArray, key: ByteArray, blockSize: Int) {
         val numBlocks = (data.size + blockSize - 1) / blockSize
         var seed = seedFromKey(key)

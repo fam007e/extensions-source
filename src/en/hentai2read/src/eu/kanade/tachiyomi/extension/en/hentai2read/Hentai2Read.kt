@@ -9,19 +9,18 @@ import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import eu.kanade.tachiyomi.source.online.ParsedHttpSource
+import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import rx.Observable
 import java.util.Calendar
 import java.util.regex.Pattern
 
-class Hentai2Read : ParsedHttpSource() {
+class Hentai2Read : HttpSource() {
 
     override val name = "Hentai2Read"
 
@@ -45,15 +44,27 @@ class Hentai2Read : ParsedHttpSource() {
         lateinit var nextSearchPage: String
     }
 
-    override fun popularMangaSelector() = "div.book-grid-item"
-
-    override fun latestUpdatesSelector() = popularMangaSelector()
+    private fun popularMangaSelector() = "div.book-grid-item"
 
     override fun popularMangaRequest(page: Int) = GET("$baseUrl/hentai-list/all/any/all/most-popular/$page/", headers)
 
+    override fun popularMangaParse(response: Response): MangasPage {
+        val document = response.asJsoup()
+
+        val mangas = document.select(popularMangaSelector()).map { element ->
+            popularMangaFromElement(element)
+        }
+
+        val hasNextPage = document.select(popularMangaNextPageSelector()).firstOrNull() != null
+
+        return MangasPage(mangas, hasNextPage)
+    }
+
     override fun latestUpdatesRequest(page: Int) = GET("$baseUrl/hentai-list/all/any/all/last-updated/$page/", headers)
 
-    override fun popularMangaFromElement(element: Element): SManga = SManga.create().apply {
+    override fun latestUpdatesParse(response: Response): MangasPage = popularMangaParse(response)
+
+    private fun popularMangaFromElement(element: Element): SManga = SManga.create().apply {
         thumbnail_url = element.select("img").attr("abs:src")
         element.select("div.overlay-title a").let {
             title = it.text()
@@ -61,11 +72,7 @@ class Hentai2Read : ParsedHttpSource() {
         }
     }
 
-    override fun latestUpdatesFromElement(element: Element): SManga = popularMangaFromElement(element)
-
-    override fun popularMangaNextPageSelector() = "a#js-linkNext"
-
-    override fun latestUpdatesNextPageSelector() = popularMangaNextPageSelector()
+    private fun popularMangaNextPageSelector() = "a#js-linkNext"
 
     override fun fetchSearchManga(page: Int, query: String, filters: FilterList): Observable<MangasPage> = if (query.startsWith(PREFIX_ID_SEARCH)) {
         val id = query.removePrefix(PREFIX_ID_SEARCH)
@@ -125,11 +132,11 @@ class Hentai2Read : ParsedHttpSource() {
             response.asJsoup()
         }
 
-        val mangas = document.select(searchMangaSelector()).map { element ->
-            searchMangaFromElement(element)
+        val mangas = document.select(popularMangaSelector()).map { element ->
+            popularMangaFromElement(element)
         }
 
-        val hasNextPage = document.select(searchMangaNextPageSelector()).firstOrNull()?.let {
+        val hasNextPage = document.select(popularMangaNextPageSelector()).firstOrNull()?.let {
             nextSearchPage = it.attr("abs:href")
             true
         } ?: false
@@ -139,13 +146,10 @@ class Hentai2Read : ParsedHttpSource() {
 
     override fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request = throw UnsupportedOperationException()
 
-    override fun searchMangaSelector() = popularMangaSelector()
+    override fun searchMangaParse(response: Response): MangasPage = throw UnsupportedOperationException()
 
-    override fun searchMangaFromElement(element: Element): SManga = popularMangaFromElement(element)
-
-    override fun searchMangaNextPageSelector() = popularMangaNextPageSelector()
-
-    override fun mangaDetailsParse(document: Document): SManga {
+    override fun mangaDetailsParse(response: Response): SManga {
+        val document = response.asJsoup()
         val infoElement = document.select("ul.list-simple-mini").first()!!
 
         val manga = SManga.create()
@@ -196,9 +200,16 @@ class Hentai2Read : ParsedHttpSource() {
         else -> SManga.UNKNOWN
     }
 
-    override fun chapterListSelector() = "ul.nav-chapters > li > div.media > a"
+    override fun chapterListParse(response: Response): List<SChapter> {
+        val document = response.asJsoup()
+        return document.select(chapterListSelector()).map { element ->
+            chapterFromElement(element)
+        }
+    }
 
-    override fun chapterFromElement(element: Element): SChapter = SChapter.create().apply {
+    private fun chapterListSelector() = "ul.nav-chapters > li > div.media > a"
+
+    private fun chapterFromElement(element: Element): SChapter = SChapter.create().apply {
         setUrlWithoutDomain(element.attr("href"))
         val time = element.select("div > small").text().substringAfter("about").substringBefore("ago")
         name = element.ownText().trim()
@@ -250,9 +261,7 @@ class Hentai2Read : ParsedHttpSource() {
         return pages
     }
 
-    override fun pageListParse(document: Document): List<Page> = throw UnsupportedOperationException()
-
-    override fun imageUrlParse(document: Document) = throw UnsupportedOperationException()
+    override fun imageUrlParse(response: Response) = throw UnsupportedOperationException()
 
     private class MangaNameSelect : Filter.Select<String>("Manga Name", arrayOf("Contains", "Starts With", "Ends With"))
     private class ArtistName : Filter.Text("Artist")
@@ -1075,6 +1084,7 @@ class Hentai2Read : ParsedHttpSource() {
         Tag("Ghost Sweeper Mikami", 2239),
         Tag("Giant Robo", 2488),
         Tag("Ginga Hyouryuu Vifam", 2578),
+        Tag("Ginga Hyouryuu Vifam", 2578),
         Tag("Gintama", 1952),
         Tag("Girl Friend Beta", 2254),
         Tag("Girls Frontline", 2362),
@@ -1175,8 +1185,6 @@ class Hentai2Read : ParsedHttpSource() {
         Tag("Ikoku Meiro no Croisee", 2728),
         Tag("Imouto Sae Ireba Ii", 2516),
         Tag("Imouto ga Iru!", 1727),
-        Tag("Inazuma Eleven", 1912),
-        Tag("Inda no Himekishi Janne", 1718),
         Tag("Infinite Ryvius", 2121),
         Tag("Infinite Stratos", 920),
         Tag("Inju Seisen Twin Angel", 1975),
@@ -1269,7 +1277,6 @@ class Hentai2Read : ParsedHttpSource() {
         Tag("King of Fighters", 1124),
         Tag("Kingdom Hearts", 2466),
         Tag("Kiniro Mosaic", 1855),
-        Tag("Kino No Tabi", 2347),
         Tag("Kirakira Precure a la Mode", 2341),
         Tag("Kiratto Pri Chan", 2541),
         Tag("Kishin Houkou Demonbane", 2696),
@@ -1363,7 +1370,6 @@ class Hentai2Read : ParsedHttpSource() {
         Tag("Mahou Sensei Negima", 1019),
         Tag("Mahou Shoujo Ai", 2316),
         Tag("Mahou Shoujo Ikusei Keikaku", 2253),
-        Tag("Mahou Shoujo Lyrical Nanoha StrikerS", 1431),
         Tag("Mahou Shoujo Madoka Magica", 942),
         Tag("Mahou Shoujo Nante Mou Ii Desu Kara", 2275),
         Tag("Mahou Shoujo ni Akogarete", 2786),

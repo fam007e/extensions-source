@@ -320,7 +320,7 @@ open class Comikey(
                         response.headers["Content-Type"] ?: "application/divina+json+vnd.e4p.drm",
                         null,
                         response.code,
-                        response.message?.takeIf { it.isNotEmpty() } ?: "OK",
+                        response.message.takeIf { it.isNotEmpty() } ?: "OK",
                         response.headers.toMap(),
                         response.body.byteStream(),
                     )

@@ -78,7 +78,9 @@ class ShadowManga : HttpSource() {
     }
 
     override fun searchMangaParse(response: Response): MangasPage {
-        val excludedGenres = response.request.tag(List::class.java) as? List<String>
+        val excludedGenres =
+            @Suppress("UNCHECKED_CAST")
+            (response.request.tag(List::class.java) as? List<String>)
         val mangas = response.parseAs<List<Series>>()
             .filter { series ->
                 excludedGenres.isNullOrEmpty() || series.getGenreList().none { genre ->

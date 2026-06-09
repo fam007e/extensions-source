@@ -48,7 +48,7 @@ class GolgeBahcesi : HttpSource() {
         val status = filters.firstInstanceOrNull<StatusFilter>()?.toUriPart() ?: ""
         val type = filters.firstInstanceOrNull<TypeFilter>()?.toUriPart() ?: ""
         val genre = filters.firstInstanceOrNull<GenreFilter>()?.toUriPart() ?: ""
-        val minChapters = filters.firstInstanceOrNull<MinChaptersFilter>()?.state?.toString()?.takeIf { it.isNotBlank() } ?: ""
+        val minChapters = filters.firstInstanceOrNull<MinChaptersFilter>()?.state?.takeIf { it.isNotBlank() } ?: ""
 
         val url = "$apiBaseUrl/series?page=$page&limit=24&sort=$sort".toHttpUrl().newBuilder()
         if (query.isNotBlank()) url.addQueryParameter("search", query)

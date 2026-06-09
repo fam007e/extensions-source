@@ -111,7 +111,7 @@ class XlecX : HttpSource() {
     }
 
     private fun Element.subInfoLinks(label: String): String? = select(".page__subinfo-item > div:not([class]):contains($label) ~ a")
-        ?.joinToString { it.text() }
+        .joinToString { it.text() }
 
     // Chapters
     override fun chapterListParse(response: Response): List<SChapter> {

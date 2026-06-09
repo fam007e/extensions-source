@@ -22,8 +22,8 @@ import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.tryParse
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -50,6 +50,13 @@ class Manhuagui(
     ConfigurableSource {
 
     private val preferences: SharedPreferences by getPreferencesLazy()
+
+    /**
+     * Used for background tasks that require [delay].
+     * Note: This scope is never cancelled as [HttpSource] lacks a lifecycle hook,
+     * effectively behaving like a properly-scoped [kotlinx.coroutines.GlobalScope].
+     */
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private val baseHost = if (preferences.getBoolean(USE_MIRROR_URL_PREF, false)) {
         "mhgui.com"
@@ -213,7 +220,7 @@ class Manhuagui(
         val call = client.newCall(GET(baseUrl + manga.url, headers))
         val bid = Regex("""\d+""").find(manga.url)?.value
         if (bid != null) {
-            GlobalScope.launch(Dispatchers.IO) {
+            scope.launch {
                 delay(1000L)
                 val callback = object : Callback {
                     override fun onFailure(call: Call, e: IOException) = e.printStackTrace()

@@ -167,7 +167,7 @@ class ComicsKingdom(override val lang: String) :
         var chapterData = getChapterList(mangaName, pageNum)
         var chapterNum = 0.0F
 
-        while (chapterData != null && chapterData.isNotEmpty()) {
+        while (chapterData.isNotEmpty()) {
             val list = chapterData.map {
                 chapterNum += 0.01F
                 SChapter.create().apply {

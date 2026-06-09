@@ -12,7 +12,7 @@ class ContentWarningInterceptor : Interceptor {
         val response = chain.proceed(request)
 
         if (response.isSuccessful && response.header("Content-Type")?.contains("text/html") == true) {
-            val body = response.body ?: return response
+            val body = response.body
             val bodyString = body.string()
 
             val document = Jsoup.parse(bodyString, request.url.toString())

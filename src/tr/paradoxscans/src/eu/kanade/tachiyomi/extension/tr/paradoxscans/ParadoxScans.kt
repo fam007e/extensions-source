@@ -22,7 +22,6 @@ class ParadoxScans :
 
         title = element.selectFirst("h2 a, h3 a")?.text()
             ?: element.select("h2").text()
-            ?: element.select("h3").text()
 
         setUrlWithoutDomain(linkElement!!.absUrl("href"))
 

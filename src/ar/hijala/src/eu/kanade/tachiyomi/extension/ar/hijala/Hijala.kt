@@ -55,7 +55,7 @@ class Hijala :
                     val pieceRequest = request.newBuilder().url(pieceUrl).build()
                     client.newCall(pieceRequest).await().use { response ->
                         response.body.use { body ->
-                            BitmapFactory.decodeStream(body?.byteStream())
+                            BitmapFactory.decodeStream(body.byteStream())
                                 ?: throw Exception("Failed to decode $pieceUrl")
                         }
                     }

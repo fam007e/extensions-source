@@ -92,7 +92,7 @@ class RocksManga :
         .orEmpty()
         .map { a ->
             Genre(
-                a!!.text(),
+                a.text(),
                 a.attr("href")
                     .substringAfter("/manga-genre/")
                     .substringBefore("/"),

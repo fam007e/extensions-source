@@ -77,7 +77,7 @@ class ChapterDto(
         val numberStr = chapterNumber.toString().removeSuffix(".0")
         name = title ?: "Capítulo $numberStr"
         url = "/manga/$mangaSlug/chapter/$numberStr"
-        date_upload = dateFormat.tryParse(releaseDate) ?: 0L
+        date_upload = dateFormat.tryParse(releaseDate)
     }
 
     companion object {

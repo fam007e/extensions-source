@@ -94,7 +94,7 @@ class TiaManhwa :
 
     override fun latestUpdatesParse(response: Response): MangasPage {
         val document = Jsoup.parse(
-            response.body!!.string(),
+            response.body.string(),
             response.request.url.toString(),
         )
 

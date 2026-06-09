@@ -108,7 +108,7 @@ class ComicAsura :
         Pair(intl["order_by_filter_popular"], "rating"),
     )
 
-    override fun parseGenres(document: Document): List<GenreData>? = document.select(".filter-dropdown-container label:has(input[name*=genres])")?.map { li ->
+    override fun parseGenres(document: Document): List<GenreData>? = document.select(".filter-dropdown-container label:has(input[name*=genres])").map { li ->
         GenreData(
             li.selectFirst("span")!!.text(),
             li.selectFirst("input[type=checkbox]")!!.attr("value"),
