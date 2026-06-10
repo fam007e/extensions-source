@@ -44,9 +44,9 @@ data class ZeistMangaEntryDto(
         date_upload = dateUpload
     }
 
-    fun getPublishedDate(): String = published?.t?.trim().orEmpty()
+    fun getPublishedDate(): String? = published?.t?.trim()
 
-    fun getUpdatedDate(): String = updated?.t?.trim().orEmpty()
+    fun getUpdatedDate(): String? = updated?.t?.trim()
 
     private fun getChapterLink(list: List<ZeistMangaEntryLink>): String = list.first { it.rel == "alternate" }.href
 

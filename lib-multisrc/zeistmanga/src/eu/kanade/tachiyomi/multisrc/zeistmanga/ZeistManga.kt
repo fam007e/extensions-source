@@ -252,7 +252,7 @@ abstract class ZeistManga(
                     published ?: updated
                 }
 
-                entry.toSChapter(baseUrl, parseDate(dateStr))
+                entry.toSChapter(baseUrl, parseDate(dateStr.orEmpty()))
             }
     }
 
