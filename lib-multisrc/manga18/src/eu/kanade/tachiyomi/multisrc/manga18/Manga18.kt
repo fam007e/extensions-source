@@ -67,7 +67,7 @@ abstract class Manga18(
                 addQueryParameter("search", query.trim())
             } else {
                 addPathSegment("manga-list")
-                addPathSegment(tag!!.selected!!)
+                addPathSegment(tag.selected!!)
                 addPathSegment(page.toString())
                 filters.firstInstanceOrNull<SortFilter>()?.selected?.let {
                     addQueryParameter("order_by", it)
