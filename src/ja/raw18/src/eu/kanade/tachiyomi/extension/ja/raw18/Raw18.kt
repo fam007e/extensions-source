@@ -58,8 +58,8 @@ class Raw18 : WPComics("Raw18", "https://raw18.tax", "ja", SimpleDateFormat("yyy
     override fun chapterFromElement(element: Element): SChapter {
         val chapterDate = element.selectFirst("div.col-xs-4")!!.text()
         return SChapter.create().apply {
-            element.selectFirst("a").let {
-                name = it!!.text()
+            element.selectFirst("a")?.let {
+                name = it.text()
                 setUrlWithoutDomain(it.absUrl("href"))
                 date_upload = chapterDate.toDate()
             }

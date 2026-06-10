@@ -139,7 +139,7 @@ class BlossomManhwa(
         val data = response.parseAs<ApiChapterInfo>()
 
         val lis = mutableListOf<Page>()
-        data.chapter.images.maxBy { it.size }.forEachIndexed { index, path ->
+        data.chapter.images.maxByOrNull { it.size }?.forEachIndexed { index, path ->
             lis.add(Page(index, imageUrl = "/chapter$path"))
         }
 
@@ -181,7 +181,7 @@ class BlossomManhwa(
     override fun popularMangaParse(response: Response): MangasPage {
         val data = response.parseAs<ApiMangaList>()
 
-        val focus = preference.getString(APP_FOCUS_LANGUAGE_KEY, "")!!
+        val focus = preference.getString(APP_FOCUS_LANGUAGE_KEY, "") ?: ""
 
         val lis = mutableListOf<SManga>()
         data.mangas.forEach {

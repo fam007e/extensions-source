@@ -25,7 +25,7 @@ class DetailsDto(
     fun toSManga(): SManga = SManga.create().apply {
         url = "$slug#$uuid"
         title = name
-        thumbnail_url = image?.webp?.maxBy { it.width }?.url?.replace(Regex("""/\d+_"""), "/2400_")
+        thumbnail_url = image?.webp?.maxByOrNull { it.width }?.url?.replace(Regex("""/\d+_"""), "/2400_")
         author = creators?.joinToString { it.name }
         description = buildString {
             append(shortDescription)

@@ -74,7 +74,7 @@ abstract class LibGroup(
 
     abstract val siteId: Int // Important in api calls
 
-    private val apiDomain: String = preferences.getString(API_DOMAIN_PREF, API_DOMAIN_DEFAULT).toString()
+    private val apiDomain: String = (preferences.getString(API_DOMAIN_PREF, API_DOMAIN_DEFAULT) ?: API_DOMAIN_DEFAULT)
 
     override val client by lazy {
         network.client.newBuilder()
@@ -396,7 +396,7 @@ abstract class LibGroup(
     private fun checkImage(url: String): Boolean {
         val getUrlHead = Request.Builder().url(url).head().headers(imageHeader()).build()
         val response = client.newCall(getUrlHead).execute()
-        return response.isSuccessful && (response.header("content-length", "0")?.toInt()!! > 600)
+        return response.isSuccessful && ((response.header("content-length", "0") ?: "0").toInt() > 600)
     }
 
     override fun fetchImageUrl(page: Page): Observable<String> {
