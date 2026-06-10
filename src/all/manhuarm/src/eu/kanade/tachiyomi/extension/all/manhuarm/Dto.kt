@@ -59,7 +59,7 @@ private object DialogListSerializer :
         return JsonArray(
             element.jsonArray.mapNotNull { jsonElement ->
                 try {
-                    val coordinates = getCoordinates(jsonElement) ?: return@mapNotNull null
+                    val coordinates = getCoordinates(jsonElement)
                     val textByLanguage = getDialogs(jsonElement)
 
                     // Validate coordinates array has at least 4 elements
