@@ -30,7 +30,7 @@ class Hentai2Read : HttpSource() {
 
     override val supportsLatest = true
 
-    override val client: OkHttpClient = network.cloudflareClient
+    override val client: OkHttpClient = network.client
 
     companion object {
         const val IMAGE_BASE_URL = "https://static.hentaicdn.com/hentai"
