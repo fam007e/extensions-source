@@ -90,7 +90,7 @@ class GistamisHouse :
 
         val result = json.decodeFromString<ZeistMangaDto>(res.body.string())
         return result.feed?.entry?.filter { it.category.orEmpty().any { category -> chapterCategories.contains(category.term) } }
-            ?.map { it.toSChapter(baseUrl, parseDate(it.getPublishedDate())) }
+            ?.map { it.toSChapter(baseUrl, parseDate(it.getPublishedDate().orEmpty())) }
             ?: throw Exception("Failed to parse from chapter API")
     }
 
