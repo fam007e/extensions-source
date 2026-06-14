@@ -49,9 +49,10 @@ class Comicaso : HttpSource() {
                 .onErrorReturn { emptyList() }
         }
 
-        return Observable.zip(observables) { results ->
-            results.flatMap { it as List<Pair<String, MangaDto>> }
-        }.doOnNext { cachedMangaList = it }
+        return Observable.concat(observables)
+            .toList()
+            .map { it.flatten() }
+            .doOnNext { cachedMangaList = it }
     }
 
     // ============================== Popular ===============================
