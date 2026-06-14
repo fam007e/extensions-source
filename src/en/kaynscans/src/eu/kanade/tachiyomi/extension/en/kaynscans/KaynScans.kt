@@ -22,10 +22,10 @@ class KaynScans :
         return super.chapterListRequest(manga)
     }
 
-    override fun pageListParse(r: Response): List<Page> {
-        if (r.request.url.pathSegments.firstOrNull() != "api") {
+    override fun pageListParse(response: Response): List<Page> {
+        if (response.request.url.pathSegments.firstOrNull() != "api") {
             throw Exception("Migrate entry from '$name' to '$name'")
         }
-        return super.pageListParse(r)
+        return super.pageListParse(response)
     }
 }
