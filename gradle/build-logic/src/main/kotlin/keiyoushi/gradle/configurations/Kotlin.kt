@@ -15,6 +15,8 @@ fun Project.configureKotlin() {
         compilerOptions {
             allWarningsAsErrors.set(true)
             optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
+            optIn.add("kotlin.ExperimentalUnsignedTypes")
+            optIn.add("kotlin.ExperimentalStdlibApi")
             freeCompilerArgs.add("-Xcontext-parameters")
         }
     }
