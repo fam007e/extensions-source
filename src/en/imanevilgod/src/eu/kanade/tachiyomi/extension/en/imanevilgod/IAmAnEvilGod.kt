@@ -9,7 +9,6 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
 import okhttp3.Response
-import org.jsoup.Jsoup
 import rx.Observable
 
 class IAmAnEvilGod : HttpSource() {
@@ -61,7 +60,7 @@ class IAmAnEvilGod : HttpSource() {
     override fun chapterListRequest(manga: SManga) = GET(baseUrl, headers)
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val doc = Jsoup.parse(response.body.string())
+        val doc = response.asJsoup()
         // Chapters are <a> tags inside the paragraph with class "has-medium-font-size"
         return doc.select("p.has-medium-font-size a[href*=imanevilgod.com]")
             .mapIndexed { index, el ->
@@ -80,7 +79,7 @@ class IAmAnEvilGod : HttpSource() {
         // Chapter pages are <img> tags inside the post content
         return doc.select("div.entry-content img")
             .mapIndexed { index, el ->
-                Page(index, "", el.absUrl("src").ifEmpty { el.absUrl("data-src") })
+                Page(index, imageUrl = el.absUrl("src").ifEmpty { el.absUrl("data-src") })
             }
     }
 

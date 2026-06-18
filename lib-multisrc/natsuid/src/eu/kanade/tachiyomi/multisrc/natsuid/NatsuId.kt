@@ -31,7 +31,6 @@ import okhttp3.Response
 import okhttp3.brotli.BrotliInterceptor
 import okhttp3.internal.closeQuietly
 import okio.IOException
-import org.jsoup.Jsoup
 import rx.Observable
 import java.lang.UnsupportedOperationException
 import java.text.SimpleDateFormat
@@ -121,7 +120,7 @@ abstract class NatsuId(
             val url = "$baseUrl/wp-admin/admin-ajax.php?type=search_form&action=get_nonce"
             val response = client.newCall(GET(url, headers)).execute()
 
-            Jsoup.parseBodyFragment(response.body.string())
+            response.asJsoup()
                 .selectFirst("input[name=search_nonce]")
                 ?.attr("value")
                 ?.takeIf { it.isNotBlank() }
@@ -208,7 +207,7 @@ abstract class NatsuId(
     }
 
     override fun searchMangaParse(response: Response): MangasPage {
-        val document = Jsoup.parseBodyFragment(response.body.string(), baseUrl)
+        val document = response.asJsoup()
         val slugs = document.select("div > a[href*=/manga/]:has(> img)").map {
             it.absUrl("href").toHttpUrl().pathSegments[1]
         }.ifEmpty {
@@ -324,7 +323,7 @@ abstract class NatsuId(
     protected open val chapterDateAttribute = "datetime"
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val document = Jsoup.parseBodyFragment(response.body.string(), baseUrl)
+        val document = response.asJsoup()
 
         return document.select(chapterListSelector).map {
             SChapter.create().apply {

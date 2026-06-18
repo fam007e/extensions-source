@@ -7,9 +7,9 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
+import eu.kanade.tachiyomi.util.asJsoup
 import okhttp3.Request
 import okhttp3.Response
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 class Mangalay : HttpSource() {
@@ -21,7 +21,7 @@ class Mangalay : HttpSource() {
     override fun popularMangaRequest(page: Int): Request = GET("$baseUrl/2013/04/daftar-baca-komik_20.html", headers)
 
     override fun popularMangaParse(response: Response): MangasPage {
-        val document = Jsoup.parse(response.body.string(), baseUrl)
+        val document = response.asJsoup()
         val mangas = document.select(".post-body table").map { element: Element ->
             SManga.create().apply {
                 setUrlWithoutDomain(element.select("a").first()!!.absUrl("href"))
@@ -35,7 +35,7 @@ class Mangalay : HttpSource() {
     override fun mangaDetailsParse(response: Response): SManga = SManga.create()
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val document = Jsoup.parse(response.body.string(), baseUrl)
+        val document = response.asJsoup()
         return document.select(".post-body span > a").map { element: Element ->
             SChapter.create().apply {
                 setUrlWithoutDomain(element.absUrl("href"))
@@ -45,7 +45,7 @@ class Mangalay : HttpSource() {
     }
 
     override fun pageListParse(response: Response): List<Page> {
-        val document = Jsoup.parse(response.body.string(), baseUrl)
+        val document = response.asJsoup()
         return document.select(".separator img")
             .dropLast(1) // :last-child not working somehow
             .mapIndexed { index: Int, element: Element ->

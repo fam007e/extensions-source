@@ -192,7 +192,7 @@ open class Wolf(
         return client.newCall(GET(searchUrl, headers))
             .asObservableSuccess()
             .map { response ->
-                val document = Jsoup.parseBodyFragment(response.body.string(), searchUrl)
+                val document = response.asJsoup()
                 val entries = document.select("article.searchItem")
                     .filter { el ->
                         el.selectFirst("a.searchLink")!!.attr("href").contains(entryPath)
