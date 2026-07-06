@@ -102,6 +102,11 @@ class PluginExtension : Plugin<Project> {
 
             packaging {
                 resources.excludes.add("kotlin-tooling-metadata.json")
+                resources.excludes.add("META-INF/DEPENDENCIES")
+                resources.excludes.add("META-INF/LICENSE")
+                resources.excludes.add("META-INF/LICENSE.txt")
+                resources.excludes.add("META-INF/NOTICE")
+                resources.excludes.add("META-INF/NOTICE.txt")
             }
         }
 
