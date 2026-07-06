@@ -49,6 +49,7 @@ abstract class Manhuagui :
     ConfigurableSource {
 
     private val preferences: SharedPreferences by getPreferencesLazy()
+
     /**
      * Used for background tasks that require [delay].
      * Note: This scope is never cancelled as [HttpSource] lacks a lifecycle hook,

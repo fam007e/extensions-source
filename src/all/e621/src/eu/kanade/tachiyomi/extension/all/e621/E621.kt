@@ -39,6 +39,7 @@ abstract class E621 :
     private val preferences: SharedPreferences by getPreferencesLazy()
 
     @Volatile private var cachedAccountBlacklist: String? = null
+
     @Volatile private var cachedAccountBlacklistCredentials: String? = null
 
     // e621 needs a custom User-Agent header
