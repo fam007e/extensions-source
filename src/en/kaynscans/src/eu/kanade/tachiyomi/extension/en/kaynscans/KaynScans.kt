@@ -3,29 +3,28 @@ package eu.kanade.tachiyomi.extension.en.kaynscans
 import eu.kanade.tachiyomi.multisrc.iken.Iken
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.annotation.Source
 import okhttp3.Request
 import okhttp3.Response
 
-class KaynScans :
-    Iken(
-        "Kayn Scans",
-        "en",
-        "https://kaynscan.org",
-        "https://api.kaynscan.org",
-    ) {
+@Source
+abstract class KaynScans : Iken() {
+    override val sortPagesByFilename = true
 
     // Migrate from Keyoapp to Iken by checking non slug-only urls
-    override fun chapterListRequest(manga: SManga): Request {
-        if (manga.url.startsWith('/')) {
+    override fun chapterListRequest(m: SManga): Request {
+        if (m.url.startsWith('/')) {
             throw Exception("Migrate entry from '$name' to '$name'")
         }
-        return super.chapterListRequest(manga)
+        return super.chapterListRequest(m)
     }
 
-    override fun pageListParse(response: Response): List<Page> {
-        if (response.request.url.pathSegments.firstOrNull() != "api") {
+    override fun pageListParse(r: Response): List<Page> {
+        if (r.request.url.pathSegments
+                .firstOrNull() != "api"
+        ) {
             throw Exception("Migrate entry from '$name' to '$name'")
         }
-        return super.pageListParse(response)
+        return super.pageListParse(r)
     }
 }
