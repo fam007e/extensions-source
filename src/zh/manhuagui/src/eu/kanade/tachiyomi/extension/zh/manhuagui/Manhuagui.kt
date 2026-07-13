@@ -57,18 +57,6 @@ abstract class Manhuagui :
      */
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    private val baseHost = if (preferences.getBoolean(USE_MIRROR_URL_PREF, false)) {
-        "mhgui.com"
-    } else {
-        "manhuagui.com"
-    }
-
-    override val baseUrl =
-        if (preferences.getBoolean(SHOW_ZH_HANT_WEBSITE_PREF, false)) {
-            "https://tw.$baseHost"
-        } else {
-            "https://www.$baseHost"
-        }
     override val supportsLatest = true
 
     private val imageServer = arrayOf("https://i.hamreus.com", "https://cf.hamreus.com")
