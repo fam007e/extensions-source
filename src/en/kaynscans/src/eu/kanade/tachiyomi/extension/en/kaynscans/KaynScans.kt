@@ -12,19 +12,19 @@ abstract class KaynScans : Iken() {
     override val sortPagesByFilename = true
 
     // Migrate from Keyoapp to Iken by checking non slug-only urls
-    override fun chapterListRequest(m: SManga): Request {
-        if (m.url.startsWith('/')) {
+    override fun chapterListRequest(manga: SManga): Request {
+        if (manga.url.startsWith('/')) {
             throw Exception("Migrate entry from '$name' to '$name'")
         }
-        return super.chapterListRequest(m)
+        return super.chapterListRequest(manga)
     }
 
-    override fun pageListParse(r: Response): List<Page> {
-        if (r.request.url.pathSegments
+    override fun pageListParse(response: Response): List<Page> {
+        if (response.request.url.pathSegments
                 .firstOrNull() != "api"
         ) {
             throw Exception("Migrate entry from '$name' to '$name'")
         }
-        return super.pageListParse(r)
+        return super.pageListParse(response)
     }
 }
