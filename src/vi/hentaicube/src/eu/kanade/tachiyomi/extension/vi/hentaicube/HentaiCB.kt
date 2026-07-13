@@ -195,7 +195,7 @@ abstract class HentaiCB : Madara() {
             .build()
 
         val challengeResponse = client.newCall(challengeRequest).execute()
-        val challengeJson = JSONObject(challengeResponse.body?.string().orEmpty())
+        val challengeJson = JSONObject(challengeResponse.body.string())
         challengeResponse.close()
         val token = challengeJson.getString("token")
         val session = challengeJson.getString("session")
@@ -219,7 +219,7 @@ abstract class HentaiCB : Madara() {
                 .build()
 
             val pagesResponse = client.newCall(pagesRequest).execute()
-            val pagesJson = JSONObject(pagesResponse.body?.string().orEmpty())
+            val pagesJson = JSONObject(pagesResponse.body.string())
             pagesResponse.close()
 
             val items = pagesJson.optJSONArray("items") ?: break
@@ -229,7 +229,7 @@ abstract class HentaiCB : Madara() {
                 allImages.add(items.getString(i))
             }
 
-            currentToken = if (pagesJson.optBoolean("done", true)) null else pagesJson.optString("next_token", null)
+            currentToken = if (pagesJson.optBoolean("done", true)) null else pagesJson.optString("next_token").takeIf { it.isNotEmpty() }
         }
 
         return allImages.mapIndexed { i, imageUrl ->
