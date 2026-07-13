@@ -82,7 +82,7 @@ index = index_pb2.Index(
         website="https://fam007e.github.io/extensions-source",
         discord="https://discord.gg/F34duNjTqn"
     ),
-    extensions=[
+    extensionList=index_pb2.ExtensionList(extensions=[
         index_pb2.Extension(
             name=extension["name"].replace("Tachiyomi: ", ""),
             packageName=extension["pkg"],
@@ -93,19 +93,19 @@ index = index_pb2.Index(
             extensionLib=extract_extension_lib(extension["version"]),
             versionCode=extension["code"],
             versionName=extension["version"],
+            contentWarning=index_pb2.ContentWarning.CONTENT_WARNING_NSFW if extension["nsfw"] == 1 else index_pb2.ContentWarning.CONTENT_WARNING_SAFE,
             sources=[
                 index_pb2.Source(
                     id=int(source["id"]),
                     name=source["name"],
                     language=source["lang"],
                     homeUrl=source["baseUrl"],
-                    contentRating=index_pb2.ContentRating.CONTENT_RATING_PORNOGRAPHIC if extension["nsfw"] == 1 else index_pb2.CONTENT_RATING_SAFE,
                 )
                 for source in extension["sources"]
             ]
         )
         for extension in legacy_index
-    ]
+    ])
 )
 
 # 5. Save the updated index files
