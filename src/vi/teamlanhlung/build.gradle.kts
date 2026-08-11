@@ -1,18 +1,20 @@
+import io.github.keiyoushi.gradle.api.ContentWarning
+
 plugins {
     alias(kei.plugins.extension)
 }
 
 keiyoushi {
     name = "Team Lanh Lung"
-    versionCode = 33
-    contentWarning = ContentWarning.NSFW
+    versionCode = 34
+    contentWarning = ContentWarning.MIXED
     libVersion = "1.4"
 
     source {
         name = "Team Lạnh Lùng"
         lang = "vi"
-        baseUrl("https://icecoldcore.com") {
-            withCustom = true
+        baseUrl {
+            custom("https://lanhhome.casa")
         }
     }
 }

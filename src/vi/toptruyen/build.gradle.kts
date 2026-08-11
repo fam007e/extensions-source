@@ -1,18 +1,20 @@
+import io.github.keiyoushi.gradle.api.ContentWarning
+
 plugins {
     alias(kei.plugins.extension)
 }
 
 keiyoushi {
     name = "Top Truyen"
-    versionCode = 30
-    contentWarning = ContentWarning.NSFW
+    versionCode = 32
+    contentWarning = ContentWarning.MIXED
     libVersion = "1.4"
     theme = "wpcomics"
 
     source {
         lang = "vi"
-        baseUrl("https://www.toptruyenzone5.com") {
-            withCustom = true
+        baseUrl {
+            custom("https://www.toptruyenzone7.com")
         }
     }
 }
