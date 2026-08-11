@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class NTRManga : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
 }

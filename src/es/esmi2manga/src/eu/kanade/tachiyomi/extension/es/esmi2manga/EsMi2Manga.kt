@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class EsMi2Manga : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     override val client = super.client.newBuilder()
         .rateLimit(2, 1.seconds)
         .build()

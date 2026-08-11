@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class SereinScan : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMM d, yyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMM d, yyy", Locale.forLanguageTag("tr"))
 }

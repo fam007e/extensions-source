@@ -30,7 +30,7 @@ abstract class MangaBlackCat : HttpSource() {
 
     override val supportsLatest = true
 
-    private val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th")).apply {
+    private val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th")).apply {
         timeZone = TimeZone.getTimeZone("Asia/Bangkok")
     }
 

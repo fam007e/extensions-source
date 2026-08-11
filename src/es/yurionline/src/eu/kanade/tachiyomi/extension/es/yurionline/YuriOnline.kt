@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class YuriOnline : Madara() {
-    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.forLanguageTag("es"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = true
 }

@@ -28,7 +28,7 @@ import java.util.Locale
 
 @Source
 abstract class HentaiCB : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("vi"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("vi"))
 
     override val client: OkHttpClient = network.client.newBuilder()
         .followRedirects(false)

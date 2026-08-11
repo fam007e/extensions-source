@@ -26,7 +26,7 @@ import java.util.Locale
 @Source
 abstract class Nudemoon : HttpSource() {
     override val supportsLatest = true
-    private val dateParseRu = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
+    private val dateParseRu = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("ru"))
     private val domain get() = baseUrl.toHttpUrl().host
     private val cookieManager by lazy { CookieManager.getInstance() }
 

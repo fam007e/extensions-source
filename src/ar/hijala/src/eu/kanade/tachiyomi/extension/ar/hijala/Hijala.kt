@@ -24,7 +24,7 @@ import java.util.Locale
 
 @Source
 abstract class Hijala : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("ar"))
 
     override val client = network.client.newBuilder()
         .addInterceptor(::scrambledImageInterceptor)

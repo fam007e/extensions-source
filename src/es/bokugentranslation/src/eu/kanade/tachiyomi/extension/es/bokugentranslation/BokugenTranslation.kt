@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class BokugenTranslation : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("dd MMMM, yyyy", Locale("en"))
+    override val dateFormat = SimpleDateFormat("dd MMMM, yyyy", Locale.forLanguageTag("en"))
     private val baseUrlHost by lazy { baseUrl.toHttpUrl().host }
 
     override val client: OkHttpClient = super.client.newBuilder()

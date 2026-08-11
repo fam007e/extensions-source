@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 abstract class TempleScanEsp :
     Madara(),
     ConfigurableSource {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
 
     private val fetchedDomainUrlHost by lazy { fetchedDomainUrl.toHttpUrl().host }
 

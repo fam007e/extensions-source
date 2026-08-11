@@ -237,7 +237,7 @@ abstract class MangaBuff :
                     ?.let { it / 10.0 }
                     ?.also {
                         if (isNotEmpty()) append("\n\n")
-                        append(String.format(Locale("ru"), "Рейтинг: %.0f%%", it * 100))
+                        append(String.format(Locale.forLanguageTag("ru"), "Рейтинг: %.0f%%", it * 100))
                     }
 
                 document // views
@@ -247,7 +247,7 @@ abstract class MangaBuff :
                     ?.toIntOrNull()
                     ?.also {
                         if (isNotEmpty()) append("\n\n")
-                        append(String.format(Locale("ru"), "Просмотров: %,d", it))
+                        append(String.format(Locale.forLanguageTag("ru"), "Просмотров: %,d", it))
                     }
 
                 document // favorites
@@ -257,7 +257,7 @@ abstract class MangaBuff :
                     ?.toIntOrNull()
                     ?.also {
                         if (isNotEmpty()) append("\n\n")
-                        append(String.format(Locale("ru"), "Избранное: %,d", it))
+                        append(String.format(Locale.forLanguageTag("ru"), "Избранное: %,d", it))
                     }
 
                 document // alternative names

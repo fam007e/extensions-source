@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class KomikindoCo : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.forLanguageTag("id"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .rateLimit(4)

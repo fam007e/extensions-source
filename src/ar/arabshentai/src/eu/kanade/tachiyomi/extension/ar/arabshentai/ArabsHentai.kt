@@ -24,7 +24,7 @@ import java.util.Locale
 
 @Source
 abstract class ArabsHentai : HttpSource() {
-    private val dateFormat = SimpleDateFormat("d MMM، yyy", Locale("ar"))
+    private val dateFormat = SimpleDateFormat("d MMM، yyy", Locale.forLanguageTag("ar"))
     override val supportsLatest = true
     override val client = network.client.newBuilder()
         .rateLimit(2)

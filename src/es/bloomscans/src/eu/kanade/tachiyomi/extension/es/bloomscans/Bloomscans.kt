@@ -14,7 +14,7 @@ import java.util.Locale
 @Source
 abstract class Bloomscans : MangaThemesia() {
     override val mangaUrlDirectory = "/series"
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("es"))
 
     override fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request {
         if (query.isNotEmpty() && filters.isEmpty()) {

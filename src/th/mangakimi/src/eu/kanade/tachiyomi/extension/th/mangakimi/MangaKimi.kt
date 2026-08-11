@@ -24,7 +24,7 @@ import java.util.TimeZone
 
 @Source
 abstract class MangaKimi : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th")).apply {
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th")).apply {
         timeZone = TimeZone.getTimeZone("Asia/Bangkok")
     }
 

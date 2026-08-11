@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaStarz : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM، yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("d MMMM، yyyy", Locale.forLanguageTag("ar"))
     override val chapterUrlSuffix = ""
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = false

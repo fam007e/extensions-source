@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class SummerToon : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("tr"))
     override val client = super.client.newBuilder()
         .rateLimit(1, 1.seconds)
         .build()

@@ -8,5 +8,5 @@ import java.util.Locale
 @Source
 abstract class EcchiDoujin : MangaThemesia() {
     override val mangaUrlDirectory = "/doujin"
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
 }

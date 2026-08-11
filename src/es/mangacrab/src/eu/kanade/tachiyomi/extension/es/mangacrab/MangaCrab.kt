@@ -31,7 +31,7 @@ import kotlin.time.Duration.Companion.seconds
 abstract class MangaCrab :
     Madara(),
     ConfigurableSource {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     override val client = super.client.newBuilder()
         .rateLimit(5, 1.seconds)

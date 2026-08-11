@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class Mangastep : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
 }

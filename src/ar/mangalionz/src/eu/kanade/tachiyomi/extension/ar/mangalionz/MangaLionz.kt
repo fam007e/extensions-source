@@ -16,7 +16,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaLionz : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("ar"))
 
     override val useLoadMoreRequest = LoadMoreStrategy.Always
 

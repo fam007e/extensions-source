@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 private val chapterRegex = Regex("""Глава\s(\d+)""", RegexOption.IGNORE_CASE)
-private val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
+private val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag("ru"))
 
 @Source
 abstract class MangaPoisk : HttpSource() {

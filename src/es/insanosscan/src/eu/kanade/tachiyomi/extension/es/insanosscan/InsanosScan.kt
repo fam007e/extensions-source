@@ -36,7 +36,7 @@ abstract class InsanosScan :
 
     override val supportsLatest = true
 
-    private val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale("es"))
+    private val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.forLanguageTag("es"))
 
     // ========================= Preferences =========================
 

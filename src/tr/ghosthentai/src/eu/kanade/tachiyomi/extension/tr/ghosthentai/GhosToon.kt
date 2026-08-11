@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class GhosToon : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = true
 

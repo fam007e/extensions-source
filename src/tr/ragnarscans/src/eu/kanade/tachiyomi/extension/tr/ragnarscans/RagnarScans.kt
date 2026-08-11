@@ -15,7 +15,7 @@ abstract class RagnarScans : InitManga() {
 
     override val popularUrlSlug = "en-cok-takip-edilenler"
 
-    private val ragnarDateFormat = SimpleDateFormat("d MMMM yyyy HH:mm", Locale("tr"))
+    private val ragnarDateFormat = SimpleDateFormat("d MMMM yyyy HH:mm", Locale.forLanguageTag("tr"))
 
     override fun chapterListSelector() = "div.chapter-list > div.chapter-item"
 

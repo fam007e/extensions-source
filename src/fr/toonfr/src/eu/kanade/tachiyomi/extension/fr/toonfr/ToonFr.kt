@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class ToonFr : Madara() {
-    override val dateFormat = SimpleDateFormat("MMM d", Locale("fr"))
+    override val dateFormat = SimpleDateFormat("MMM d", Locale.forLanguageTag("fr"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = true
 

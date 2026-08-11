@@ -12,7 +12,7 @@ import java.util.Locale
 
 @Source
 abstract class TopManhuaFan : Madara() {
-    override val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale("en"))
+    override val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.forLanguageTag("en"))
     override val mangaSubString = "manhua"
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = false

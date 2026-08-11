@@ -12,7 +12,7 @@ import java.util.Locale
 
 @Source
 abstract class Komikhwa : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("id"))
     override fun pageListParse(document: Document): List<Page> {
         val script = document.selectFirst("script[src^=data:text/javascript;base64,dHNfcmVhZGVyLnJ1bih7]")
             ?: return super.pageListParse(document)

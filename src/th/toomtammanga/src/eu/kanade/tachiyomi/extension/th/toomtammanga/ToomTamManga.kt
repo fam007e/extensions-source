@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class ToomTamManga : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
     override val seriesAuthorSelector = ".imptdt:contains(ผู้เขียน) i"
     override val seriesArtistSelector = ".imptdt:contains(ศิลปิน) i"
     override val seriesTypeSelector = ".imptdt:contains(พิมพ์) a"

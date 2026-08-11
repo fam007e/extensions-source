@@ -11,7 +11,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaTilkisi : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("tr"))
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val useNewChapterEndpoint = true
 

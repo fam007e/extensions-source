@@ -264,7 +264,7 @@ abstract class PlotTwistNoFansub : HttpSource() {
     }
 
     private val dateFormat by lazy {
-        SimpleDateFormat("MMMM d, yyyy", Locale("es"))
+        SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("es"))
     }
 
     companion object {

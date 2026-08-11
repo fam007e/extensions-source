@@ -18,7 +18,7 @@ import java.util.Locale
 
 @Source
 abstract class AreaManga : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.forLanguageTag("ar"))
 
     override fun searchMangaSelector() = ".listupd .manga-card-v"
     protected val searchMangaTitleSelector = ".bigor .tt, h3 a"

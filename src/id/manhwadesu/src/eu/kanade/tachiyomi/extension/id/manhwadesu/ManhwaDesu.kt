@@ -11,7 +11,7 @@ import java.util.Locale
 @Source
 abstract class ManhwaDesu : MangaThemesia() {
     override val mangaUrlDirectory = "/komik"
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("id"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .rateLimit(4)

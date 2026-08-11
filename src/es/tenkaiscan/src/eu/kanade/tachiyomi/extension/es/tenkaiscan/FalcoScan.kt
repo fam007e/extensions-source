@@ -26,7 +26,7 @@ abstract class FalcoScan : HttpSource() {
 
     override val supportsLatest = true
 
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     override val client = network.client.newBuilder()
         .rateLimit(3) { it.host == baseUrlHost }

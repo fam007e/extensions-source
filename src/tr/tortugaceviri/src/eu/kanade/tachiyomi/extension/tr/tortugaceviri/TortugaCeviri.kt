@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class TortugaCeviri : Madara() {
-    override val dateFormat = SimpleDateFormat("MMM d, yyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMM d, yyy", Locale.forLanguageTag("tr"))
 
     override val useNewChapterEndpoint = true
 }

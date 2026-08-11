@@ -23,7 +23,7 @@ abstract class OkuToon : HttpSource() {
     override val supportsLatest = true
 
     private val dateFormat by lazy {
-        SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+        SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     }
 
     override fun popularMangaRequest(page: Int): Request = GET("$baseUrl/tur?sira=popular&sayfa=$page", headers)

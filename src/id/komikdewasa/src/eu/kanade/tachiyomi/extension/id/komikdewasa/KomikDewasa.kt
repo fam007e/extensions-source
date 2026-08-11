@@ -8,6 +8,6 @@ import java.util.Locale
 @Source
 abstract class KomikDewasa : MangaThemesia() {
     override val mangaUrlDirectory = "/komik"
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("id"))
     override val hasProjectPage = true
 }

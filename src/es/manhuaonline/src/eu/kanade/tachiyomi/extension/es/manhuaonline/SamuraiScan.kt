@@ -12,7 +12,7 @@ import java.util.Locale
 
 @Source
 abstract class SamuraiScan : Madara() {
-    override val dateFormat = SimpleDateFormat("dd MMMM, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("dd MMMM, yyyy", Locale.forLanguageTag("es"))
 
     override val useLoadMoreRequest = LoadMoreStrategy.Never
 

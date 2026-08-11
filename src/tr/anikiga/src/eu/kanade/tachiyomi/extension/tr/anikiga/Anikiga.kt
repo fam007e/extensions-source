@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class Anikiga : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMMM yyyy", Locale.forLanguageTag("tr"))
 }

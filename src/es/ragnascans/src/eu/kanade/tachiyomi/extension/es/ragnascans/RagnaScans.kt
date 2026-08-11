@@ -35,7 +35,7 @@ abstract class RagnaScans : HttpSource() {
         .build()
 
     private val dateFormat by lazy {
-        SimpleDateFormat("dd MMMM, yyyy", Locale("es")).apply {
+        SimpleDateFormat("dd MMMM, yyyy", Locale.forLanguageTag("es")).apply {
             timeZone = TimeZone.getTimeZone("UTC")
         }
     }

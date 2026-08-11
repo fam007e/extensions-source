@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class Kanzenin : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("id"))
 }

@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class CelestialMoon : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     private val baseUrlHost by lazy { baseUrl.toHttpUrl().host }
 
     private val cookieInterceptor = CookieInterceptor(baseUrl.substringAfter("://"), "age_gate" to "18")

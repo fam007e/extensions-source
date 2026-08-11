@@ -227,7 +227,7 @@ abstract class HenChan : MultiChan() {
         private val manganewThumbsRegex = "(?<=/)manganew_thumbs\\w*?(?=/)".toRegex(RegexOption.IGNORE_CASE)
         private val chapterNumberRegex = "(глава\\s|часть\\s)([0-9]+\\.?[0-9]*)".toRegex(RegexOption.IGNORE_CASE)
         private val exhentaiDateFormat by lazy {
-            SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
+            SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag("ru"))
         }
     }
 }

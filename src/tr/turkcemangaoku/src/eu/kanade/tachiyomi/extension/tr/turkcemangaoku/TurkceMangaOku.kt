@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class TurkceMangaOku : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     override val mangaDetailsSelectorStatus = "div.summary-heading:contains(Durumu) + div.summary-content"
 
     override val useLoadMoreRequest = LoadMoreStrategy.Always

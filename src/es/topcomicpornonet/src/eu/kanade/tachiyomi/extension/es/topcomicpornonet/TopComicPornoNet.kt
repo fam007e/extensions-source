@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class TopComicPornoNet : Madara() {
-    override val dateFormat = SimpleDateFormat("MMM dd, yy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMM dd, yy", Locale.forLanguageTag("es"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = true
 }

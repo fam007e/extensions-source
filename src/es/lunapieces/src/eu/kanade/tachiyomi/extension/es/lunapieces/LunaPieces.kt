@@ -8,5 +8,5 @@ import java.util.Locale
 @Source
 abstract class LunaPieces : MangaThemesia() {
     override val mangaUrlDirectory = "/doujinshi"
-    override val dateFormat = SimpleDateFormat("d MMMM, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("d MMMM, yyyy", Locale.forLanguageTag("es"))
 }

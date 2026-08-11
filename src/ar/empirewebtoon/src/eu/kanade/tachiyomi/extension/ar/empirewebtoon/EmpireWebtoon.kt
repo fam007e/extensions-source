@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class EmpireWebtoon : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM، yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("d MMMM، yyyy", Locale.forLanguageTag("ar"))
     override val mangaSubString = "webtoon"
     override val useNewChapterEndpoint = false
 }

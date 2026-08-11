@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class TarotScans : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("tr"))
 }

@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class DoujinLc : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
     override val pageListParseSelector = ".reading-content img"
 
     override val useLoadMoreRequest = LoadMoreStrategy.Never

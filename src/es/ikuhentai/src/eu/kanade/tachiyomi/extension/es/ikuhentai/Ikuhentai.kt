@@ -23,7 +23,7 @@ import java.util.Locale
 abstract class Ikuhentai : HttpSource() {
     override val supportsLatest = true
 
-    private val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    private val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
 
     override fun popularMangaRequest(page: Int): Request {
         val pagePath = if (page > 1) "page/$page/" else ""

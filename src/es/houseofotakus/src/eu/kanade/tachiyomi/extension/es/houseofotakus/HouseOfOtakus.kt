@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class HouseOfOtakus : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val useNewChapterEndpoint = true
 }

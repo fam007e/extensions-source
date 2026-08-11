@@ -17,13 +17,13 @@ import java.util.Locale
 
 @Source
 abstract class Mangalek : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("ar"))
 
     override val fetchGenres = false
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val chapterUrlSuffix = ""
 
-    private val formatOne = SimpleDateFormat("MMMM dd, yyyy", Locale("ar"))
+    private val formatOne = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("ar"))
     private val formatTwo = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     override fun parseChapterDate(date: String?): Long {

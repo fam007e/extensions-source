@@ -13,7 +13,7 @@ import java.util.Locale
 
 @Source
 abstract class SkyMangas : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     override fun pageListParse(document: Document): List<Page> {
         val script = document.selectFirst("div.readercontent > div.wrapper > script")
             ?: return super.pageListParse(document)

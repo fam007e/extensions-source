@@ -10,7 +10,7 @@ import java.util.Locale
 
 @Source
 abstract class RaindropFansub : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("tr"))
     override val seriesTypeSelector = ".tsinfo .imptdt:contains(Tür) a"
 
     override fun chapterListParse(response: Response): List<SChapter> {

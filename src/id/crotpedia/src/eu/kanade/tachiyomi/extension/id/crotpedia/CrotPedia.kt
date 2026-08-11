@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class CrotPedia : ZManga() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("id"))
 
     override val hasProjectPage = false
 }

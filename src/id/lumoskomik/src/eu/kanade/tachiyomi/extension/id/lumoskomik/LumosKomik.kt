@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class LumosKomik : Madara() {
-    override val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("en"))
+    override val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag("en"))
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val useNewChapterEndpoint = true
 

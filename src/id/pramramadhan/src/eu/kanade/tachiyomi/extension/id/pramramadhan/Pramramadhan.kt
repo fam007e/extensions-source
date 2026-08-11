@@ -22,7 +22,7 @@ abstract class Pramramadhan : HttpSource() {
 
     override val supportsLatest = true
 
-    private val simpleDateFormat = SimpleDateFormat("d MMMM yyyy", Locale("id"))
+    private val simpleDateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("id"))
 
     // ============================== Popular ===============================
     override fun popularMangaRequest(page: Int): Request = GET("$baseUrl/search.php?sort=popular&page=$page", headers)

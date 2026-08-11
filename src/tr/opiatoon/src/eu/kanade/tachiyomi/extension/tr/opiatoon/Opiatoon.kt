@@ -11,7 +11,7 @@ import java.util.Locale
 
 @Source
 abstract class Opiatoon : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM", Locale.forLanguageTag("tr"))
     override val chapterUrlSelector = "li > a"
 
     override val useLoadMoreRequest = LoadMoreStrategy.Always

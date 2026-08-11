@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class MundoManhwa : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("es"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = false
 }

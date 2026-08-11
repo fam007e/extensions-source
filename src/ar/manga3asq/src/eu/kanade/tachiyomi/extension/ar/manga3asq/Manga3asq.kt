@@ -8,7 +8,7 @@ import java.util.Locale
 @Source
 abstract class Manga3asq : Madara() {
     // \u060c (،) U+060C : ARABIC COMMA
-    override val dateFormat = SimpleDateFormat("d MMM\u060c yyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("d MMM\u060c yyy", Locale.forLanguageTag("ar"))
     override val useNewChapterEndpoint: Boolean = true
     override val popularMangaUrlSelector = "div.post-title a:not([target])"
 }

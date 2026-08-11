@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class GodDoujin : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
     override val seriesTypeSelector = ".imptdt:contains(ประเภท) a"
 }

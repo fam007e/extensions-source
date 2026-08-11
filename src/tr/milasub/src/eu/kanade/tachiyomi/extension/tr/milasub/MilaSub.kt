@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class MilaSub : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val useNewChapterEndpoint = true
 

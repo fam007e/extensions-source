@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class WalpurgisScan : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale("it"))
+    override val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.forLanguageTag("it"))
 }

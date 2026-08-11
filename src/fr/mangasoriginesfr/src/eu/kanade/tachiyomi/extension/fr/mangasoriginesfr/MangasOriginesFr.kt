@@ -8,7 +8,7 @@ import java.util.TimeZone
 
 @Source
 abstract class MangasOriginesFr : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("fr")).apply {
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("fr")).apply {
         timeZone = TimeZone.getTimeZone("Europe/Paris")
     }
     override val mangaSubString = "catalogues"

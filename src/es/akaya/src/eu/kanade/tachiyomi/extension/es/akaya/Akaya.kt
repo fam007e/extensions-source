@@ -225,6 +225,6 @@ abstract class Akaya : HttpSource() {
     override fun imageUrlParse(response: Response): String = throw UnsupportedOperationException()
 
     companion object {
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("es"))
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.forLanguageTag("es"))
     }
 }

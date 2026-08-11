@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class AreaScans : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("ar"))
 }

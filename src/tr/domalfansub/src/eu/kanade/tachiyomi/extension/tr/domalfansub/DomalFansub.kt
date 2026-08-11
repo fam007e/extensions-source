@@ -12,7 +12,7 @@ import java.util.Locale
 
 @Source
 abstract class DomalFansub : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     override val mangaDetailsSelectorStatus = "div.summary-heading:contains(Durum) + div.summary-content"
 
     override val useLoadMoreRequest = LoadMoreStrategy.Never

@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class Hwago : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("en"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("en"))
     override val useNewChapterEndpoint = true
 
     override val mangaDetailsSelectorStatus = "div.summary-heading:contains(Status) + div.summary-content"

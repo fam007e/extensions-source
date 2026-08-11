@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class NoblesseTranslations : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("es"))
     override val useNewChapterEndpoint = true
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val mangaDetailsSelectorTag = "div.tags-content a.notUsed"

@@ -38,7 +38,7 @@ abstract class Nekopost : HttpSource() {
     private val projectDataEndpoint = "$baseUrl/api/project/detail2"
     private val fileHost = "https://www.osemocphoto.com"
 
-    private val dateFormat by lazy { SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("th")) }
+    private val dateFormat by lazy { SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.forLanguageTag("th")) }
 
     private val apiHeaders by lazy {
         headersBuilder()

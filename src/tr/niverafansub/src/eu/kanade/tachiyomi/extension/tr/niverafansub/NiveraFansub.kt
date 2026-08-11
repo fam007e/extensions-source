@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class NiveraFansub : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     override val chapterUrlSelector = "li > a"
 
     override val useLoadMoreRequest = LoadMoreStrategy.Never

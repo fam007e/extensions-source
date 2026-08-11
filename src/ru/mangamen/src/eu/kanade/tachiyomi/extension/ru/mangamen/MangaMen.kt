@@ -239,6 +239,6 @@ abstract class MangaMen : HttpSource() {
         private val PAGES_VAR_REGEX = Regex("""window\.__pg\s*=\s*(\[[^\]]+\])""")
         private val PAGE_URL_REGEX = Regex(""""u":"([^"]+)"""")
 
-        private val absoluteDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
+        private val absoluteDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.forLanguageTag("ru"))
     }
 }

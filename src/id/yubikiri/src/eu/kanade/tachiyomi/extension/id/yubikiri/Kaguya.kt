@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.minutes
 
 @Source
 abstract class Kaguya : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM", Locale("en"))
+    override val dateFormat = SimpleDateFormat("d MMMM", Locale.forLanguageTag("en"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .readTimeout(1.minutes)

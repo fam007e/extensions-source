@@ -8,7 +8,7 @@ import java.util.Locale
 
 @Source
 abstract class NekoScans : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
 
     override val client = super.client.newBuilder()
         .rateLimit(2)

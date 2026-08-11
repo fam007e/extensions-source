@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class Gaiatoon : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyy", Locale.forLanguageTag("tr"))
 }

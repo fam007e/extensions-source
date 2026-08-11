@@ -8,7 +8,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaLivreTo : Madara() {
-    override val dateFormat = SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale("pt"))
+    override val dateFormat = SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.forLanguageTag("pt"))
     override val client = super.client.newBuilder()
         .rateLimit(2)
         .build()

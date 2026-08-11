@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class KoreliScans : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
 }

@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class BymichiScan : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     private val baseUrlHost by lazy { baseUrl.toHttpUrl().host }
 
     override val client = super.client.newBuilder()

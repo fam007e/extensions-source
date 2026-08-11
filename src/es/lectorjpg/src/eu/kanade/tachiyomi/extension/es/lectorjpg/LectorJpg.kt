@@ -169,7 +169,7 @@ abstract class LectorJpg : HttpSource() {
         return style.substringAfterLast("url(").substringBefore(")").removeSurrounding("\"")
     }
 
-    private val chapterDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    private val chapterDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     private fun parseChapterDate(date: String): Long {
         if (date.contains("hace")) {

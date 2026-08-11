@@ -29,6 +29,6 @@ abstract class KuroManga : MangaThemesia() {
     override fun chapterListParse(response: Response): List<SChapter> = super.chapterListParse(response).reversed()
 }
 
-private val KMdateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("id")).apply {
+private val KMdateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("id")).apply {
     timeZone = TimeZone.getTimeZone("Asia/Jakarta")
 }

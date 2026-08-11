@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class Shirodoujin : ZManga() {
-    override val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.forLanguageTag("id"))
 
     override val hasProjectPage = true
 }

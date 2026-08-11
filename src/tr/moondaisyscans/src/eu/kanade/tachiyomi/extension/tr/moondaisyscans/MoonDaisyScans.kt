@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-private val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("tr")).apply {
+private val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("tr")).apply {
     timeZone = TimeZone.getTimeZone("Europe/Istanbul")
 }
 

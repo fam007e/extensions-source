@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class Makimaaaaa : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("th"))
     override val seriesTypeSelector = ".tsinfo .imptdt:contains(ประเภท) a"
     override val seriesStatusSelector = ".tsinfo .imptdt:contains(สถานะ) i"
 }

@@ -11,7 +11,7 @@ import java.util.Locale
 
 @Source
 abstract class StrayFansub : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("tr"))
     private val baseUrlHost by lazy { baseUrl.toHttpUrl().host }
 
     override val useLoadMoreRequest = LoadMoreStrategy.Never

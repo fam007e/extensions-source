@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class MangaSehri : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyy", Locale.forLanguageTag("tr"))
     override val useNewChapterEndpoint = false
 }

@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaDia : Madara() {
-    override val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.forLanguageTag("tr"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = true
 }

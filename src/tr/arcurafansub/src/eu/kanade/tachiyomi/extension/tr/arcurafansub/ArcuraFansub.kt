@@ -8,5 +8,5 @@ import java.util.Locale
 @Source
 abstract class ArcuraFansub : MangaThemesia() {
     override val mangaUrlDirectory = "/seri"
-    override val dateFormat = SimpleDateFormat("MMMM d, yyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyy", Locale.forLanguageTag("tr"))
 }

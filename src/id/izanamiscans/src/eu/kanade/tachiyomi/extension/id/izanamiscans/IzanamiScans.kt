@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class IzanamiScans : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("id"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("id"))
     override val client: OkHttpClient = super.client.newBuilder()
         .rateLimit(3)
         .build()
