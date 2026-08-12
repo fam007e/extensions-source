@@ -40,12 +40,12 @@ abstract class ToomicsGlobal : HttpSource() {
     private val dateFormat: SimpleDateFormat = when (lang) {
         "zh-Hans" -> SimpleDateFormat("yyyy.MM.dd", Locale.SIMPLIFIED_CHINESE)
         "zh-Hant" -> SimpleDateFormat("yyyy.MM.dd", Locale.TRADITIONAL_CHINESE)
-        "es-419" -> SimpleDateFormat("d MMM, yyyy", Locale("es", "419"))
-        "es" -> SimpleDateFormat("d MMM, yyyy", Locale("es", "419"))
+        "es-419" -> SimpleDateFormat("d MMM, yyyy", Locale.forLanguageTag("es-419"))
+        "es" -> SimpleDateFormat("d MMM, yyyy", Locale.forLanguageTag("es-419"))
         "it" -> SimpleDateFormat("d MMM, yyyy", Locale.ITALIAN)
         "de" -> SimpleDateFormat("d. MMM yyyy", Locale.GERMAN)
         "fr" -> SimpleDateFormat("dd MMM. yyyy", Locale.ENGLISH)
-        "pt-BR" -> SimpleDateFormat("d 'de' MMM 'de' yyyy", Locale("pt", "BR"))
+        "pt-BR" -> SimpleDateFormat("d 'de' MMM 'de' yyyy", Locale.forLanguageTag("pt-BR"))
         else -> SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)
     }
 

@@ -96,7 +96,7 @@ data class SaikaiScanReleaseDto(
 
     companion object {
         private val DATE_FORMATTER by lazy {
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale("pt", "BR"))
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.forLanguageTag("pt-BR"))
         }
     }
 }

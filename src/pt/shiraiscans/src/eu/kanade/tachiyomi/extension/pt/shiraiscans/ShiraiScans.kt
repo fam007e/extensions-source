@@ -84,7 +84,7 @@ abstract class ShiraiScans : HttpSource() {
         .build()
 
     private val dateFormat by lazy {
-        SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+        SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"))
     }
 
     // ============================== Popular ==============================

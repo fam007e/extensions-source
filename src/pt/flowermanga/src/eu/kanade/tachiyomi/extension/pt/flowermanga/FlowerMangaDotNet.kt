@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class FlowerMangaDotNet : Madara() {
-    override val dateFormat = SimpleDateFormat("d 'de' MMMMM 'de' yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("d 'de' MMMMM 'de' yyyy", Locale.forLanguageTag("pt-BR"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .rateLimit(2)

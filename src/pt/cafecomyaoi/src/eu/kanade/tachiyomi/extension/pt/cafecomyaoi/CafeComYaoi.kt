@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class CafeComYaoi : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"))
     override val useNewChapterEndpoint = true
 
     override val client: OkHttpClient = super.client.newBuilder()

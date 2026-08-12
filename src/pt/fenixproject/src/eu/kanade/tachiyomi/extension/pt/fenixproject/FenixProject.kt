@@ -19,7 +19,7 @@ import java.util.Locale
 
 @Source
 abstract class FenixProject : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"))
     override val client = super.client.newBuilder()
         .rateLimit(3)
         .build()

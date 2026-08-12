@@ -373,7 +373,7 @@ abstract class MangaDash :
         private const val PREF_PASSWORD = "pref_password"
 
         private val dateFormat by lazy {
-            SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+            SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"))
         }
     }
 }

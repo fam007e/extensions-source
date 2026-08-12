@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class PinkSeaUnicorn : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMMM dd, yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("MMMMM dd, yyyy", Locale.forLanguageTag("pt-BR"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .addNetworkInterceptor(::checkPasswordProtectedIntercept)

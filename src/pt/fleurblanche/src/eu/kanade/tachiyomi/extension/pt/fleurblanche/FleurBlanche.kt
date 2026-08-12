@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class FleurBlanche : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR"))
 
     override val client = super.client.newBuilder()
         .addInterceptor(::authWarningIntercept)

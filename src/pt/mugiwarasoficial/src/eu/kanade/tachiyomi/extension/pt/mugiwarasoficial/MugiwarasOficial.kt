@@ -14,7 +14,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class MugiwarasOficial : Madara() {
-    override val dateFormat = SimpleDateFormat("d 'de' MMM 'de' yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("d 'de' MMM 'de' yyyy", Locale.forLanguageTag("pt-BR"))
 
     override val client = super.client.newBuilder()
         .rateLimit(3, 1.seconds)

@@ -8,7 +8,7 @@ import java.util.Locale
 
 @Source
 abstract class Atemporal : MangaThemesia() {
-    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.forLanguageTag("pt-BR"))
     override val client = super.client.newBuilder()
         .rateLimit(2)
         .build()

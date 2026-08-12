@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class LerMangas : Madara() {
-    override val dateFormat = SimpleDateFormat("dd 'de' MMMMM 'de' yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("dd 'de' MMMMM 'de' yyyy", Locale.forLanguageTag("pt-BR"))
     override val client: OkHttpClient = super.client.newBuilder()
         .rateLimit(1, 2.seconds)
         .build()

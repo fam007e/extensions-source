@@ -24,7 +24,7 @@ import java.util.Locale
 abstract class MangaStop :
     MangaThemesia(),
     ConfigurableSource {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("pt-BR"))
 
     override val client = network.client.newBuilder()
         .addInterceptor { chain ->

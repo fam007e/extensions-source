@@ -229,14 +229,7 @@ abstract class Honeytoon :
     }
 
     private val dateFormat: SimpleDateFormat by lazy {
-        val locale = when {
-            lang.contains("-") -> {
-                val (lang, country) = lang.split("-")
-                Locale(lang, country)
-            }
-
-            else -> Locale(lang)
-        }
+        val locale = Locale.forLanguageTag(lang)
         SimpleDateFormat("MMMM dd , yyyy", locale)
     }
 

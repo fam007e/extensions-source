@@ -166,7 +166,7 @@ abstract class Taiyo : HttpSource() {
             additionalDataObj?.titles?.takeIf { it.isNotEmpty() }?.run {
                 append("Títulos alternativos:")
                 forEach {
-                    val languageName = Locale(it.language.substringBefore("_")).displayLanguage
+                    val languageName = Locale.forLanguageTag(it.language.substringBefore("_")).displayLanguage
                     append("\n\t$languageName: ${it.title}")
                 }
             }

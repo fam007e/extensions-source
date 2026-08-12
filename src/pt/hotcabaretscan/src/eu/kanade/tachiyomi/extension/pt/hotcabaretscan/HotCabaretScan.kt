@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class HotCabaretScan : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("pt-BR"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .addInterceptor(::checkPasswordProtectedIntercept)

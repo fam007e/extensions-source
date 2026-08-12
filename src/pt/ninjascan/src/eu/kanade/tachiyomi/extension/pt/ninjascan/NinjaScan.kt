@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.minutes
 
 @Source
 abstract class NinjaScan : Madara() {
-    override val dateFormat = SimpleDateFormat("dd 'de' MMMMM 'de' yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("dd 'de' MMMMM 'de' yyyy", Locale.forLanguageTag("pt-BR"))
     override val client = super.client.newBuilder()
         .connectTimeout(5.minutes)
         .readTimeout(5.minutes)

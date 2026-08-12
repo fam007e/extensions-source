@@ -13,7 +13,7 @@ import java.util.Locale
 
 @Source
 abstract class Inkapk : Madara() {
-    override val dateFormat = SimpleDateFormat("MM dd, yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("MM dd, yyyy", Locale.forLanguageTag("pt-BR"))
     override val client = super.client.newBuilder()
         .rateLimit(2)
         .build()

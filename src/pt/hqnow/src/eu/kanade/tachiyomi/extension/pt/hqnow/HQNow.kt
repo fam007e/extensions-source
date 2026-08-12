@@ -298,7 +298,7 @@ abstract class HQNow : HttpSource() {
         .replace("[^\\p{ASCII}]".toRegex(), "")
         .replace("[^a-zA-Z0-9\\s]+".toRegex(), "").trim()
         .replace("\\s+".toRegex(), "-")
-        .lowercase(Locale("pt", "BR"))
+        .lowercase(Locale.forLanguageTag("pt-BR"))
 
     private fun String.toStatus(): Int = when (this) {
         "Concluído" -> SManga.COMPLETED

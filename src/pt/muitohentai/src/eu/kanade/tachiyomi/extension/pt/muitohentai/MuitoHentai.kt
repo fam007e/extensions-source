@@ -142,6 +142,6 @@ abstract class MuitoHentai : HttpSource() {
     }
 
     companion object {
-        private val LOCALE = Locale("pt", "BR")
+        private val LOCALE = Locale.forLanguageTag("pt-BR")
     }
 }
