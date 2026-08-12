@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class DiamondFansub : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM", Locale("tr", "TR"))
+    override val dateFormat = SimpleDateFormat("d MMMM", Locale.forLanguageTag("tr"))
     override val mangaSubString = "seri"
     override val useNewChapterEndpoint = true
     override val mangaDetailsSelectorAuthor = ".manga-authors"
