@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class CrotPedia : ZManga() {
-    override val dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale("id"))
+    override val dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.forLanguageTag("id"))
 
     override val hasProjectPage = false
 }
