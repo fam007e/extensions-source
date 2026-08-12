@@ -12,10 +12,11 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
+import keiyoushi.utils.WebViewTimeoutException
 import keiyoushi.utils.getPreferences
 import keiyoushi.utils.parseAs
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import keiyoushi.utils.runWebView
+import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,6 +26,7 @@ import org.jsoup.select.Elements
 import rx.Observable
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class HentaiCB : Madara() {
@@ -167,91 +169,66 @@ abstract class HentaiCB : Madara() {
     }
 
     override fun fetchPageList(chapter: SChapter): Observable<List<Page>> = Observable.fromCallable {
-        fetchPageListApi(chapter)
-    }
-
-    private fun fetchPageListApi(chapter: SChapter): List<Page> {
         val chapterUrl = chapter.url
-        val originUrl = chapterUrl.toHttpUrl().newBuilder()
-            .scheme("https")
-            .host(baseUrl.toHttpUrl().host)
-            .encodedPath("/")
-            .build()
 
-        // Build cookies string with cf_clearance from cookie jar
-        val cookies = client.cookieJar.loadForRequest(originUrl)
-            .joinToString("; ") { "${it.name}=${it.value}" }
+        val imageUrls = try {
+            runBlocking {
+                runWebView<List<String>>(timeout = 60.seconds) {
+                    loadWithOverviewMode = true
+                    useWideViewPort = true
 
-        val referer = chapterUrl
+                    var lastCount = 0
+                    var stableCount = 0
 
-        // Step 1: Fetch chapter HTML to extract MASR2 token from data-masr2-token attribute
-        val chapterRequest = Request.Builder()
-            .url(chapterUrl)
-            .header("Cookie", cookies)
-            .build()
-        val chapterResponse = client.newCall(chapterRequest).execute()
-        val document = chapterResponse.asJsoup()
-        val masr2Token = document.selectFirst("#manga-secure-reader")
-            ?.attr("data-masr2-token")
-            ?: throw Exception("MASR2 token not found")
+                    poll(1.seconds) {
+                        evaluateJs(extractPageImagesScript) { value ->
+                            val urls = runCatching { value.parseAs<List<String>>() }.getOrDefault(emptyList())
+                            if (urls.isEmpty()) return@evaluateJs
 
-        // Step 2: Generate a client ID (hex string like the JS reader does)
-        val clientId = generateClientId()
+                            if (urls.size == lastCount) {
+                                stableCount++
+                            } else {
+                                lastCount = urls.size
+                                stableCount = 0
+                            }
 
-        // Step 3: Paginate images using MASR2 v2 protocol
-        var token: String? = masr2Token
-        val allImages = mutableListOf<String>()
+                            if (stableCount >= 3) {
+                                resolve(urls)
+                            }
+                        }
+                    }
 
-        while (!token.isNullOrEmpty()) {
-            val pagesUrl = baseUrl.toHttpUrl().newBuilder()
-                .addPathSegments("wp-json/manga-reader/v2/pages")
-                .addQueryParameter("token", token)
-                .addQueryParameter("cid", clientId)
-                .build()
-
-            val pagesRequest = Request.Builder()
-                .url(pagesUrl)
-                .header("Accept", "application/json")
-                .header("Referer", referer)
-                .header("Cookie", cookies)
-                .build()
-
-            val pagesResponse = client.newCall(pagesRequest).execute()
-            val pages = pagesResponse.parseAs<PagesResponse>()
-
-            if (pages.items.isEmpty()) break
-
-            allImages += pages.items
-
-            token = if (pages.done) null else pages.nextToken
+                    loadUrl(chapterUrl, headers.toMap())
+                }
+            }
+        } catch (_: WebViewTimeoutException) {
+            emptyList()
         }
 
-        return allImages.mapIndexed { i, imageUrl ->
+        imageUrls.distinct().mapIndexed { i, imageUrl ->
             Page(i, chapterUrl, imageUrl)
         }
     }
 
-    private fun generateClientId(): String {
-        val random = java.security.SecureRandom()
-        val bytes = ByteArray(16)
-        random.nextBytes(bytes)
-        return bytes.joinToString("") { "%02x".format(it) }
-    }
-
     override fun pageListParse(response: Response): List<Page> = throw UnsupportedOperationException()
+
+    private val extractPageImagesScript = """
+        (function() {
+            var images = Array.prototype.slice.call(document.querySelectorAll('img.manga-page, img.protected-manga-image'));
+            images.forEach(function(img) {
+                img.loading = 'eager';
+                img.removeAttribute('loading');
+            });
+            window.scrollTo(0, document.body.scrollHeight);
+            return Array.from(new Set(images.map(function(img) {
+                return img.currentSrc || img.src || img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || img.getAttribute('data-original') || '';
+            }).filter(function(src) {
+                return /^https?:\/\//.test(src);
+            })));
+        })()
+    """.trimIndent()
 
     companion object {
         private const val BASE_URL_PREF = "overrideBaseUrl"
     }
 }
-
-@Serializable
-private class PagesResponse(
-    val items: List<String>,
-    val done: Boolean,
-    val protocol: Int = 0,
-    val cursor: Int = 0,
-    @SerialName("next_cursor") val nextCursor: Int = 0,
-    val count: Int = 0,
-    @SerialName("next_token") val nextToken: String? = null,
-)

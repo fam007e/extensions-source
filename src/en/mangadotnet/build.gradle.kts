@@ -6,9 +6,9 @@ plugins {
 
 keiyoushi {
     name = "Mangadotnet"
-    versionCode = 13
+    versionCode = 17
     contentWarning = ContentWarning.MIXED
-    libVersion = "1.4"
+    libVersion = "1.6"
 
     source {
         lang = "en"
@@ -19,5 +19,6 @@ keiyoushi {
         host("mangadot.net")
         path("/manga/..*")
         path("/chapter/..*")
+        path("/volume/..*")
     }
 }
