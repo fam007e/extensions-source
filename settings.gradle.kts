@@ -23,11 +23,13 @@ buildscript {
         classpath("org.apache.httpcomponents:httpclient:4.5.13")
         classpath("org.bouncycastle:bcpkix-jdk18on:1.84")
         classpath("org.bouncycastle:bcprov-jdk18on:1.84")
-        classpath("io.netty:netty-codec-http2:4.2.16.Final")
-        classpath("io.netty:netty-handler:4.2.16.Final")
-        classpath("io.netty:netty-codec-http:4.2.16.Final")
-        classpath("io.netty:netty-codec:4.2.16.Final")
-        classpath("io.netty:netty-common:4.2.16.Final")
+        classpath("org.apache.logging.log4j:log4j-core:2.25.4")
+        classpath("org.apache.logging.log4j:log4j-api:2.25.4")
+        classpath("io.netty:netty-codec-http2:4.2.17.Final")
+        classpath("io.netty:netty-handler:4.2.17.Final")
+        classpath("io.netty:netty-codec-http:4.2.17.Final")
+        classpath("io.netty:netty-codec:4.2.17.Final")
+        classpath("io.netty:netty-common:4.2.17.Final")
     }
 }
 
@@ -53,7 +55,7 @@ dependencyResolutionManagement {
                 withDependencies {
                     forEach {
                         it.version {
-                            require("4.2.15.Final")
+                            require("4.2.17.Final")
                         }
                     }
                 }
