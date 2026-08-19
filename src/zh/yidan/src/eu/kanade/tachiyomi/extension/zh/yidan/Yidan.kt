@@ -19,7 +19,7 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDate
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -33,7 +33,7 @@ import okhttp3.ResponseBody.Companion.asResponseBody
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import uy.kohesive.injekt.injectLazy
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -61,7 +61,7 @@ abstract class Yidan : HttpSource() {
     }.build()
 
     private val json: Json by injectLazy()
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
+    private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 
     override fun popularMangaRequest(page: Int) = POST(
         "$baseUrl/api/getByComicByRow",
@@ -167,7 +167,7 @@ abstract class Yidan : HttpSource() {
             SChapter.create().apply {
                 url = "${chapter.id}"
                 name = chapter.chapterName
-                date_upload = dateFormat.tryParse(chapter.createTime)
+                date_upload = dateFormat.tryParseDate(chapter.createTime)
                 // used to get the real chapter url
                 chapter_number = index.toFloat()
             }
@@ -224,7 +224,6 @@ abstract class Yidan : HttpSource() {
                     with(settings) {
                         javaScriptEnabled = true
                         domStorageEnabled = true
-                        databaseEnabled = true
                         blockNetworkImage = true
                     }
                 }

@@ -30,9 +30,10 @@ abstract class WNACG :
 
     private val preferences = getPreferences { preferenceMigration() }
 
-    override val baseUrl = when (System.getenv("CI")) {
-        "true" -> getCiBaseUrl()
-        else -> preferences.baseUrl
+    override val baseUrl = if (System.getenv("CI") == "true") {
+        getCiBaseUrl()
+    } else {
+        preferences.baseUrl
     }
 
     private val updateUrlInterceptor = UpdateUrlInterceptor(preferences)
