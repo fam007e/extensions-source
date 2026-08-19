@@ -25,6 +25,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       matrix: ${{ steps.generate-matrices.outputs.matrix }}
+      lint_modules: ${{ steps.generate-matrices.outputs.lint_modules }}
       delete: ${{ steps.generate-matrices.outputs.delete }}
     steps:
       - name: Checkout PR
@@ -36,7 +37,7 @@ jobs:
       - id: generate-matrices
         name: Generate build matrices
         run: |
-          python ./.github/scripts/generate-build-matrices.py origin/main Release
+          python ./.github/scripts/generate-build-matrices.py origin/main
 
   build:
     name: Build extensions (${{ matrix.chunk.number }})
@@ -55,11 +56,11 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
-          java-version: 21
+          java-version: 17
           distribution: temurin
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
         with:
           cache-read-only: true
 
@@ -67,10 +68,15 @@ jobs:
         env:
           MODULES: ${{ join(matrix.chunk.modules, ' ') }}
         run: |
-          ./gradlew $MODULES
+          TASKS=()
+          for module in $MODULES; do
+            TASKS+=("${module}:assembleRelease" "${module}:lintRelease")
+          done
+          ./gradlew "${TASKS[@]}"
 
       - name: Upload APKs (${{ matrix.chunk.number }})
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: "github.repository == 'keiyoushi/extensions-source'"
         with:
           name: "individual-apks-${{ matrix.chunk.number }}"
           path: |
@@ -78,40 +84,35 @@ jobs:
             **/build/outputs/jar/release/*.jar
           retention-days: 1
 
-  inspect:
-    name: Inspect extensions
-    needs: [prepare, build]
+  lint-shared:
+    name: Lint shared modules
+    needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
+    if: ${{ needs.prepare.outputs.lint_modules != '[]' }}
     steps:
-      - name: Download APK artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          path: ~/apk-artifacts
-
-      - name: Set up JDK
-        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
-        with:
-          java-version: 21
-          distribution: temurin
-
-      - name: Checkout inspector branch
+      - name: Checkout PR
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: inspector-fix
-          path: inspector-source
           persist-credentials: false
 
-      - name: Build Inspector
-        run: |
-          cd inspector-source
-          ./AndroidCompat/getAndroid.sh
-          ./gradlew :inspector:shadowJar
-          cp server/build/*.jar ../Inspector.jar
+      - name: Set up Java
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          java-version: 17
+          distribution: temurin
 
-      - name: Run inspector
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          cache-read-only: true
+
+      - name: Lint shared modules
+        env:
+          MODULES: ${{ join(fromJSON(needs.prepare.outputs.lint_modules), ' ') }}
         run: |
-          mkdir -p apk
-          find ~/apk-artifacts -name "*.apk" -type f -exec mv {} apk/ \;
-          java -noverify -jar ./Inspector.jar "apk" "output.json" "tmp"
-          jq . output.json
+          TASKS=()
+          for module in $MODULES; do
+            TASKS+=("${module}:lintRelease")
+          done
+          ./gradlew "${TASKS[@]}"
