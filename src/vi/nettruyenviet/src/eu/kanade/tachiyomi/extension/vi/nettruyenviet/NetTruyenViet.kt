@@ -12,13 +12,14 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDateTime
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -32,9 +33,7 @@ abstract class NetTruyenViet : HttpSource() {
         .rateLimit(5)
         .build()
 
-    private val chapterDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply {
-        timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
-    }
+    private val chapterDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
 
     override fun headersBuilder() = super.headersBuilder()
         .add("Referer", "$baseUrl/")
@@ -194,7 +193,8 @@ abstract class NetTruyenViet : HttpSource() {
         }
     }
 
-    private fun parseChapterDate(rawDate: String): Long = chapterDateFormat.tryParse(rawDate).takeIf { it > 0L } ?: parseRelativeDate(rawDate)
+    private fun parseChapterDate(rawDate: String): Long = chapterDateFormat.tryParseDateTime(rawDate, ZoneId.of("Asia/Ho_Chi_Minh"))
+        .takeIf { it > 0L } ?: parseRelativeDate(rawDate)
 
     private fun parseRelativeDate(dateText: String?): Long {
         if (dateText.isNullOrBlank()) return 0L

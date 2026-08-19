@@ -9,11 +9,12 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDateTime
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Source
@@ -107,11 +108,11 @@ abstract class NhatTruyen : WPComics() {
             SChapter.create().apply {
                 setUrlWithoutDomain("$baseUrl/truyen-tranh/$slug/${it.chapter_slug}")
                 name = it.chapter_name
-                date_upload = dateFormatChapter.tryParse(it.updated_at)
+                date_upload = dateFormatChapter.tryParseDateTime(it.updated_at)
             }
         }
         return chapter
     }
 
-    private val dateFormatChapter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+    private val dateFormatChapter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.US)
 }
