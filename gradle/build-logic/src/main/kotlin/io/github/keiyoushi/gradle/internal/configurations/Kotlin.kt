@@ -17,7 +17,6 @@ internal fun Project.configureKotlin() {
             optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
             optIn.add("kotlin.ExperimentalUnsignedTypes")
             optIn.add("kotlin.ExperimentalStdlibApi")
-            freeCompilerArgs.add("-Xcontext-parameters")
         }
     }
 }

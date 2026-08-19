@@ -11,6 +11,7 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
+import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.getPreferencesLazy
@@ -150,7 +151,7 @@ abstract class TomiloLib :
     override fun pageListParse(response: Response): List<Page> {
         val data = response.parseAs<ApiResponse<ChapterDetailDto>>().data
         if (data.pages.isEmpty()) {
-            if (data.isPaid) throw Exception("Глава платная и ещё не открыта бесплатно")
+            if (data.isPaid) throw IOException("Глава платная и ещё не открыта бесплатно")
             return emptyList()
         }
         return data.pages.mapIndexed { i, url -> Page(i, imageUrl = resolveImageUrl(url, baseUrl)) }

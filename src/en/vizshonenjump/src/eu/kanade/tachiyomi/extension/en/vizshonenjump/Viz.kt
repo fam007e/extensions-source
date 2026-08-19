@@ -12,6 +12,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.SMangaUpdate
 import eu.kanade.tachiyomi.util.asJsoup
+import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.network.get
 import keiyoushi.source.KeiSource
@@ -119,7 +120,7 @@ abstract class Viz :
 
     override fun getChapterUrl(chapter: SChapter): String {
         val chapterId = chapter.memo.getStringOrNull("id")
-            ?: throw Exception("Refresh chapter list")
+            ?: throw IOException("Refresh chapter list")
         val slug = chapter.memo.getString("slug")
         return "$baseUrl/$servicePath/$slug/chapter/$chapterId"
     }
@@ -147,7 +148,7 @@ abstract class Viz :
         val elements = document.select("section.section_chapters a.o_chapter-container[id^=ch-]")
         if (elements.isEmpty()) {
             if (document.selectFirst("section.section_static") != null) {
-                throw Exception("This service is not available in your country.")
+                throw IOException("This service is not available in your country.")
             }
         }
 
@@ -202,10 +203,10 @@ abstract class Viz :
 
         checkIfIsLoggedIn()
         val chapterId = chapter.memo.getStringOrNull("id")
-            ?: throw Exception("Refresh chapter list")
+            ?: throw IOException("Refresh chapter list")
         val hasAccess = client.newCall(pageUrlRequest(chapterId, "0")).execute().parseAs<Dto>().ok
         if (hasAccess == 0) {
-            throw Exception("Log in via WebView and subscribe to the website's service.")
+            throw IOException("Log in via WebView and subscribe to the website's service.")
         }
 
         return (0..pageCount).map {

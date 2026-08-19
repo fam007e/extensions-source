@@ -14,6 +14,7 @@ import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.utils.parseAs
 import okhttp3.Request
@@ -39,7 +40,7 @@ abstract class RoliaScan : MangaTaro() {
 
     // ========================== Pages ==========================
     override fun pageListRequest(chapter: SChapter): Request {
-        if (chapter.url.endsWith("/")) throw Exception("Refresh Manga to update information about chapters")
+        if (chapter.url.endsWith("/")) throw IOException("Refresh Manga to update information about chapters")
         return super.pageListRequest(chapter)
     }
 

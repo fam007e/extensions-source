@@ -10,6 +10,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
+import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.utils.firstInstanceOrNull
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -196,7 +197,7 @@ abstract class MyHentaiGallery : HttpSource() {
             else -> return null
         }
         val id = lookupTagId(uriPart, name)
-            ?: throw Exception("No $uriPart \"$name\" was found.")
+            ?: throw IOException("No $uriPart \"$name\" was found.")
         return GET("$baseUrl/a/$uriPart/$id/$page", headers)
     }
 

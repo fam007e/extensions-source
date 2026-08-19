@@ -7,6 +7,7 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.SMangaUpdate
+import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.network.get
 import keiyoushi.network.post
@@ -116,7 +117,7 @@ abstract class MoeTruyenSuiCao : KeiSource() {
         val detailsDeferred = if (fetchDetails) {
             async {
                 val result = client.get(detailsUrl).parseAs<ApiResponse<MangaItem>>()
-                (result.data ?: throw Exception("Manga not found")).toSManga()
+                (result.data ?: throw IOException("Manga not found")).toSManga()
             }
         } else {
             null
@@ -146,7 +147,7 @@ abstract class MoeTruyenSuiCao : KeiSource() {
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
         val result = client.get("$baseUrl${chapter.url}").parseAs<ApiResponse<ChapterReaderData>>()
-        val data = result.data ?: throw Exception("Chapter not found")
+        val data = result.data ?: throw IOException("Chapter not found")
         val chapterId = data.chapter.id
         val pageCount = data.pageUrls.size
 
@@ -177,7 +178,7 @@ abstract class MoeTruyenSuiCao : KeiSource() {
             val pageAccess = client.post(url, accessHeaders, body)
                 .parseAs<ApiResponse<PageAccessData>>()
 
-            val accessData = pageAccess.data ?: throw Exception("Failed to get page access")
+            val accessData = pageAccess.data ?: throw IOException("Failed to get page access")
 
             for (entry in accessData.pages) {
                 if (entry.downloadUrl.isNotBlank() && entry.grant != null) {

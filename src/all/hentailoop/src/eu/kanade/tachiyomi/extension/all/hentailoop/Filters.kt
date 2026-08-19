@@ -67,7 +67,7 @@ class LanguageFilter(values: List<SourceFilter>) : TriStateFilter("Languages", v
 open class PageCountFilter(name: String, state: String) : Filter.Text(name, state) {
     val count get() = state.toIntOrNull().let {
         if (it == null || it < 0) {
-            throw Exception("Page Count must be a positive integer")
+            throw IllegalArgumentException("Page Count must be a positive integer")
         }
         it
     }

@@ -12,6 +12,7 @@ import eu.kanade.tachiyomi.source.model.UpdateStrategy
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
+import java.io.IOException
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonString
@@ -146,7 +147,7 @@ abstract class HentaiLoop : HttpSource() {
                 .map { MangasPage(listOf(it), hasNextPage = false) }
         }
 
-        throw Exception("Unsupported Url")
+        throw IOException("Unsupported Url")
     }
 
     private fun quickSearch(query: String): Observable<MangasPage> {
@@ -330,7 +331,7 @@ abstract class HentaiLoop : HttpSource() {
         val data = response.parseAs<Data<AdvancedSearchResponse>>()
 
         if (!data.success && data.data.message?.contains("captcha", ignoreCase = true) == true) {
-            throw Exception("Captcha Required! Open advanced search in WebView and solve the captcha")
+            throw IOException("Captcha Required! Open advanced search in WebView and solve the captcha")
         }
 
         val mangas = data.data.posts.map {

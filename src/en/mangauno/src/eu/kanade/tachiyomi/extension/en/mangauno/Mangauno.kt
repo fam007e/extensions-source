@@ -127,13 +127,11 @@ abstract class Mangauno :
     private fun fetchFilters() {
         fetchFiltersStatus = FetchFilterStatus.FETCHING
         thread {
-            try {
+            fetchFiltersStatus = runCatching {
                 val response = client.newCall(GET("$apiUrl/search/facets", headers)).execute()
                 facets = response.parseAs<FacetsDto>()
-                fetchFiltersStatus = FetchFilterStatus.FETCHED
-            } catch (e: Exception) {
-                fetchFiltersStatus = FetchFilterStatus.FAILED
-            }
+                FetchFilterStatus.FETCHED
+            }.getOrDefault(FetchFilterStatus.FAILED)
         }
     }
 
