@@ -7,7 +7,6 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.SMangaUpdate
-import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.network.get
 import keiyoushi.network.post
@@ -31,6 +30,7 @@ import okio.BufferedSource
 import okio.buffer
 import okio.source
 import java.io.ByteArrayInputStream
+import java.io.IOException
 import java.util.Collections
 import java.util.LinkedHashMap
 

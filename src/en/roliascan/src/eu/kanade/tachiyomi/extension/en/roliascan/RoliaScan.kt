@@ -14,11 +14,11 @@ import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import java.io.IOException
 import keiyoushi.annotation.Source
 import keiyoushi.utils.parseAs
 import okhttp3.Request
 import rx.Observable
+import java.io.IOException
 
 @Source
 abstract class RoliaScan : MangaTaro() {
