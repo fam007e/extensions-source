@@ -10,9 +10,9 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDate
 import okhttp3.Response
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Source
@@ -104,7 +104,7 @@ abstract class Toptoon : HttpSource() {
                     ""
                 } + it.selectFirst("div.title")!!.text() + " " +
                     it.selectFirst("div.subTitle")!!.text()
-                date_upload = dateFormat.tryParse(it.selectFirst("div.pubDate")?.text())
+                date_upload = dateFormat.tryParseDate(it.selectFirst("div.pubDate")?.text())
             }
         }.asReversed()
     }
@@ -128,6 +128,6 @@ abstract class Toptoon : HttpSource() {
     override fun imageUrlParse(response: Response): String = throw UnsupportedOperationException()
 
     private val dateFormat by lazy {
-        SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
     }
 }
