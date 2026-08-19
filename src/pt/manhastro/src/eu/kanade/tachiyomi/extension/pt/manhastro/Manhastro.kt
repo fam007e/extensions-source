@@ -15,7 +15,6 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.OkHttpClient
@@ -180,7 +179,7 @@ abstract class Manhastro :
                 url = "/capitulo/${chapter.capituloId}"
                 name = chapter.capituloNome
                 chapter_number = extractChapterNumber(chapter.capituloNome)
-                date_upload = DATE_FORMAT.tryParse(chapter.capituloData)
+                date_upload = runCatching { DATE_FORMAT.parse(chapter.capituloData)?.time }.getOrDefault(0L)
             }
         }.sortedByDescending { it.chapter_number }
     }
