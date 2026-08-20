@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.os.Build
 import androidx.preference.CheckBoxPreference
 import androidx.preference.PreferenceScreen
 import eu.kanade.tachiyomi.multisrc.mangabox.imagesize.ImageSize
@@ -127,11 +128,16 @@ abstract class MangaBox :
                     yOffset += bitmap.height
                     bitmap.recycle()
                 }
-
+                val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    Bitmap.CompressFormat.WEBP_LOSSLESS
+                } else {
+                    @Suppress("DEPRECATION")
+                    Bitmap.CompressFormat.WEBP
+                }
                 return Response.Builder().body(
                     Buffer()
                         .also {
-                            result.compress(Bitmap.CompressFormat.WEBP, 100, it.outputStream())
+                            result.compress(format, 100, it.outputStream())
                         }
                         .asResponseBody("image/webp".toMediaType()),
                 )

@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.os.Build
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
 import eu.kanade.tachiyomi.source.ConfigurableSource
@@ -349,8 +350,15 @@ abstract class AsuraScans :
             canvas.drawBitmap(source, srcRect, dstRect, null)
         }
 
+        val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSLESS
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+
         val buffer = Buffer().apply {
-            output.compress(Bitmap.CompressFormat.WEBP, 100, outputStream())
+            output.compress(format, 100, outputStream())
         }
 
         source.recycle()

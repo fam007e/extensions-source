@@ -3,6 +3,7 @@ package eu.kanade.tachiyomi.extension.all.honeytoon
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
@@ -26,7 +27,13 @@ class ScrambledImageInterceptor : Interceptor {
         val image = mergeImages(bitmaps)
 
         val outputStream = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.WEBP, 100, outputStream)
+        val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSLESS
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+        image.compress(format, 100, outputStream)
 
         return response.newBuilder()
             .body(outputStream.toByteArray().toResponseBody("image/webp".toMediaType()))

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.os.Build
 import keiyoushi.utils.decodeHex
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.readIntLittleEndian
@@ -108,7 +109,13 @@ class ImageInterceptor : Interceptor {
         val unscrambled = unscramble(bitmap, order, sideLength, meta)
         bitmap.recycle()
         val buffer = Buffer()
-        unscrambled.compress(Bitmap.CompressFormat.WEBP, 100, buffer.outputStream())
+        val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSLESS
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+        unscrambled.compress(format, 100, buffer.outputStream())
         unscrambled.recycle()
 
         return buffer.toImageResponse(request, WEBP_MEDIA_TYPE)
