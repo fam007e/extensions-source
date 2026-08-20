@@ -12,13 +12,13 @@ import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.firstInstance
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDate
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Document
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Source
@@ -101,7 +101,7 @@ abstract class BaoBua : HttpSource() {
                 val absUrl = document.selectFirst("link[rel=canonical]")?.absUrl("href")
                     ?: response.request.url.toString()
                 url = absUrl.toHttpUrlOrNull()?.encodedPath ?: absUrl
-                date_upload = POST_DATE_FORMAT.tryParse(document.selectFirst(".article-date-comment .date")?.text())
+                date_upload = POST_DATE_FORMAT.tryParseDate(document.selectFirst(".article-date-comment .date")?.text())
                 name = "Gallery"
             },
         )
@@ -166,6 +166,6 @@ abstract class BaoBua : HttpSource() {
     companion object {
         private val WP_COM_REGEX = Regex("""^https://i\d+\.wp\.com/""")
         private val WP_COM_REPLACE_REGEX = Regex("""https://i\d+\.wp\.com/""")
-        private val POST_DATE_FORMAT = SimpleDateFormat("EEE MMM dd yyyy", Locale.US)
+        private val POST_DATE_FORMAT = DateTimeFormatter.ofPattern("EEE MMM dd yyyy", Locale.US)
     }
 }
