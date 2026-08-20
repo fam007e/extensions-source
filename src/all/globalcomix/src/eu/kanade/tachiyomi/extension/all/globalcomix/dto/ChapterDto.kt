@@ -7,6 +7,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.ParsePosition
+import java.text.SimpleDateFormat
 
 typealias ChapterDto = ResponseDto<ChapterDataDto>
 typealias ChaptersDto = PaginatedResponseDto<ChapterDataDto>

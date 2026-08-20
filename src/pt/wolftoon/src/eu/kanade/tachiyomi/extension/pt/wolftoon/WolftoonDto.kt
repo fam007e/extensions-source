@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.Normalizer
 import java.text.ParsePosition
+import java.text.SimpleDateFormat
 
 @Serializable
 class MangaDto(

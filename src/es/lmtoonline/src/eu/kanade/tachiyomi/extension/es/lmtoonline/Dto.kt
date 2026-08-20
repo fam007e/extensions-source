@@ -4,6 +4,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import kotlinx.serialization.Serializable
 import java.text.ParsePosition
+import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 

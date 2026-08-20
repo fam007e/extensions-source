@@ -4,6 +4,7 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import kotlinx.serialization.Serializable
 import java.text.ParsePosition
+import java.text.SimpleDateFormat
 
 @Serializable
 class ChaptersDto(
