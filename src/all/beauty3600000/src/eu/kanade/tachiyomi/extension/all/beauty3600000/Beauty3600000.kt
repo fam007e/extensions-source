@@ -13,7 +13,7 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -25,9 +25,9 @@ import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.Jsoup
 import rx.Observable
-import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 import kotlin.time.Duration.Companion.seconds
 
 @Source
@@ -249,7 +249,7 @@ abstract class Beauty3600000 : HttpSource() {
         val post = response.toPost()
         return listOf(
             post.toSChapter().apply {
-                date_upload = DATE_FORMAT.tryParse(post.date)
+                date_upload = DATE_FORMAT.tryParseDateTime(post.date, ZoneId.of("UTC"))
             },
         )
     }
@@ -328,9 +328,7 @@ abstract class Beauty3600000 : HttpSource() {
         private val jsonArrayRegex by lazy { Regex("""\[.*]\s*$""") }
 
         private val DATE_FORMAT by lazy {
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).apply {
-                timeZone = TimeZone.getTimeZone("UTC")
-            }
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
         }
     }
 }
