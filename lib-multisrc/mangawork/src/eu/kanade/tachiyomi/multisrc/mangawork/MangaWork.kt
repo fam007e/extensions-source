@@ -19,6 +19,7 @@ import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -462,3 +463,5 @@ abstract class MangaWork : HttpSource() {
         return FilterList(filters)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

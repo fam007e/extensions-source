@@ -5,6 +5,7 @@ import eu.kanade.tachiyomi.source.model.SManga
 import keiyoushi.utils.parseAs
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -179,3 +180,5 @@ class ViewRequestBody(
     val chapter: String,
     val language: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

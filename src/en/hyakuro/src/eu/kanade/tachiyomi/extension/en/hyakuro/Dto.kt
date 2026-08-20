@@ -4,6 +4,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -129,3 +130,5 @@ class Pagination(
     val page: Int,
     val pageCount: Int,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L
