@@ -63,7 +63,6 @@ abstract class MangaUp :
             with(webView.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
             }
             webView.webViewClient = object : WebViewClient() {
@@ -95,7 +94,6 @@ abstract class MangaUp :
             with(webView.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
             }
             webView.webViewClient = object : WebViewClient() {

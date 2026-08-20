@@ -364,7 +364,6 @@ abstract class Zebrack :
             with(webView.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
             }
             webView.webViewClient = object : WebViewClient() {
@@ -396,7 +395,6 @@ abstract class Zebrack :
             with(webView.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
             }
             webView.webViewClient = object : WebViewClient() {

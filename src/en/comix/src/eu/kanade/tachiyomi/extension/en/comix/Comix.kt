@@ -802,7 +802,6 @@ abstract class Comix :
                 with(view.settings) {
                     javaScriptEnabled = true
                     domStorageEnabled = true
-                    databaseEnabled = true
                     loadWithOverviewMode = true
                     useWideViewPort = true
                     blockNetworkImage = false

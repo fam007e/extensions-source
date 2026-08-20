@@ -248,7 +248,6 @@ abstract class UNext :
             with(webView.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
                 userAgentString = headers["User-Agent"]
             }

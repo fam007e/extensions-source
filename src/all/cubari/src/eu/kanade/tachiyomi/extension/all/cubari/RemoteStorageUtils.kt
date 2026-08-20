@@ -62,7 +62,6 @@ class RemoteStorageUtils {
                 with(webview.settings) {
                     javaScriptEnabled = true
                     domStorageEnabled = true
-                    databaseEnabled = true
                     useWideViewPort = false
                     loadWithOverviewMode = false
                     userAgentString = request.header("User-Agent")
