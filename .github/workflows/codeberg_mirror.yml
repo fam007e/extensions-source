@@ -12,7 +12,7 @@ permissions: {}
 
 jobs:
   codeberg:
-    if: "github.repository == 'keiyoushi/extensions-source'"
+    if: "github.repository == 'fam007e/extensions-source'"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

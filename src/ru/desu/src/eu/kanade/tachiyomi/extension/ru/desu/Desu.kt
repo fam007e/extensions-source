@@ -35,7 +35,7 @@ abstract class Desu :
     private val preferences by getPreferencesLazy()
 
     override fun Headers.Builder.configureHeaders() = apply {
-        set("User-Agent", "Mihon (+https://github.com/keiyoushi/extensions-source)")
+        set("User-Agent", "Mihon (+https://github.com/fam007e/extensions-source)")
     }
 
     override fun OkHttpClient.Builder.configureClient(): OkHttpClient.Builder = apply {
