@@ -179,7 +179,7 @@ abstract class Manhastro :
                 url = "/capitulo/${chapter.capituloId}"
                 name = chapter.capituloNome
                 chapter_number = extractChapterNumber(chapter.capituloNome)
-                date_upload = runCatching { DATE_FORMAT.parse(chapter.capituloData)?.time }.getOrDefault(0L)
+                date_upload = runCatching { DATE_FORMAT.parse(chapter.capituloData)?.time ?: 0L }.getOrDefault(0L)
             }
         }.sortedByDescending { it.chapter_number }
     }

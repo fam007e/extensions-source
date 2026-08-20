@@ -130,7 +130,7 @@ abstract class Manhwa18 : HttpSource() {
 
                 val timeStr = a.selectFirst(".au-chtile-date")?.text()?.substringAfter("·")?.trim()
                     ?: a.selectFirst(".chapter-time")?.text()?.substringAfter("-")?.trim()
-                date_upload = dateFormat.tryParse(timeStr) ?: 0L
+                date_upload = dateFormat.tryParse(timeStr)
             }
         }
     }

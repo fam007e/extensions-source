@@ -176,7 +176,7 @@ abstract class MangaCloud : KeiSource() {
         } while (nextPageToken != null)
 
         allChapters.sortByDescending {
-            it.chapter_number?.toString()?.toFloatOrNull() ?: 0f
+            it.chapter_number
         }
 
         return allChapters

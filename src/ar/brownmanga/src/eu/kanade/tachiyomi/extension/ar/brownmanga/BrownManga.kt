@@ -141,7 +141,7 @@ abstract class BrownManga : HttpSource() {
 
     private fun ManhwaDto.toSManga() = SManga.create().apply {
         url = id
-        title = titleAr?.ifEmpty { null } ?: this@toSManga.title!!
+        title = titleAr?.ifEmpty { null } ?: this@toSManga.title
         thumbnail_url = coverUrl
         description = descriptionAr?.ifEmpty { null } ?: this@toSManga.description
         status = when (this@toSManga.status) {
