@@ -1,7 +1,7 @@
 package eu.kanade.tachiyomi.multisrc.galleryadults
 
-import keiyoushi.utils.tryParse
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -47,9 +47,9 @@ fun String?.toDate(simpleDateFormat: SimpleDateFormat?): Long {
                     it
                 }
             }
-                .let { simpleDateFormat.tryParse(it.joinToString(" ")) }
+                .let { simpleDateFormat.parse(it.joinToString(" "), ParsePosition(0))?.time ?: 0L }
         } else {
-            simpleDateFormat.tryParse(this)
+            simpleDateFormat.parse(this, ParsePosition(0))?.time ?: 0L
         }
     } else {
         parseDate(this)

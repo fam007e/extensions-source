@@ -17,7 +17,7 @@ import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.getPreferencesLazy
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDateTime
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -27,9 +27,9 @@ import okhttp3.Request
 import okhttp3.Response
 import rx.Observable
 import java.io.IOException
-import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 
 @Source
 abstract class Akuma :
@@ -76,9 +76,7 @@ abstract class Akuma :
 
     private val ddosGuardIntercept = DDosGuardInterceptor(network.client)
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).apply {
-        timeZone = TimeZone.getTimeZone("UTC")
-    }
+    private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH)
     override val client: OkHttpClient = network.client.newBuilder()
         .addInterceptor(ddosGuardIntercept)
         .addInterceptor(::tokenInterceptor)
@@ -318,7 +316,7 @@ abstract class Akuma :
             SChapter.create().apply {
                 setUrlWithoutDomain("${response.request.url}/1")
                 name = "Chapter"
-                date_upload = dateFormat.tryParse(document.select(".date .value>time").text())
+                date_upload = dateFormat.tryParseDateTime(document.select(".date .value>time").text(), ZoneId.of("UTC"))
             },
         )
     }
