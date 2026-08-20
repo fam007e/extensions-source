@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.pt.leituramanga
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -118,3 +118,5 @@ class MangaIdOnlyDto(
 class NextJsMangaIdDto(
     val mangaId: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

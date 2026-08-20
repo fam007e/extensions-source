@@ -20,7 +20,6 @@ import keiyoushi.lib.randomua.setRandomUserAgent
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -34,6 +33,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import rx.Observable
 import java.io.IOException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -494,3 +494,5 @@ abstract class Readcomiconline :
             "https://raw.githubusercontent.com/keiyoushi/rco-script/refs/heads/main/decrypt.json"
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

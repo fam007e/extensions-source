@@ -1,9 +1,9 @@
 package eu.kanade.tachiyomi.extension.tr.monomanga
 
 import eu.kanade.tachiyomi.source.model.SChapter
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -72,3 +72,5 @@ class ChapterPageDto(
 class ChapterContentDto(
     val content: List<String>? = null,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

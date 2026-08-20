@@ -2,11 +2,11 @@ package eu.kanade.tachiyomi.extension.id.doujindesu
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -234,3 +234,5 @@ class PageList(
 class EncryptedDto(
     @SerialName("_enc_resp_") val encrypted: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.en.azuki
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import kotlin.text.replace
 
@@ -115,3 +115,5 @@ class PageDataDto(
 class PageDto(
     val image: Image,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

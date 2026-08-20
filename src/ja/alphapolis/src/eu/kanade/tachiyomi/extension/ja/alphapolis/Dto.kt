@@ -1,10 +1,10 @@
 package eu.kanade.tachiyomi.extension.ja.alphapolis
 
 import eu.kanade.tachiyomi.source.model.SChapter
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -72,3 +72,5 @@ class ViewerRequestBody(
     val preview: Boolean,
     val resolution: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

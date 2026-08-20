@@ -4,10 +4,10 @@ import eu.kanade.tachiyomi.extension.pt.wolftoon.Wolftoon.Companion.DATE_FORMAT
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.Normalizer
+import java.text.ParsePosition
 
 @Serializable
 class MangaDto(
@@ -84,3 +84,5 @@ class PageDto(
         Page(index, imageUrl = imageUrl)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

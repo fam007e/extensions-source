@@ -4,9 +4,9 @@ import eu.kanade.tachiyomi.extension.all.globalcomix.GlobalComix.Companion.dateF
 import eu.kanade.tachiyomi.extension.all.globalcomix.LOCK_SYMBOL
 import eu.kanade.tachiyomi.extension.all.globalcomix.RELEASE
 import eu.kanade.tachiyomi.source.model.SChapter
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 
 typealias ChapterDto = ResponseDto<ChapterDataDto>
 typealias ChaptersDto = PaginatedResponseDto<ChapterDataDto>
@@ -61,3 +61,5 @@ class ChapterDataDto(
         }
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

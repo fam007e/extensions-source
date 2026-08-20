@@ -2,10 +2,10 @@ package eu.kanade.tachiyomi.extension.en.xomanga
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -82,3 +82,5 @@ private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
 class ImageResponse(
     val images: List<String>,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

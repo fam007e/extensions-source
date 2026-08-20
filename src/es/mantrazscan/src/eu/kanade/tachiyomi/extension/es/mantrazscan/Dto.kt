@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.es.mantrazscan
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 private fun String.toAbsoluteUrl(baseUrl: String) = if (startsWith("/")) baseUrl + this else this
@@ -138,3 +138,5 @@ class PageDto(
 ) {
     fun toPageImageUrl(baseUrl: String) = imageUrl.toAbsoluteUrl(baseUrl)
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

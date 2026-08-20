@@ -12,13 +12,13 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.utils.getPreferencesLazy
-import keiyoushi.utils.tryParse
 import okhttp3.CacheControl
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.TextNode
 import org.jsoup.select.Evaluator
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -276,3 +276,5 @@ abstract class PepperCarrot :
         timeZone = TimeZone.getTimeZone("UTC")
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

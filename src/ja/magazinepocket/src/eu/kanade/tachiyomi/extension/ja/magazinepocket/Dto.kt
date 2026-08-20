@@ -2,10 +2,10 @@ package eu.kanade.tachiyomi.extension.ja.magazinepocket
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -105,3 +105,5 @@ class GenreListResponse(
 class GenreDetail(
     @SerialName("genre_name") val genreName: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

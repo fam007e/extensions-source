@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.fr.rimuscans
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -132,3 +132,5 @@ internal fun String.toAbsoluteUrl(baseUrl: String): String = when {
     startsWith("/") -> baseUrl + this
     else -> "$baseUrl/$this"
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

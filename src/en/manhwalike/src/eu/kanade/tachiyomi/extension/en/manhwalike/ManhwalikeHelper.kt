@@ -1,11 +1,11 @@
 package eu.kanade.tachiyomi.extension.en.manhwalike
 
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import okhttp3.FormBody
 import okhttp3.Headers
 import okhttp3.RequestBody
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -38,3 +38,5 @@ object ManhwalikeHelper {
         else -> absUrl("src")
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

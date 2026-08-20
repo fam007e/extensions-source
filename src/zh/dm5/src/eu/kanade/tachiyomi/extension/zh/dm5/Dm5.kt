@@ -17,11 +17,11 @@ import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.lib.unpacker.Unpacker
 import keiyoushi.utils.getPreferencesLazy
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -276,3 +276,5 @@ abstract class Dm5 :
         private const val SEARCH_MANGA_SELECTOR = "ul.mh-list > li, div.banner_detail_form"
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

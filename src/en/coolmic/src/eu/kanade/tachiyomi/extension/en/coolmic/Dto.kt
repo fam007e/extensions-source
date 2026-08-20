@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.en.coolmic
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.flatten
@@ -126,3 +126,5 @@ class KeyRequestBody(
 class KeyResponse(
     @SerialName("decrypted_key") val decryptedKey: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

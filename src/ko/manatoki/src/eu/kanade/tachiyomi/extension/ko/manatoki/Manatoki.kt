@@ -10,12 +10,12 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.util.asJsoup
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
-import keiyoushi.utils.tryParse
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okio.ByteString.Companion.decodeBase64
 import org.jsoup.Jsoup
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -151,3 +151,5 @@ abstract class Manatoki : HttpSource() {
 
     override fun imageUrlParse(response: Response): String = throw UnsupportedOperationException()
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

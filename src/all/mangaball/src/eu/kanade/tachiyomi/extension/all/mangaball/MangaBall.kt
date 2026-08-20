@@ -19,7 +19,6 @@ import keiyoushi.network.addCookie
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -31,6 +30,7 @@ import okio.IOException
 import org.jsoup.nodes.Document
 import rx.Observable
 import java.lang.UnsupportedOperationException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -473,3 +473,5 @@ abstract class MangaBall :
 }
 
 private const val NSFW_PREF = "nsfw_pref"
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

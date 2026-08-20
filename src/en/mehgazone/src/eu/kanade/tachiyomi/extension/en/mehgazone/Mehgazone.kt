@@ -28,7 +28,6 @@ import keiyoushi.lib.textinterceptor.TextInterceptor
 import keiyoushi.lib.textinterceptor.TextInterceptorHelper
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.Headers
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -42,6 +41,7 @@ import org.jsoup.select.Collector
 import org.jsoup.select.Elements
 import org.jsoup.select.QueryParser
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -309,3 +309,5 @@ abstract class Mehgazone :
 
     override fun searchMangaParse(response: Response): MangasPage = throw UnsupportedOperationException()
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

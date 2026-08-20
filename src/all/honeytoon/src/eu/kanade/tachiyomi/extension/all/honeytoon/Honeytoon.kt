@@ -20,7 +20,6 @@ import keiyoushi.network.addCookie
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -31,6 +30,7 @@ import okio.IOException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
@@ -239,3 +239,5 @@ abstract class Honeytoon :
         private const val PREF_ADULT_KEY = "prefAdultKey"
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

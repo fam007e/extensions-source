@@ -2,8 +2,8 @@ package eu.kanade.tachiyomi.extension.en.manhuarush
 
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 
 @Serializable
 class ChaptersDto(
@@ -32,3 +32,5 @@ class ReaderDto(
         Page(index, imageUrl = url)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

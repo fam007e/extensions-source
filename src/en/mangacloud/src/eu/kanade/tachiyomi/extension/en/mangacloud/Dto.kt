@@ -2,11 +2,11 @@ package eu.kanade.tachiyomi.extension.en.mangacloud
 
 import android.app.Application
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.SimpleTimeZone
@@ -216,3 +216,5 @@ class ChapterContent(
     val comicId: String,
     val images: List<Image>,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -2,10 +2,10 @@ package eu.kanade.tachiyomi.extension.ja.pashup
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -85,3 +85,5 @@ class Product(
 class CPhpResponse(
     val url: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

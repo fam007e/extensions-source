@@ -2,11 +2,11 @@ package eu.kanade.tachiyomi.extension.zh.boylove
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.long
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -76,3 +76,5 @@ class ListPageDto<T>(val lastPage: Boolean, val list: List<T> = emptyList())
 
 @Serializable
 class ResultDto<T>(val result: T)
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

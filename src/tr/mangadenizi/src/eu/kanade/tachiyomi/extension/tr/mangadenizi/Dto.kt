@@ -3,12 +3,12 @@ package eu.kanade.tachiyomi.extension.tr.mangadenizi
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -95,3 +95,5 @@ class ReaderPageDto(
 ) {
     fun toPage(index: Int) = Page(index, imageUrl = url)
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -16,7 +16,6 @@ import keiyoushi.annotation.Source
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.jsonInstance
 import keiyoushi.utils.toJsonRequestBody
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
@@ -28,6 +27,7 @@ import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -323,3 +323,5 @@ abstract class CManhua : HttpSource() {
         private val CHAPTER_TOKEN_REGEX = Regex("""var\s+ts\s*=\s*"([^"]+)""")
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

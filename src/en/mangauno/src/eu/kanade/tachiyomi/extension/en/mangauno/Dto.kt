@@ -4,10 +4,10 @@ import eu.kanade.tachiyomi.extension.en.mangauno.Mangauno.Companion.IMG_API_URL
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.parser.Parser
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -125,3 +125,5 @@ class FacetsDto(
 class FacetDto(
     val name: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

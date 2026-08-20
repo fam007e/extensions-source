@@ -15,10 +15,10 @@ import keiyoushi.annotation.Source
 import keiyoushi.lib.textinterceptor.TextInterceptor
 import keiyoushi.lib.textinterceptor.TextInterceptorHelper
 import keiyoushi.utils.getPreferencesLazy
-import keiyoushi.utils.tryParse
 import okhttp3.Request
 import okhttp3.Response
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -161,3 +161,5 @@ abstract class GrrlPower :
         private const val SHOW_AUTHORS_NOTES_KEY = "showAuthorsNotes"
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

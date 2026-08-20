@@ -1,8 +1,8 @@
 package eu.kanade.tachiyomi.extension.all.mayotune
 
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -33,3 +33,5 @@ data class ChapterDto(
 
     fun getDateTimestamp(): Long = this.sdf.tryParse(this.date)
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

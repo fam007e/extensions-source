@@ -2,7 +2,7 @@ package eu.kanade.tachiyomi.extension.en.readvagabondmanga
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -31,3 +31,5 @@ fun ChapterDto.toSChapter(): SChapter = SChapter.create().apply {
 private val dateFormat by lazy {
     SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -1,9 +1,9 @@
 package eu.kanade.tachiyomi.extension.en.bbato
 
 import eu.kanade.tachiyomi.source.model.SChapter
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -25,3 +25,5 @@ class ChapterDto(
         date_upload = dateFormat.tryParse(updatedAt)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

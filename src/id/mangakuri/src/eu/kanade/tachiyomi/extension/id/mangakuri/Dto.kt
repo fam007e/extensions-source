@@ -2,10 +2,10 @@ package eu.kanade.tachiyomi.extension.id.mangakuri
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -90,3 +90,5 @@ class ChapterPagesDto(
 class PageDto(
     @SerialName("image_url") val imageUrl: String,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -17,7 +17,6 @@ import keiyoushi.utils.firstInstance
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonString
-import keiyoushi.utils.tryParse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.CacheControl
@@ -33,6 +32,7 @@ import okhttp3.internal.closeQuietly
 import okio.IOException
 import rx.Observable
 import java.lang.UnsupportedOperationException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.random.Random
@@ -349,3 +349,5 @@ abstract class NatsuId : HttpSource() {
 
     protected open fun transformJsonResponse(responseBody: String): String = responseBody
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

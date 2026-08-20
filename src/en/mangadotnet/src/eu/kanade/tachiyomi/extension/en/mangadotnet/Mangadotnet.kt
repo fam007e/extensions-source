@@ -26,7 +26,6 @@ import keiyoushi.utils.getPreferences
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonElement
 import keiyoushi.utils.toJsonString
-import keiyoushi.utils.tryParse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.Serializable
@@ -46,6 +45,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -890,3 +890,5 @@ private const val DEDUPLICATE_CHAPTERS = "pref_deduplicate_chapters"
 private const val PREFERRED_SCANLATORS = "pref_preferred_scanlators"
 private const val EXCLUDE_DEMOGRAPHIC_PREF = "pref_exclude_demographic"
 private const val SHOW_TAGS_PREF = "pref_show_tags"
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

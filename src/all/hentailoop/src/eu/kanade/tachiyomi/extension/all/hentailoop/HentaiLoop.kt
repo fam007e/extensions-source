@@ -15,7 +15,6 @@ import keiyoushi.annotation.Source
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonString
-import keiyoushi.utils.tryParse
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -28,6 +27,7 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import java.io.IOException
 import java.lang.UnsupportedOperationException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -497,3 +497,5 @@ abstract class HentaiLoop : HttpSource() {
         else -> null
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L
