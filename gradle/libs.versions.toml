@@ -2,8 +2,8 @@
 android-gradle = "9.3.1"
 coroutines = "1.11.0"
 junit = "4.13.2"
-kotlin-gradle = "2.4.10"
-ksp = "2.3.9"
+kotlin-gradle = "2.4.20-RC" # changed from 2.4.10
+ksp = "2.3.11" # changed from 2.3.9
 kotlinpoet = "2.3.0"
 ktlint = "1.8.0"
 spotless = "8.8.0"
@@ -17,7 +17,7 @@ serialization = "1.11.0"
 
 # Security fixes
 netty = "4.2.17.Final"
-log4j = "2.25.4"
+log4j = "2.25.5"
 jdom2 = "2.0.6.1"
 jose4j = "0.9.6"
 commons-lang3 = "3.20.0"
