@@ -11,9 +11,9 @@ import type { Extension } from '../../queries/useExtensionsRepositoryQuery';
 const props = defineProps<{ item: Extension }>()
 
 const pkgId = props.item.pkg.replace('eu.kanade.tachiyomi.extension.', '');
-const pkgName = props.item.name.split(': ')[1];
-const iconUrl = `${GITHUB_EXTENSION_BASE}/icon/${props.item.pkg}.png`;
-const apkUrl = `${GITHUB_EXTENSION_BASE}/apk/${props.item.apk}`;
+const pkgName = props.item.name.includes(': ') ? props.item.name.split(': ')[1] : props.item.name;
+const iconUrl = props.item.iconUrl || `${GITHUB_EXTENSION_BASE}/icon/${props.item.pkg}.png`;
+const apkUrl = props.item.apkUrl || `${GITHUB_EXTENSION_BASE}/apk/${props.item.apk}`;
 
 function handleAnalytics(apk: string) {
   window.goatcounter?.count?.({
