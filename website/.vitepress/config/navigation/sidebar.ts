@@ -26,6 +26,7 @@ function defaultSidebar(): DefaultTheme.SidebarItem[] {
       text: 'Guides',
       items: [
         { text: 'Getting started', link: '/docs/guides/getting-started' },
+        { text: 'Coding standards', link: '/docs/guides/coding-standards' },
         {
           text: 'Troubleshooting',
           link: '/docs/guides/troubleshooting',
