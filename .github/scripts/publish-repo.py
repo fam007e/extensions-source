@@ -28,8 +28,16 @@ to_delete: list[str] = json.loads(sys.argv[1])
 current_sha = sys.argv[2]
 current_sha_short = current_sha[:7]
 
-with REPO_DIR.joinpath("index.json").open() as f:
-    remote_proto = json_format.Parse(f.read(), index_pb2.Index())
+index_path = REPO_DIR / "index.json"
+if index_path.exists():
+    try:
+        with index_path.open(encoding="utf-8") as f:
+            remote_proto = json_format.Parse(f.read(), index_pb2.Index())
+    except Exception as e:
+        print(f"Warning: Failed to parse existing index.json ({e}), starting with empty index")
+        remote_proto = index_pb2.Index()
+else:
+    remote_proto = index_pb2.Index()
 
 remote_extensions = {
     ext.packageName: ext for ext in remote_proto.extensionList.extensions
@@ -202,22 +210,22 @@ with REPO_DIR.joinpath("index.json").open("w", encoding="utf-8") as f:
         )
     )
 
+with REPO_DIR.joinpath("index.min.json").open("w", encoding="utf-8") as f:
+    f.write(
+        json_format.MessageToJson(
+            index,
+            indent=None,
+            always_print_fields_with_no_presence=False,
+            preserving_proto_field_name=True,
+        )
+    )
+
 with REPO_DIR.joinpath("index.pb").open("wb") as f:
     f.write(gzip.compress(index.SerializeToString(deterministic=True), mtime=0))
 
 with release_assets_path.open("w", encoding="utf-8") as f:
     json.dump(updated_release_assets, f, indent=2, sort_keys=True)
     f.write("\n")
-
-with REPO_DIR.joinpath("index.html").open("w", encoding="utf-8") as f:
-    f.write(
-        '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<title>apks</title>\n</head>\n<body>\n<pre>\n'
-    )
-    for ext in final_extensions:
-        apk_escaped = html.escape(ext.resources.apkUrl)
-        name_escaped = html.escape(f"Tachiyomi: {ext.name}")
-        f.write(f'<a href="{apk_escaped}">{name_escaped}</a>\n')
-    f.write("</pre>\n</body>\n</html>\n")
 
 # --- Upload assets as release ---
 if not changed_extensions:
