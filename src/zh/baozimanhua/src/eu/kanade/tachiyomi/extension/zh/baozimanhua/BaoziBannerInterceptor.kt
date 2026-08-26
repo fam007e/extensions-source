@@ -22,7 +22,7 @@ class BaoziBannerInterceptor(var level: Int) : Interceptor {
 
         if (request.tag(ReaderPageImageTag::class.java) == null) return response
 
-        val body = response.body ?: return response
+        val body = response.body
         val contentType = body.contentType() ?: return response
         if (contentType.type != "image") return response
 
