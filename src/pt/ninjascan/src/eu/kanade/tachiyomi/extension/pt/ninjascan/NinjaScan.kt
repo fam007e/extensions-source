@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.minutes
 @Source
 abstract class NinjaScan : Madara() {
     override val chapterMode = ChapterMode.MangaAjax
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("pt", "BR"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale.of("pt", "BR"))
     override fun OkHttpClient.Builder.configureClient() = connectTimeout(5.minutes)
         .readTimeout(5.minutes)
         .rateLimit(2) { !it.encodedPath.startsWith("/wp-content/uploads/") }

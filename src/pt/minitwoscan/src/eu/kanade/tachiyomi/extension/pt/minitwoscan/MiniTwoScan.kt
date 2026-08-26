@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class MiniTwoScan : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("pt", "BR"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.of("pt", "BR"))
     override val chapterMode = ChapterMode.AdminAjax
 
     override fun OkHttpClient.Builder.configureClient() = apply {

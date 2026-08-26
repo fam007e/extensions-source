@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class MangaRomance : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("es"))
     override val chapterMode = ChapterMode.MangaAjax
 }

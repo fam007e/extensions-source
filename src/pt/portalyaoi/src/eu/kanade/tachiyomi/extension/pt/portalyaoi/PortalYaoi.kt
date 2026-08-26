@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class PortalYaoi : MadaraNoAjax() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("pt", "BR"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.of("pt", "BR"))
 
     override fun OkHttpClient.Builder.configureClient() = rateLimit(1, 2.seconds) {
         !it.encodedPath.startsWith("/wp-content/uploads/")

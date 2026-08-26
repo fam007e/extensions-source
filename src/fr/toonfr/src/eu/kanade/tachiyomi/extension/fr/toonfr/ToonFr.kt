@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class ToonFr : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMM d", Locale("fr"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMM d", Locale.forLanguageTag("fr"))
     override val chapterMode = ChapterMode.MangaAjax
 
     override val mangaSubString = "webtoon"

@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class Toones : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.forLanguageTag("es"))
 }

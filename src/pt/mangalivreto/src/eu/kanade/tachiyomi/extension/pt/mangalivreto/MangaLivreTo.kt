@@ -9,7 +9,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaLivreTo : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("pt"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale.forLanguageTag("pt"))
 
     override fun OkHttpClient.Builder.configureClient() = apply {
         rateLimit(2)

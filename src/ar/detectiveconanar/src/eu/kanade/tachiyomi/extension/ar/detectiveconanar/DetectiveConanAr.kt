@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class DetectiveConanAr : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale("ar"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.forLanguageTag("ar"))
     override val chapterMode = ChapterMode.MangaAjax
 }

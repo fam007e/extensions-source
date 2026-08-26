@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class TopComicPorno : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMM dd, yy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMM dd, yy", Locale.forLanguageTag("es"))
     override val chapterMode = ChapterMode.MangaAjax
 }

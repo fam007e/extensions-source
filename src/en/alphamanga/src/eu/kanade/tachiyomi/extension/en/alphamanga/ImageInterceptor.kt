@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.RectF
+import android.os.Build
 import android.util.Base64
 import keiyoushi.utils.readIntLittleEndian
 import okhttp3.Interceptor
@@ -28,7 +29,13 @@ class ImageInterceptor : Interceptor {
 
         bitmap.recycle()
         val buffer = Buffer()
-        result.compress(Bitmap.CompressFormat.WEBP, 100, buffer.outputStream())
+        val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSLESS
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+        result.compress(format, 100, buffer.outputStream())
         result.recycle()
 
         return response.newBuilder()

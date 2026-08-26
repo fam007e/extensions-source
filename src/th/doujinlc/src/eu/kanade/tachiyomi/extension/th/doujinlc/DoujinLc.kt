@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class DoujinLc : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale("th"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.forLanguageTag("th"))
     override val pageListParseSelector = ".reading-content img"
 
     override val mangaSubString = "doujin"

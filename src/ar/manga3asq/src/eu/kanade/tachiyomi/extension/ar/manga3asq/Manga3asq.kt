@@ -8,7 +8,7 @@ import java.util.Locale
 @Source
 abstract class Manga3asq : MadaraNoAjax() {
     // \u060c (،) U+060C : ARABIC COMMA
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMM\u060c yyy", Locale("ar"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMM\u060c yyy", Locale.forLanguageTag("ar"))
     override val chapterDateSelector = "span.chapter-release-date .timediff"
     override val chapterMode = ChapterMode.MangaAjax
     override val archiveUrlSelector = "div.post-title a:not([target])"

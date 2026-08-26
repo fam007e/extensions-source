@@ -9,5 +9,5 @@ import java.util.Locale
 @Source
 abstract class InventarioOculto : Madara() {
     override val chapterMode = ChapterMode.MangaAjax
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("es"))
 }

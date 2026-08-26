@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class MangaZure : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("tr"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.forLanguageTag("tr"))
 }

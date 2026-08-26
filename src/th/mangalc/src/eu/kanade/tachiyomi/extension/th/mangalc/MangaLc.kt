@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaLc : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("th"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("th"))
     override val pageListParseSelector = ".reading-content img"
     override val filterNonMangaItems = false
 }
