@@ -49,22 +49,15 @@ dependencyResolutionManagement {
     }
 
     components.all {
-        val details = this
-        if (details.id.group == "io.netty") {
-            details.allVariants {
-                withDependencies {
-                    forEach {
+        allVariants {
+            withDependencies {
+                forEach {
+                    if (it.group == "io.netty") {
                         it.version {
                             require("4.2.17.Final")
                         }
                     }
-                }
-            }
-        }
-        if (details.id.group == "org.apache.logging.log4j") {
-            details.allVariants {
-                withDependencies {
-                    forEach {
+                    if (it.group == "org.apache.logging.log4j") {
                         it.version {
                             require("2.26.1")
                         }
