@@ -2,11 +2,11 @@ package eu.kanade.tachiyomi.extension.id.mangakuri
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import kotlin.time.Instant
 
 @Serializable
 class SearchResponseDto(
@@ -68,11 +68,11 @@ class ChapterDto(
     private val number: String,
     @SerialName("created_at") private val createdAt: String? = null,
 ) {
-    fun toSChapter(comicSlug: String, dateFormat: SimpleDateFormat) = SChapter.create().apply {
+    fun toSChapter(comicSlug: String) = SChapter.create().apply {
         url = "/comic/$comicSlug/chapter/$slug"
         name = "Chapter ${number.removeSuffix(".00")}"
         chapter_number = number.toFloatOrNull() ?: -1f
-        date_upload = dateFormat.tryParse(createdAt)
+        date_upload = Instant.tryParse(createdAt)
     }
 }
 
@@ -83,6 +83,10 @@ class ChapterDetailDto(
 
 @Serializable
 class ChapterPagesDto(
+    @SerialName("login_required")
+    val loginRequired: Boolean?,
+    @SerialName("password_required")
+    val passwordRequired: Boolean = false,
     val pages: List<PageDto>,
 )
 
@@ -91,4 +95,8 @@ class PageDto(
     @SerialName("image_url") val imageUrl: String,
 )
 
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L
+@Serializable
+class Filter(
+    val name: String,
+    val slug: String,
+)
