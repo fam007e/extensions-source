@@ -10,6 +10,29 @@ pluginManagement {
     }
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        // Explicit overrides to satisfy Dependabot's scanner for settings.gradle.kts
+        classpath("org.jdom:jdom2:2.0.6.1")
+        classpath("org.bitbucket.b_c:jose4j:0.9.6")
+        classpath("org.apache.commons:commons-lang3:3.20.0")
+        classpath("org.apache.httpcomponents:httpclient:4.5.13")
+        classpath("org.bouncycastle:bcpkix-jdk18on:1.84")
+        classpath("org.bouncycastle:bcprov-jdk18on:1.84")
+        classpath("org.apache.logging.log4j:log4j-core:2.26.1")
+        classpath("org.apache.logging.log4j:log4j-api:2.26.1")
+        classpath("io.netty:netty-codec-http2:4.2.17.Final")
+        classpath("io.netty:netty-handler:4.2.17.Final")
+        classpath("io.netty:netty-codec-http:4.2.17.Final")
+        classpath("io.netty:netty-codec:4.2.17.Final")
+        classpath("io.netty:netty-common:4.2.17.Final")
+    }
+}
+
 dependencyResolutionManagement {
     versionCatalogs {
         create("kei") {
@@ -23,6 +46,25 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://www.jitpack.io")
+    }
+
+    components.all {
+        allVariants {
+            withDependencies {
+                forEach {
+                    if (it.group == "io.netty") {
+                        it.version {
+                            require("4.2.17.Final")
+                        }
+                    }
+                    if (it.group == "org.apache.logging.log4j") {
+                        it.version {
+                            require("2.26.1")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
