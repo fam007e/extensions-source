@@ -18,7 +18,7 @@ ARTIFACTS_DIR = Path.home() / "apk-artifacts"
 # The checked-out `repo` branch we publish into (the working directory).
 REPO_DIR = Path.cwd()
 
-ICON_BASE_URL = "https://cdn.jsdelivr.net/gh/keiyoushi/extensions-source@main"
+ICON_BASE_URL = "https://cdn.jsdelivr.net/gh/fam007e/extensions-source@main"
 RELEASE_BASE_URL = f"https://github.com/{REPO_NAME}/releases/download"
 ASSET_LIMIT = 495  # Actual limit is 1000 but we upload 2 items per extension.
 UPLOAD_CHUNK_SIZE = 80
@@ -28,8 +28,16 @@ to_delete: list[str] = json.loads(sys.argv[1])
 current_sha = sys.argv[2]
 current_sha_short = current_sha[:7]
 
-with REPO_DIR.joinpath("index.json").open() as f:
-    remote_proto = json_format.Parse(f.read(), index_pb2.Index())
+index_path = REPO_DIR / "index.json"
+if index_path.exists():
+    try:
+        with index_path.open(encoding="utf-8") as f:
+            remote_proto = json_format.Parse(f.read(), index_pb2.Index())
+    except Exception as e:
+        print(f"Warning: Failed to parse existing index.json ({e}), starting with empty index")
+        remote_proto = index_pb2.Index()
+else:
+    remote_proto = index_pb2.Index()
 
 remote_extensions = {
     ext.packageName: ext for ext in remote_proto.extensionList.extensions
@@ -183,12 +191,12 @@ final_extensions.extend(ext for ext, _, _, _, _ in new_extensions)
 final_extensions.sort(key=lambda ext: ext.packageName)
 
 index = index_pb2.Index(
-    name="Keiyoushi",
-    badgeLabel="KEI",
-    signingKey="9add655a78e96c4ec7a53ef89dccb557cb5d767489fac5e785d671a5a75d4da2",
+    name="Dark Knightz Inc.",
+    badgeLabel="DKZ",
+    signingKey="088b28aa2943e5c5f2b8ab76d87106e6bdc9b49eba4c75c16b758ce8a080b076",
     contact=index_pb2.Contact(
-        website="https://keiyoushi.github.io",
-        discord="https://discord.gg/3FbCpdKbdY",
+        website="https://fam007e.github.io/extensions-source/",
+        discord="https://discord.gg/F34duNjTqn",
     ),
     extensionList=index_pb2.ExtensionList(extensions=final_extensions),
 )
@@ -202,22 +210,22 @@ with REPO_DIR.joinpath("index.json").open("w", encoding="utf-8") as f:
         )
     )
 
+with REPO_DIR.joinpath("index.min.json").open("w", encoding="utf-8") as f:
+    f.write(
+        json_format.MessageToJson(
+            index,
+            indent=None,
+            always_print_fields_with_no_presence=False,
+            preserving_proto_field_name=True,
+        )
+    )
+
 with REPO_DIR.joinpath("index.pb").open("wb") as f:
     f.write(gzip.compress(index.SerializeToString(deterministic=True), mtime=0))
 
 with release_assets_path.open("w", encoding="utf-8") as f:
     json.dump(updated_release_assets, f, indent=2, sort_keys=True)
     f.write("\n")
-
-with REPO_DIR.joinpath("index.html").open("w", encoding="utf-8") as f:
-    f.write(
-        '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<title>apks</title>\n</head>\n<body>\n<pre>\n'
-    )
-    for ext in final_extensions:
-        apk_escaped = html.escape(ext.resources.apkUrl)
-        name_escaped = html.escape(f"Tachiyomi: {ext.name}")
-        f.write(f'<a href="{apk_escaped}">{name_escaped}</a>\n')
-    f.write("</pre>\n</body>\n</html>\n")
 
 # --- Upload assets as release ---
 if not changed_extensions:
@@ -249,7 +257,7 @@ def create_release(tag: str):
         "--title",
         f"Repository Update {tag}",
         "--notes",
-        f"Automated update from keiyoushi/extensions-source@{current_sha}",
+        f"Automated update from fam007e/extensions-source@{current_sha}",
     )
 
 
