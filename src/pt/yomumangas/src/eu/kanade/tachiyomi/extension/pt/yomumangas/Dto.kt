@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.pt.yomumangas
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 internal fun String.replaceB2Uri(): String = replace("b2://", "https://b2.yomumangas.com/")
@@ -92,3 +92,5 @@ class ChapterDto(
         date_upload = dateFormat.tryParse(uploadedAt)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -24,14 +24,15 @@ class MangamoHelper(headers: Headers) {
             explicitNulls = false
 
             serializersModule = SerializersModule {
-                contextual(DocumentDto::class) { DocumentSerializer(DocumentDtoInternal.serializer(it[0])) }
+                @Suppress("UNCHECKED_CAST")
+                contextual(DocumentDto::class) { DocumentSerializer(DocumentDtoInternal.serializer(it[0]) as KSerializer<DocumentDto<Any>>) }
             }
         }
 
         @Suppress("UNCHECKED_CAST")
         inline fun <reified T> String.parseJson(): T = when (T::class) {
             DocumentDto::class -> json.decodeFromString<T>(
-                DocumentSerializer(serializer<T>() as KSerializer<out DocumentDto<out Any?>>) as KSerializer<T>,
+                DocumentSerializer(serializer<T>() as KSerializer<DocumentDto<Any>>) as KSerializer<T>,
                 this,
             )
 

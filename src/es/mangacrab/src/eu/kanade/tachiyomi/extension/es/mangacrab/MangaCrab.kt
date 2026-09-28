@@ -31,7 +31,7 @@ import kotlin.time.Duration.Companion.seconds
 abstract class MangaCrab :
     Madara(),
     ConfigurableSource {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     override val client = super.client.newBuilder()
         .rateLimit(5, 1.seconds)
@@ -93,7 +93,7 @@ abstract class MangaCrab :
     override fun latestUpdatesParse(response: Response): MangasPage {
         val document = response.asJsoup()
         val mangas = document.select(latestUpdatesSelector()).map { latestUpdatesFromElement(it) }.distinctBy { it.url }
-        val hasNextPage = latestUpdatesNextPageSelector()?.let { document.selectFirst(it) } != null
+        val hasNextPage = document.selectFirst(latestUpdatesNextPageSelector()) != null
         return MangasPage(mangas, hasNextPage)
     }
 

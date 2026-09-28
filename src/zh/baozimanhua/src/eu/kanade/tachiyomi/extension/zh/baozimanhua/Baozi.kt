@@ -165,7 +165,7 @@ abstract class Baozi :
             val slug = onclick.substringAfter("'comic', '").substringBefore("'")
             normalizeRelativeUrl("/comic/$slug")
         } else {
-            normalizeRelativeUrl(poster!!.attr("href"))
+            normalizeRelativeUrl(poster.attr("href"))
         }
 
         val titleElement = element.selectFirst(".comics-card__title")
@@ -252,7 +252,7 @@ abstract class Baozi :
             val filteredImages = if (
                 preferences.getBoolean(REMOVE_DUPLICATE_IMAGES_PREF, false) && lastImageId != null
             ) {
-                filterImagesByMinId(pageImages, lastImageId!! + 1)
+                filterImagesByMinId(pageImages, lastImageId + 1)
             } else {
                 pageImages
             }

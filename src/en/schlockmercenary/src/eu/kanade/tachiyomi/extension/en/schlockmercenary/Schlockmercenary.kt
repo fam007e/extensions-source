@@ -10,10 +10,10 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
-import keiyoushi.utils.tryParse
 import okhttp3.Request
 import okhttp3.Response
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -86,7 +86,7 @@ abstract class Schlockmercenary : HttpSource() {
                 var end = start + 1L
 
                 if (nextChapter == null) {
-                    nextChapter = currentChapter.parents()[2]?.nextElementSibling()?.selectFirst("ul.chapters > li:not(ul > li > ul > li) > a")
+                    nextChapter = currentChapter.parents()[2].nextElementSibling()?.selectFirst("ul.chapters > li:not(ul > li > ul > li) > a")
                 }
 
                 if (nextChapter != null) {
@@ -151,3 +151,5 @@ abstract class Schlockmercenary : HttpSource() {
         private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

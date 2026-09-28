@@ -19,7 +19,6 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -33,6 +32,7 @@ import okhttp3.ResponseBody.Companion.asResponseBody
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import uy.kohesive.injekt.injectLazy
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.CountDownLatch
@@ -224,7 +224,6 @@ abstract class Yidan : HttpSource() {
                     with(settings) {
                         javaScriptEnabled = true
                         domStorageEnabled = true
-                        databaseEnabled = true
                         blockNetworkImage = true
                     }
                 }
@@ -285,3 +284,5 @@ abstract class Yidan : HttpSource() {
         private const val PAGE_SIZE = 16
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

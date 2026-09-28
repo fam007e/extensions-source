@@ -2,8 +2,8 @@ package eu.kanade.tachiyomi.extension.pt.geasscomics
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 // ========================= API Response Wrapper =========================
@@ -163,3 +163,5 @@ class UserDto(
     val username: String? = null,
     val name: String? = null,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

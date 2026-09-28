@@ -22,7 +22,7 @@ import java.util.Locale
 
 @Source
 abstract class MangaIsekaiThai : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("th"))
     override val supportsLatest = false
 
     override val useLoadMoreRequest = LoadMoreStrategy.Never

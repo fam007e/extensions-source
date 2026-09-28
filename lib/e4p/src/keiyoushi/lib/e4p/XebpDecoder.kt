@@ -3,6 +3,7 @@ package keiyoushi.lib.e4p
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.decodeByteArray
+import android.os.Build
 import keiyoushi.utils.decodeHex
 import keiyoushi.utils.readIntLittleEndian
 import keiyoushi.utils.writeIntLittleEndian
@@ -256,7 +257,13 @@ object XebpDecoder {
         result.setPixels(patch.pixels, 0, patch.width, 0, 0, pw, ph)
 
         val buffer = Buffer()
-        result.compress(Bitmap.CompressFormat.WEBP, 100, buffer.outputStream())
+        val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSLESS
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+        result.compress(format, 100, buffer.outputStream())
         result.recycle()
         return buffer
     }

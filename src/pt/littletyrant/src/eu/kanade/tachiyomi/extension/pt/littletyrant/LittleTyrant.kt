@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class LittleTyrant : Madara() {
-    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.of("pt", "BR"))
 
     override val client: OkHttpClient = network.client.newBuilder()
         .addNetworkInterceptor(ImageDecoderInterceptor())

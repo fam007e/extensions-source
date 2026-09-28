@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class Yaoibar : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("tr"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("tr"))
     override val useNewChapterEndpoint: Boolean = true
 }

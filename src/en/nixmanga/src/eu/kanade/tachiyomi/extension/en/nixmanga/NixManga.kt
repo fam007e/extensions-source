@@ -51,7 +51,7 @@ abstract class NixManga : HttpSource() {
 
     private fun refreshAuthValues(endpoint: String) {
         val response = client.newCall(GET(signerJsUrl, headers)).execute()
-        val body = response.body?.string() ?: error("Failed to fetch signer.js")
+        val body = response.body.string()
         response.close()
 
         val match = signerJsRegex.find(body)

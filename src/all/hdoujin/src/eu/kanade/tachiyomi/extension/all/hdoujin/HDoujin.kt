@@ -115,7 +115,6 @@ abstract class HDoujin :
             with(webview.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
             }
             webview.webViewClient = object : WebViewClient() {

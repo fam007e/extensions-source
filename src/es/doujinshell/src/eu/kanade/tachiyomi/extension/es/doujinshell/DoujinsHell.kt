@@ -11,7 +11,7 @@ import java.util.Locale
 
 @Source
 abstract class DoujinsHell : Madara() {
-    override val dateFormat = SimpleDateFormat("d MMMM, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("d MMMM, yyyy", Locale.forLanguageTag("es"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = false
 

@@ -162,8 +162,8 @@ abstract class Holotoon : KeiSource() {
         var element = titleElement?.parent()
         repeat(6) {
             if (element == null) return null
-            if (element!!.select("a[href*='genre=']").isNotEmpty()) return element
-            element = element!!.parent()
+            if (element.select("a[href*='genre=']").isNotEmpty()) return element
+            element = element.parent()
         }
         return titleElement?.parent()
     }

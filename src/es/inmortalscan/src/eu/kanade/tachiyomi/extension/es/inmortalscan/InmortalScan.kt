@@ -10,7 +10,7 @@ import java.util.Locale
 
 @Source
 abstract class InmortalScan : Madara() {
-    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.forLanguageTag("es"))
 
     override val mangaSubString = "mg"
 

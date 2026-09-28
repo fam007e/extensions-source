@@ -12,12 +12,12 @@ import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import java.io.IOException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -84,7 +84,7 @@ abstract class ShiraiScans : HttpSource() {
         .build()
 
     private val dateFormat by lazy {
-        SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+        SimpleDateFormat("dd/MM/yyyy", Locale.of("pt", "BR"))
     }
 
     // ============================== Popular ==============================
@@ -217,3 +217,5 @@ abstract class ShiraiScans : HttpSource() {
         private val B64_REGEX = """var\s+b64\s*=\s*['"]([A-Za-z0-9+/=\s]+)['"]""".toRegex()
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

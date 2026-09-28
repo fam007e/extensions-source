@@ -11,7 +11,6 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.FormBody
 import okhttp3.Headers
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -21,6 +20,7 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URLDecoder
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
@@ -40,12 +40,12 @@ abstract class ToomicsGlobal : HttpSource() {
     private val dateFormat: SimpleDateFormat = when (lang) {
         "zh-Hans" -> SimpleDateFormat("yyyy.MM.dd", Locale.SIMPLIFIED_CHINESE)
         "zh-Hant" -> SimpleDateFormat("yyyy.MM.dd", Locale.TRADITIONAL_CHINESE)
-        "es-419" -> SimpleDateFormat("d MMM, yyyy", Locale("es", "419"))
-        "es" -> SimpleDateFormat("d MMM, yyyy", Locale("es", "419"))
+        "es-419" -> SimpleDateFormat("d MMM, yyyy", Locale.of("es", "419"))
+        "es" -> SimpleDateFormat("d MMM, yyyy", Locale.of("es", "419"))
         "it" -> SimpleDateFormat("d MMM, yyyy", Locale.ITALIAN)
         "de" -> SimpleDateFormat("d. MMM yyyy", Locale.GERMAN)
         "fr" -> SimpleDateFormat("dd MMM. yyyy", Locale.ENGLISH)
-        "pt-BR" -> SimpleDateFormat("d 'de' MMM 'de' yyyy", Locale("pt", "BR"))
+        "pt-BR" -> SimpleDateFormat("d 'de' MMM 'de' yyyy", Locale.of("pt", "BR"))
         else -> SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)
     }
 
@@ -209,3 +209,5 @@ abstract class ToomicsGlobal : HttpSource() {
         private val ESCAPE_CHAR_REGEX = """(\\n)|(\\r)|(\\{1})""".toRegex()
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

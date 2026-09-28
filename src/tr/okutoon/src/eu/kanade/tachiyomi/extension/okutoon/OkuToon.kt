@@ -10,10 +10,10 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -23,7 +23,7 @@ abstract class OkuToon : HttpSource() {
     override val supportsLatest = true
 
     private val dateFormat by lazy {
-        SimpleDateFormat("d MMMM yyyy", Locale("tr"))
+        SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("tr"))
     }
 
     override fun popularMangaRequest(page: Int): Request = GET("$baseUrl/tur?sira=popular&sayfa=$page", headers)
@@ -121,3 +121,5 @@ abstract class OkuToon : HttpSource() {
         GenreFilter(getGenreList()),
     )
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

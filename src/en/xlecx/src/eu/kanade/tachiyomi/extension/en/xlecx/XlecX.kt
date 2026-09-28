@@ -137,8 +137,8 @@ abstract class XlecX : KeiSource() {
         return SMangaUpdate(manga, chapters)
     }
 
-    private fun Element.subInfoLinks(label: String): String? = select(".page__subinfo-item > div:not([class]):contains($label) ~ a")
-        ?.joinToString { it.text() }
+    private fun Element.subInfoLinks(label: String): String = select(".page__subinfo-item > div:not([class]):contains($label) ~ a")
+        .joinToString { it.text() }
 
     // Pages
     override suspend fun getPageList(chapter: SChapter): List<Page> {

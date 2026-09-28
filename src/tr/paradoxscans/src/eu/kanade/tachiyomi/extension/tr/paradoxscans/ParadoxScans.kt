@@ -17,9 +17,7 @@ abstract class ParadoxScans : InitManga() {
             ?: element.selectFirst("h2 a, h3 a, a.uk-link-heading")
             ?: element.selectFirst("a")
 
-        title = element.selectFirst("h2 a, h3 a")?.text()
-            ?: element.select("h2").text()
-            ?: element.select("h3").text()
+        title = element.selectFirst("h2 a, h3 a, h2, h3")?.text().orEmpty()
 
         setUrlWithoutDomain(linkElement!!.absUrl("href"))
 

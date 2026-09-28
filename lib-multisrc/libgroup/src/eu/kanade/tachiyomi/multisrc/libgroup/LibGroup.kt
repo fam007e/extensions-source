@@ -195,7 +195,6 @@ abstract class LibGroup :
             with(webView.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
             }
             webView.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {

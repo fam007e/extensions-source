@@ -10,10 +10,10 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -130,7 +130,7 @@ abstract class Manhwa18 : HttpSource() {
 
                 val timeStr = a.selectFirst(".au-chtile-date")?.text()?.substringAfter("·")?.trim()
                     ?: a.selectFirst(".chapter-time")?.text()?.substringAfter("-")?.trim()
-                date_upload = dateFormat.tryParse(timeStr) ?: 0L
+                date_upload = dateFormat.tryParse(timeStr)
             }
         }
     }
@@ -154,3 +154,5 @@ abstract class Manhwa18 : HttpSource() {
         GenreFilter(genreList),
     )
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

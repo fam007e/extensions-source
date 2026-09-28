@@ -4,7 +4,7 @@ import eu.kanade.tachiyomi.extension.pt.wolftoon.Wolftoon.Companion.DATE_FORMAT
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.Normalizer
@@ -47,7 +47,7 @@ class MangaDto(
             .replace(NON_ALPHA_REGEX, "-")
             .trim('-')
     }
-    fun updatedAt(): Long = DATE_FORMAT.tryParse(updatedAt)
+    fun updatedAt(): Long = DATE_FORMAT.tryParseDateTime(updatedAt)
 
     companion object {
         private val MARKS_REGEX = "\\p{InCombiningDiacriticalMarks}+".toRegex()
@@ -68,7 +68,7 @@ class ChapterDto(
     fun toSChapter(): SChapter = SChapter.create().apply {
         name = "Capítulo $number"
         chapter_number = number
-        date_upload = DATE_FORMAT.tryParse(createdAt)
+        date_upload = DATE_FORMAT.tryParseDateTime(createdAt)
         url = "/read/$titleId/$number#$id"
     }
 }

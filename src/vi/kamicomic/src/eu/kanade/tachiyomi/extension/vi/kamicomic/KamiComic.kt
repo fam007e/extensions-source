@@ -151,14 +151,14 @@ abstract class KamiComic : KeiSource() {
             genre = terms
                 .filter { it.taxonomy == "genre" }
                 .mapNotNull { it.name }
-                ?.joinToString()
-                ?.ifEmpty { null }
+                .joinToString()
+                .ifEmpty { null }
 
             author = terms
                 .filter { it.taxonomy == "author_tax" }
                 .mapNotNull { it.name }
-                ?.joinToString()
-                ?.ifEmpty { null }
+                .joinToString()
+                .ifEmpty { null }
 
             thumbnail_url = wpManga.embedded?.featuredMedia
                 ?.firstOrNull()?.sourceUrl

@@ -4,13 +4,13 @@ import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.UpdateStrategy
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.serializer
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -125,3 +125,5 @@ private fun Int.toUpdateStrategy(): UpdateStrategy = when (this) {
     SManga.COMPLETED -> UpdateStrategy.ONLY_FETCH_ONCE
     else -> UpdateStrategy.ALWAYS_UPDATE
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -14,12 +14,12 @@ import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
@@ -121,7 +121,7 @@ abstract class Akaya : HttpSource() {
                 setUrlWithoutDomain(it.selectFirst("div.name-serie-search > a")!!.attr("href"))
                 thumbnail_url = it.selectFirst("div.inner-img-search")?.attr("style")
                     ?.substringAfter("url(")?.substringBefore(")")
-                title = it.select("div.name-serie-search")?.text() ?: ""
+                title = it.select("div.name-serie-search").text()
             }
         }
 
@@ -225,6 +225,8 @@ abstract class Akaya : HttpSource() {
     override fun imageUrlParse(response: Response): String = throw UnsupportedOperationException()
 
     companion object {
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("es"))
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.forLanguageTag("es"))
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

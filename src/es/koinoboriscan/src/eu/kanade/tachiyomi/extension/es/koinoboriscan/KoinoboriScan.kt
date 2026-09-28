@@ -33,7 +33,7 @@ abstract class KoinoboriScan : HttpSource() {
 
     private val json: Json by injectLazy()
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale("es")).apply {
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.forLanguageTag("es")).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 

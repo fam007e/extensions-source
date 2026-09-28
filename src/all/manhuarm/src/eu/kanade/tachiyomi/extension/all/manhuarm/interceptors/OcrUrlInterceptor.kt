@@ -29,7 +29,6 @@ class OcrUrlInterceptor(private val headers: Headers) {
             with(webview.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 useWideViewPort = false
                 loadWithOverviewMode = false
                 userAgentString = headers["User-Agent"]

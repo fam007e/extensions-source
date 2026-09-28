@@ -11,7 +11,7 @@ import java.util.Locale
 
 @Source
 abstract class Doodmanga : Madara() {
-    override val dateFormat = SimpleDateFormat("dd MMMMM yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("dd MMMMM yyyy", Locale.forLanguageTag("th"))
     override val filterNonMangaItems = false
 
     override val client: OkHttpClient = super.client.newBuilder()

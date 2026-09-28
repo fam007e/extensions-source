@@ -12,7 +12,8 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import keiyoushi.utils.tryParseDate
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -25,7 +26,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.io.IOException
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 abstract class InitManga : HttpSource() {
@@ -42,7 +43,9 @@ abstract class InitManga : HttpSource() {
 
     protected var genrelist: List<GenreData>? = null
 
-    private val fallbackDateFormatter = SimpleDateFormat(dateFormatStr, Locale.ROOT)
+    private val fallbackDateFormatter by lazy {
+        DateTimeFormatter.ofPattern(dateFormatStr, Locale.ROOT)
+    }
 
     override fun headersBuilder(): Headers.Builder = super.headersBuilder()
         .add("Referer", "$baseUrl/")
@@ -306,7 +309,8 @@ abstract class InitManga : HttpSource() {
         }
 
         val dateStr = element.select("time").attr("datetime")
-        date_upload = fallbackDateFormatter.tryParse(dateStr)
+        date_upload = fallbackDateFormatter.tryParseDateTime(dateStr).takeIf { it != 0L }
+            ?: fallbackDateFormatter.tryParseDate(dateStr)
     }
 
     override fun pageListParse(response: Response): List<Page> {

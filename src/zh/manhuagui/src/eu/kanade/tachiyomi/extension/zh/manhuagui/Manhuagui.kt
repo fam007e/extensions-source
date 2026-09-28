@@ -22,9 +22,8 @@ import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -39,6 +38,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import rx.Observable
 import java.io.IOException
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
@@ -49,6 +49,8 @@ abstract class Manhuagui :
     ConfigurableSource {
 
     private val preferences: SharedPreferences by getPreferencesLazy()
+
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override val supportsLatest = true
 
@@ -194,7 +196,7 @@ abstract class Manhuagui :
         val call = client.newCall(GET(baseUrl + manga.url, headers))
         val bid = Regex("""\d+""").find(manga.url)?.value
         if (bid != null) {
-            GlobalScope.launch(Dispatchers.IO) {
+            scope.launch {
                 delay(1000L)
                 val callback = object : Callback {
                     override fun onFailure(call: Call, e: IOException) = e.printStackTrace()
@@ -420,3 +422,5 @@ abstract class Manhuagui :
         private val singleQuoteRegex = Regex("""\\'""")
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

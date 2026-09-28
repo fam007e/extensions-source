@@ -20,9 +20,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import rx.Observable
-import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 import kotlin.time.Duration.Companion.seconds
 
 @Source
@@ -253,8 +253,9 @@ abstract class Wolftoon : HttpSource() {
     companion object {
         private val GENRE_REGEX = """\w+\s*=\s*(\['Ação',[^]]+])""".toRegex()
         private val API_KEY_REGEX = """supabase\.co['"],\s*[a-zA-Z0-9_$]+\s*=\s*['"](eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[^'"]+)['"]""".toRegex()
-        val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).apply {
-            timeZone = TimeZone.getTimeZone("America/Sao_Paulo")
+        val DATE_FORMAT by lazy {
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)
+                .withZone(ZoneId.of("America/Sao_Paulo"))
         }
     }
 }

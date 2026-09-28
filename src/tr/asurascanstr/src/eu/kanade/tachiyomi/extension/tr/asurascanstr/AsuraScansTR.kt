@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class AsuraScansTR : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("tr"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("tr"))
     override val altNameSelector = ".post-content_item:contains(Diğer Adlar) .summary-content"
 }

@@ -10,13 +10,13 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
@@ -102,7 +102,7 @@ abstract class MangaToon : HttpSource() {
                 .joinToString("\n\n") { it.text() }
             genre = document.select("div.detail-tags-info span").text()
                 .split("/")
-                .map { it.capitalize(locale) }
+                .map { it.replaceFirstChar { char -> if (char.isLowerCase()) char.titlecase(locale) else char.toString() } }
                 .sorted()
                 .joinToString { it.trim() }
             status = document.select("div.detail-status").text().toStatus()
@@ -193,3 +193,5 @@ abstract class MangaToon : HttpSource() {
         private val PAID_CHECK_BREAKPOINTS = arrayOf(5, 10, 15, 20)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

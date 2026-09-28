@@ -13,7 +13,8 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.parseAs
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Headers
 import okhttp3.HttpUrl
@@ -26,6 +27,8 @@ import rx.Observable
 
 @Source
 abstract class AnimeSama : HttpSource() {
+
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override val supportsLatest = true
 
@@ -292,7 +295,7 @@ abstract class AnimeSama : HttpSource() {
 
     override fun getFilterList(): FilterList {
         val filters = mutableListOf<Filter<*>>()
-        GlobalScope.launch { fetchFilters() }
+        scope.launch { fetchFilters() }
 
         if (genreList.isNotEmpty()) {
             filters.add(GenreFilter(genreList))

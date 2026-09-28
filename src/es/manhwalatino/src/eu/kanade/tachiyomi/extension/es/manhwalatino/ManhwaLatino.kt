@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class ManhwaLatino : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .addInterceptor { chain ->

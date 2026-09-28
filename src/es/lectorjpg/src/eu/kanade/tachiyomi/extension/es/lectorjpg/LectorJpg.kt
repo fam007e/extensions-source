@@ -12,11 +12,11 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -169,7 +169,7 @@ abstract class LectorJpg : HttpSource() {
         return style.substringAfterLast("url(").substringBefore(")").removeSurrounding("\"")
     }
 
-    private val chapterDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    private val chapterDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     private fun parseChapterDate(date: String): Long {
         if (date.contains("hace")) {
@@ -274,3 +274,5 @@ abstract class LectorJpg : HttpSource() {
         Genre("Transmigración", "Transmigración"),
     )
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

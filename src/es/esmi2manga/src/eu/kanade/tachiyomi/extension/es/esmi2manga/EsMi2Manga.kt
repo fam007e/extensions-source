@@ -12,6 +12,6 @@ import kotlin.time.Duration.Companion.seconds
 @Source
 abstract class EsMi2Manga : Madara() {
     override val chapterMode = ChapterMode.MangaAjax
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     override fun OkHttpClient.Builder.configureClient() = rateLimit(2, 1.seconds) { !it.encodedPath.startsWith("/wp-content/uploads/") }
 }

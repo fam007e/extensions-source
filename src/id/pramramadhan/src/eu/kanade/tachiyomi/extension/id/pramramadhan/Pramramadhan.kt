@@ -9,10 +9,10 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -22,7 +22,7 @@ abstract class Pramramadhan : HttpSource() {
 
     override val supportsLatest = true
 
-    private val simpleDateFormat = SimpleDateFormat("d MMMM yyyy", Locale("id"))
+    private val simpleDateFormat = SimpleDateFormat("d MMMM yyyy", Locale.forLanguageTag("id"))
 
     // ============================== Popular ===============================
     override fun popularMangaRequest(page: Int): Request = GET("$baseUrl/search.php?sort=popular&page=$page", headers)
@@ -148,3 +148,5 @@ abstract class Pramramadhan : HttpSource() {
         ArtistFilter(),
     )
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -72,7 +72,12 @@ class ComposedImageInterceptor(
         val format = when (ext) {
             "png" -> Bitmap.CompressFormat.PNG
             "jpeg", "jpg" -> Bitmap.CompressFormat.JPEG
-            else -> Bitmap.CompressFormat.WEBP
+            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Bitmap.CompressFormat.WEBP_LOSSLESS
+            } else {
+                @Suppress("DEPRECATION")
+                Bitmap.CompressFormat.WEBP
+            }
         }
 
         bitmap.compress(format, 100, output)

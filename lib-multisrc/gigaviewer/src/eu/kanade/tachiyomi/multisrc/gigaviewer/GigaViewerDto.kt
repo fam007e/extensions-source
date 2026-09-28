@@ -1,9 +1,9 @@
 package eu.kanade.tachiyomi.multisrc.gigaviewer
 
 import eu.kanade.tachiyomi.source.model.SChapter
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 // Viewer
@@ -54,3 +54,5 @@ class GigaViewerPaginationReadableProduct(
 class GigaViewerPaginationReadableProductStatus(
     val label: String?, // is_free, is_rentable, is_purchasable, unpublished, is_rentable_and_subscribable
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

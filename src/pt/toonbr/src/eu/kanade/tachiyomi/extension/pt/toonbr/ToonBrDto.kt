@@ -2,8 +2,8 @@ package eu.kanade.tachiyomi.extension.pt.toonbr
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
 @Serializable
@@ -63,3 +63,5 @@ internal data class LoginResponse(
 internal data class MangaListResponse(
     val data: List<MangaDto>,
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

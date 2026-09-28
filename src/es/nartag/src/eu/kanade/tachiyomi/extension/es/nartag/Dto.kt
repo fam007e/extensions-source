@@ -1,6 +1,6 @@
 package eu.kanade.tachiyomi.extension.es.nartag
 
-import keiyoushi.utils.tryParse
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -29,3 +29,5 @@ fun parseDate(dateStr: String): Long? {
         else -> null
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -3,8 +3,8 @@ package eu.kanade.tachiyomi.extension.pt.spectralscan
 import eu.kanade.tachiyomi.source.model.Filter
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -367,3 +367,5 @@ val themeList = arrayOf(
     Pair("Virtual Reality", "virtual-reality"),
     Pair("Zumbis", "zumbis-tema"),
 )
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -15,7 +15,7 @@ import java.util.Locale
 
 @Source
 abstract class RagnarokScanlation : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale("en"))
+    override val dateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("en"))
 
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val useNewChapterEndpoint = true

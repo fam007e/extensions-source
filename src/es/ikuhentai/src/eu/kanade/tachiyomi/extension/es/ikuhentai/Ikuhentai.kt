@@ -11,11 +11,11 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.utils.asJsoup
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -23,7 +23,7 @@ import java.util.Locale
 abstract class Ikuhentai : HttpSource() {
     override val supportsLatest = true
 
-    private val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    private val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
 
     override fun popularMangaRequest(page: Int): Request {
         val pagePath = if (page > 1) "page/$page/" else ""
@@ -185,3 +185,5 @@ abstract class Ikuhentai : HttpSource() {
         GenreList(getGenreList()),
     )
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

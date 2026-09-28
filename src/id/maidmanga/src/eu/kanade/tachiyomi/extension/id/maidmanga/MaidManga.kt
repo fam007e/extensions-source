@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class MaidManga : ZManga() {
-    override val dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale("id"))
+    override val dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.forLanguageTag("id"))
 
     override val hasProjectPage = true
 }

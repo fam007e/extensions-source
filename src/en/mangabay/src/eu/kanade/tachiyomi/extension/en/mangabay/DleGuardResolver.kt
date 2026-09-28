@@ -64,7 +64,6 @@ object DleGuardResolver {
             with(wv.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 blockNetworkImage = true
                 if (!userAgent.isNullOrBlank()) userAgentString = userAgent
             }

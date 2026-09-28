@@ -21,7 +21,6 @@ import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstance
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.FormBody
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -31,6 +30,8 @@ import okhttp3.Response
 import okio.use
 import org.jsoup.Jsoup
 import rx.Observable
+import java.text.ParsePosition
+import java.text.SimpleDateFormat
 
 @Source
 abstract class Dynasty :
@@ -756,3 +757,5 @@ abstract class Dynasty :
             .toString()
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

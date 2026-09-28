@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.seconds
 abstract class LectorMangaLat :
     Madara(),
     ConfigurableSource {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
 
     override val client: OkHttpClient = super.client.newBuilder()
         .rateLimit(2, 1.seconds)

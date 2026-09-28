@@ -12,11 +12,11 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -26,7 +26,7 @@ abstract class FalcoScan : HttpSource() {
 
     override val supportsLatest = true
 
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("es"))
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("es"))
 
     override val client = network.client.newBuilder()
         .rateLimit(3) { it.host == baseUrlHost }
@@ -159,3 +159,5 @@ abstract class FalcoScan : HttpSource() {
         else -> SManga.UNKNOWN
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

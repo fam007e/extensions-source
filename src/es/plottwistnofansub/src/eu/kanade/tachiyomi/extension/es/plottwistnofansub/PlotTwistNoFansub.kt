@@ -12,13 +12,13 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
@@ -264,7 +264,7 @@ abstract class PlotTwistNoFansub : HttpSource() {
     }
 
     private val dateFormat by lazy {
-        SimpleDateFormat("MMMM d, yyyy", Locale("es"))
+        SimpleDateFormat("MMMM d, yyyy", Locale.forLanguageTag("es"))
     }
 
     companion object {
@@ -273,3 +273,5 @@ abstract class PlotTwistNoFansub : HttpSource() {
         private val HTML_TAG_REGEX = Regex("<[^>]*>")
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

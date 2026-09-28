@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class GremoryMangas : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     override val useNewChapterEndpoint = true
 }

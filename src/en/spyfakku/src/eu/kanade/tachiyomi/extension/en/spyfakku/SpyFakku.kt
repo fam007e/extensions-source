@@ -16,7 +16,6 @@ import keiyoushi.utils.int
 import keiyoushi.utils.long
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.string
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
@@ -26,6 +25,7 @@ import okhttp3.Response
 import rx.Observable
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -390,3 +390,5 @@ abstract class SpyFakku : HttpSource() {
         }
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class Marmota : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("d 'de' MMM 'de' yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("d 'de' MMM 'de' yyyy", Locale.forLanguageTag("es"))
     override val mangaSubString: String = "comic"
     override val chapterMode = ChapterMode.MangaAjax
 }

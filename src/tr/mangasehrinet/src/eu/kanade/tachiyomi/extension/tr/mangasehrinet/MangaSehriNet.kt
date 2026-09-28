@@ -9,5 +9,5 @@ import java.util.Locale
 @Source
 abstract class MangaSehriNet : Madara() {
     override val chapterMode = ChapterMode.MangaAjax
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("tr"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("tr"))
 }

@@ -16,7 +16,7 @@ import java.util.Locale
 
 @Source
 abstract class TiaManhwa : Madara() {
-    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+    override val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.of("pt", "BR"))
 
     override val mangaSubString = "manhwa"
 
@@ -91,7 +91,7 @@ abstract class TiaManhwa : Madara() {
 
     override fun latestUpdatesParse(response: Response): MangasPage {
         val document = Jsoup.parse(
-            response.body!!.string(),
+            response.body.string(),
             response.request.url.toString(),
         )
 

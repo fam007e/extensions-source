@@ -7,5 +7,5 @@ import java.util.Locale
 
 @Source
 abstract class ApollComics : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.forLanguageTag("es"))
 }

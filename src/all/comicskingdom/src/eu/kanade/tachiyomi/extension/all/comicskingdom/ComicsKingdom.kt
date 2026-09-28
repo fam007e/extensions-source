@@ -168,7 +168,7 @@ abstract class ComicsKingdom :
         var chapterData = getChapterList(mangaName, pageNum)
         var chapterNum = 0.0F
 
-        while (chapterData != null) {
+        while (true) {
             val list = chapterData.map {
                 chapterNum += 0.01F
                 SChapter.create().apply {
@@ -180,7 +180,7 @@ abstract class ComicsKingdom :
                         }
                             .toString(),
                     )
-                    date_upload = dateFormat.parse(it.date).time
+                    date_upload = dateFormat.parse(it.date)?.time ?: 0L
                     name = it.date.substringBefore("T")
                 }
             }

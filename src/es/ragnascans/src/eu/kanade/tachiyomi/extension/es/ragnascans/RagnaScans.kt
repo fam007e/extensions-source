@@ -14,12 +14,12 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
-import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Request
 import okhttp3.Response
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -35,7 +35,7 @@ abstract class RagnaScans : HttpSource() {
         .build()
 
     private val dateFormat by lazy {
-        SimpleDateFormat("dd MMMM, yyyy", Locale("es")).apply {
+        SimpleDateFormat("dd MMMM, yyyy", Locale.forLanguageTag("es")).apply {
             timeZone = TimeZone.getTimeZone("UTC")
         }
     }
@@ -198,3 +198,5 @@ abstract class RagnaScans : HttpSource() {
         SortFilter(),
     )
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

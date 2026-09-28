@@ -3,8 +3,8 @@ package eu.kanade.tachiyomi.extension.tr.ragnarscans
 import eu.kanade.tachiyomi.multisrc.initmanga.InitManga
 import eu.kanade.tachiyomi.source.model.SChapter
 import keiyoushi.annotation.Source
-import keiyoushi.utils.tryParse
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -15,7 +15,7 @@ abstract class RagnarScans : InitManga() {
 
     override val popularUrlSlug = "en-cok-takip-edilenler"
 
-    private val ragnarDateFormat = SimpleDateFormat("d MMMM yyyy HH:mm", Locale("tr"))
+    private val ragnarDateFormat = SimpleDateFormat("d MMMM yyyy HH:mm", Locale.forLanguageTag("tr"))
 
     override fun chapterListSelector() = "div.chapter-list > div.chapter-item"
 
@@ -31,3 +31,5 @@ abstract class RagnarScans : InitManga() {
         date_upload = ragnarDateFormat.tryParse(dateStr)
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

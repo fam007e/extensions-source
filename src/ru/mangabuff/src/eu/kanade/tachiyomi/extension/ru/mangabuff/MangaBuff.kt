@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.extension.ru.mangabuff
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
 import eu.kanade.tachiyomi.network.GET
@@ -102,7 +103,13 @@ abstract class MangaBuff :
         }
 
         val buffer = Buffer()
-        original.compress(Bitmap.CompressFormat.WEBP, 90, buffer.outputStream())
+        val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSY
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
+        original.compress(format, 90, buffer.outputStream())
         original.recycle()
         return response.newBuilder().body(buffer.asResponseBody(WEBP_MEDIA_TYPE, buffer.size)).build()
     }

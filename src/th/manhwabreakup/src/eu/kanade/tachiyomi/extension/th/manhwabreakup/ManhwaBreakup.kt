@@ -22,7 +22,7 @@ import java.util.Locale
 
 @Source
 abstract class ManhwaBreakup : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("th"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("th"))
     override val useLoadMoreRequest = LoadMoreStrategy.Never
     override val useNewChapterEndpoint = false
 

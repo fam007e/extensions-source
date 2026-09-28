@@ -2,11 +2,11 @@ package eu.kanade.tachiyomi.extension.ja.linemanga
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -123,3 +123,5 @@ class Rows(
 }
 
 private val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.ROOT)
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

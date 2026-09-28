@@ -62,7 +62,6 @@ object AnibusInterceptor : Interceptor {
             with(webview.settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
-                databaseEnabled = true
                 userAgentString = request.header("User-Agent")
             }
             webview.webViewClient = object : WebViewClient() {

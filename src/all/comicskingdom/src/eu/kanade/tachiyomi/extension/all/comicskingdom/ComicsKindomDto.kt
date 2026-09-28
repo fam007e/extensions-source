@@ -40,5 +40,5 @@ class Rendered(
     val rendered: String,
 )
 
-val ChapterFields = Chapter.javaClass.fields.joinToString(",") { it.name }
-val MangaFields = Manga.javaClass.fields.joinToString(",") { it.name }
+val ChapterFields = Chapter::class.java.fields.joinToString(",") { it.name }
+val MangaFields = Manga::class.java.fields.joinToString(",") { it.name }

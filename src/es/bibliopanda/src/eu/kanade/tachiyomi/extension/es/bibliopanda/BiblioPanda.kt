@@ -8,7 +8,7 @@ import java.util.Locale
 
 @Source
 abstract class BiblioPanda : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("es"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("es"))
     override val client = super.client.newBuilder()
         .rateLimit(3)
         .build()

@@ -20,7 +20,6 @@ import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -31,6 +30,7 @@ import okio.IOException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
@@ -126,7 +126,7 @@ abstract class Honeytoon :
         val document = response.asJsoup()
         title = document.selectFirst("h1")!!.text()
 
-        author = document.select(".comic-book__story-art a")?.joinToString { it.text() }
+        author = document.select(".comic-book__story-art a").joinToString { it.text() }
         description = document.selectFirst(".comic-book__desc")?.text()
         genre = document.select(".comic-book-content a[href*=genre], .comic-tag").joinToString { it.text() }
         status = when {
@@ -160,7 +160,7 @@ abstract class Honeytoon :
 
                     date_upload = dateFormat.tryParse(element.selectFirst(".comic-list__title-date")?.text())
                     setUrlWithoutDomain(
-                        element.absUrl("href")?.takeIf { !isLocked }
+                        element.absUrl("href").takeIf { !isLocked }
                             ?: (document.location() + "/$index#locked"),
                     )
                 }
@@ -227,10 +227,10 @@ abstract class Honeytoon :
         val locale = when {
             lang.contains("-") -> {
                 val (lang, country) = lang.split("-")
-                Locale(lang, country)
+                Locale.of(lang, country)
             }
 
-            else -> Locale(lang)
+            else -> Locale.forLanguageTag(lang)
         }
         SimpleDateFormat("MMMM dd , yyyy", locale)
     }
@@ -246,3 +246,5 @@ abstract class Honeytoon :
         private const val PREF_ADULT_KEY = "prefAdultKey"
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

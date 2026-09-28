@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class HotCabaretScan : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale("pt", "BR"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.of("pt", "BR"))
 
     override fun OkHttpClient.Builder.configureClient() = addInterceptor(::checkPasswordProtectedIntercept)
         .rateLimit(1, 2.seconds) { !it.encodedPath.startsWith("/wp-content/uploads/") }

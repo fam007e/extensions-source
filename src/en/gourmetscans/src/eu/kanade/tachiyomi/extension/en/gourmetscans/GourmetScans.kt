@@ -33,9 +33,9 @@ abstract class GourmetScans : Madara() {
                 url.addPathSegment(yearFilter.state)
             }
 
-            genreFilter?.state?.equals(0)?.not() ?: false -> {
+            genreFilter != null && genreFilter.state != 0 -> {
                 url.addPathSegment("genre")
-                url.addPathSegment(genreFilter!!.toUriPart())
+                url.addPathSegment(genreFilter.toUriPart())
             }
 
             else -> {

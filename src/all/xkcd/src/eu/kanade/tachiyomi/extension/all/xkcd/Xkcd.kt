@@ -19,7 +19,6 @@ import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.int
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.string
-import keiyoushi.utils.tryParse
 import kotlinx.serialization.json.JsonObject
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -28,6 +27,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.jsoup.nodes.Element
 import rx.Observable
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -464,3 +464,5 @@ abstract class Xkcd :
         }
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

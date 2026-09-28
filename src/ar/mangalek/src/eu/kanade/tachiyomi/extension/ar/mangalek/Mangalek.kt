@@ -11,7 +11,7 @@ import java.util.Locale
 
 @Source
 abstract class Mangalek : Madara() {
-    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale("ar"))
+    override val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.forLanguageTag("ar"))
 
     override val useLoadMoreRequest = LoadMoreStrategy.Always
     override val chapterUrlSuffix = ""

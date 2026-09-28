@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.os.Build
 import keiyoushi.utils.decodeHex
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -77,7 +78,15 @@ class ImageInterceptor : Interceptor {
         val (format, quality) = when (mimeType.lowercase()) {
             "image/jpeg", "image/jpg" -> Bitmap.CompressFormat.JPEG to 90
             "image/png" -> Bitmap.CompressFormat.PNG to 100
-            else -> Bitmap.CompressFormat.WEBP to 100
+            else -> {
+                val webpFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    Bitmap.CompressFormat.WEBP_LOSSLESS
+                } else {
+                    @Suppress("DEPRECATION")
+                    Bitmap.CompressFormat.WEBP
+                }
+                webpFormat to 100
+            }
         }
 
         bitmap.recycle()

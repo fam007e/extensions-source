@@ -10,7 +10,6 @@ import eu.kanade.tachiyomi.source.online.HttpSource
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.asJsoup
-import keiyoushi.utils.tryParse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,12 +18,13 @@ import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Source
 abstract class ArabsHentai : HttpSource() {
-    private val dateFormat = SimpleDateFormat("d MMM، yyy", Locale("ar"))
+    private val dateFormat = SimpleDateFormat("d MMM، yyy", Locale.forLanguageTag("ar"))
     override val supportsLatest = true
     override val client = network.client.newBuilder()
         .rateLimit(2)
@@ -203,3 +203,5 @@ abstract class ArabsHentai : HttpSource() {
         }
     }
 }
+
+private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

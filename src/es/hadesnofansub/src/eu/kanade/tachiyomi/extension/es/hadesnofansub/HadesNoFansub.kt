@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Source
 abstract class HadesNoFansub : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale("es"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.forLanguageTag("es"))
     override val chapterMode = ChapterMode.MangaAjax
 
     override val mangaSubString = "tmo"
