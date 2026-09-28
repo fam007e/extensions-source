@@ -1,6 +1,5 @@
 package eu.kanade.tachiyomi.extension.en.weebcentral
 
-import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.Page
@@ -38,11 +37,11 @@ abstract class WeebCentral : KeiSource() {
 
     // ============================== Popular ===============================
 
-    override suspend fun getPopularManga(page: Int): MangasPage = getSearchMangaList(page, "", defaultFilterList(SortFilter("Popularity")))
+    override suspend fun getPopularManga(page: Int): MangasPage = getSearchMangaList(page, "", FilterList(SortFilter("Popularity"), SortOrderFilter()))
 
     // =============================== Latest ===============================
 
-    override suspend fun getLatestUpdates(page: Int): MangasPage = getSearchMangaList(page, "", defaultFilterList(SortFilter("Latest Updates")))
+    override suspend fun getLatestUpdates(page: Int): MangasPage = getSearchMangaList(page, "", FilterList(SortFilter("Latest Updates"), SortOrderFilter()))
 
     // =============================== Search ===============================
 
@@ -235,7 +234,7 @@ abstract class WeebCentral : KeiSource() {
 
         val document = client.get(newUrl).asJsoup()
         return document.select("section[x-data~=scroll] > img").mapIndexed { index, element ->
-            Page(index, imageUrl = element.attr("abs:src"))
+            Page(index, imageUrl = element.absUrl("src"))
         }
     }
 
@@ -245,7 +244,10 @@ abstract class WeebCentral : KeiSource() {
             add("Host", page.imageUrl!!.toHttpUrl().host)
         }.build()
 
-        return GET(page.imageUrl!!, imgHeaders)
+        return Request.Builder()
+            .url(page.imageUrl!!)
+            .headers(imgHeaders)
+            .build()
     }
 
     // ============================= Utilities ==============================

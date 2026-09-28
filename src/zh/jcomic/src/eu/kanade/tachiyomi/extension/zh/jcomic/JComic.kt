@@ -12,30 +12,35 @@ import keiyoushi.annotation.Source
 import keiyoushi.network.get
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
-import keiyoushi.utils.long
+import keiyoushi.utils.longOrNull
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.supervisorScope
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import okhttp3.Headers
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import org.jsoup.nodes.Element
 import java.io.IOException
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Source
 abstract class JComic : KeiSource() {
 
+    override fun Headers.Builder.configureHeaders() = apply {
+        set("Cookie", "jcomic_access=verified_user")
+    }
+
     override fun OkHttpClient.Builder.configureClient() = apply {
         addInterceptor { chain ->
             val origin = chain.request()
             chain.proceed(origin).also {
-                if (it.code == 403 && origin.url.toString().contains("jcomic-content")) {
+                if (it.code == 403 && (origin.url.host.startsWith("images.") || origin.url.toString().contains("jcomic-content"))) {
                     it.close()
                     throw IOException("图片已失效，清除章节缓存后重试\n（链接有效期只有1分钟，建议以后下载完章节再看）")
                 }
@@ -46,7 +51,7 @@ abstract class JComic : KeiSource() {
     // Customize
     companion object {
         val SIZE_REGEX = Regex("\\((\\d+)\\)")
-        val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINESE)
+        val DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.CHINESE) }
     }
 
     private fun mangaPageParse(response: Response): MangasPage {
@@ -54,7 +59,7 @@ abstract class JComic : KeiSource() {
         val mangas = doc.select(".container .col-lg-4").map {
             val a = it.selectFirst("> a:nth-child(1)")!!
             val tags = it.select(".list-content > a").drop(1)
-            val time = DATE_FORMAT.tryParse(it.selectFirst(".comic-date")!!.text().substringAfter("最後更新: "))
+            val time = DATE_FORMAT.tryParseDateTime(it.selectFirst(".comic-date")!!.text().substringAfter("最後更新: "))
             val name = it.selectFirst(".comic-title")!!.text()
             SManga.create().apply {
                 url = a.attr("href")
@@ -129,7 +134,7 @@ abstract class JComic : KeiSource() {
 
         val asyncChapters = if (fetchChapters) {
             async {
-                val time = manga.memo["time"]!!.long
+                val time = manga.memo["time"]?.longOrNull ?: 0L
                 if (manga.url.contains("/page")) {
                     listOf(
                         SChapter.create().apply {
@@ -160,9 +165,13 @@ abstract class JComic : KeiSource() {
     override suspend fun getPageList(chapter: SChapter): List<Page> {
         val response = client.get(baseUrl + chapter.url)
         return response.asJsoup().select(".comic-thumb").mapIndexed { i, img ->
-            Page(i, imageUrl = String(Base64.decode(img.attr("data-locked").removePrefix("JCOMIC_TRAP_").reversed(), Base64.NO_WRAP)))
+            val locked = img.attr("data-locked")
+            val url = if (locked.isNotEmpty()) {
+                String(Base64.decode(locked.removePrefix("JCOMIC_TRAP_").reversed(), Base64.NO_WRAP))
+            } else {
+                img.attr("data-src").ifEmpty { img.attr("src") }
+            }
+            Page(i, imageUrl = url)
         }
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

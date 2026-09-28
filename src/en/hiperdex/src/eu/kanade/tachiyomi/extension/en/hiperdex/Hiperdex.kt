@@ -97,11 +97,20 @@ abstract class Hiperdex : Hiper() {
 
     override fun parseSearchMangaList(response: Response): MangasPage {
         val mangaUpdate = super.parseSearchMangaList(response)
+        val noCleanTitles = noCleanTitlesWhileBrowsing()
+        val removeVersion = isRemoveTitleVersion()
+        val customRegex = customRemoveTitle().takeIf { it.isNotEmpty() }?.let { runCatching { Regex(it) }.getOrNull() }
+        val hasCustom = customRegex != null
+
+        if (noCleanTitles && !removeVersion && !hasCustom) {
+            return mangaUpdate
+        }
+
         return MangasPage(
             mangaUpdate.mangas.map {
-                if (!noCleanTitlesWhileBrowsing()) {
-                    it.title = it.title.cleanTitleIfNeeded()
-                } else if (isRemoveTitleVersion() || customRemoveTitle().isNotEmpty()) {
+                if (!noCleanTitles) {
+                    it.title = it.title.cleanTitle(customRegex, removeVersion)
+                } else if (removeVersion || hasCustom) {
                     // Allow it to refresh the cleaning title when manga is opened
                     it.initialized = false
                 }
@@ -112,7 +121,8 @@ abstract class Hiperdex : Hiper() {
     }
 
     override fun parseMangaDetails(response: Response): SManga = super.parseMangaDetails(response).apply {
-        val cleanedTitle = title.cleanTitleIfNeeded()
+        val customRegex = customRemoveTitle().takeIf { it.isNotEmpty() }?.let { runCatching { Regex(it) }.getOrNull() }
+        val cleanedTitle = title.cleanTitle(customRegex, isRemoveTitleVersion())
         if (cleanedTitle != title.trim()) {
             description = listOfNotNull(title, description)
                 .joinToString("\n\n")
@@ -120,14 +130,12 @@ abstract class Hiperdex : Hiper() {
         }
     }
 
-    private fun String.cleanTitleIfNeeded(): String {
+    private fun String.cleanTitle(customRegex: Regex?, removeVersion: Boolean): String {
         var tempTitle = this
-        customRemoveTitle().takeIf { it.isNotEmpty() }?.let { customRegex ->
-            runCatching {
-                tempTitle = tempTitle.replace(Regex(customRegex), "")
-            }
+        if (customRegex != null) {
+            tempTitle = tempTitle.replace(customRegex, "")
         }
-        if (isRemoveTitleVersion()) {
+        if (removeVersion) {
             tempTitle = tempTitle.replace(titleRegex, "")
         }
         return tempTitle.trim()

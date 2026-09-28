@@ -2,19 +2,14 @@ package eu.kanade.tachiyomi.extension.ja.mangano
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
+import kotlin.time.Instant
 
 // Variables
-@Serializable
-object EmptyVariables
-
 @Suppress("unused")
 @Serializable
 class LatestVariables(
@@ -72,6 +67,7 @@ class Node(
     private val coverImage: CoverImage?,
     private val user: User?,
     private val tags: List<Tag>?,
+    val episodes: Episodes?,
 ) {
     fun toSManga(): SManga = SManga.create().apply {
         url = id
@@ -127,16 +123,6 @@ class Tag(
 )
 
 @Serializable
-class ChapterResponse(
-    val node: ChapterNode,
-)
-
-@Serializable
-class ChapterNode(
-    val episodes: Episodes,
-)
-
-@Serializable
 class Episodes(
     val edges: List<ChapterEdge>,
 )
@@ -170,7 +156,7 @@ class ChapterNodeX(
         url = id
         name = lock + preview + title
         chapter_number = number?.toFloat() ?: -1f
-        date_upload = dateFormat.tryParse(publishedAt)
+        date_upload = Instant.tryParse(publishedAt)
     }
 }
 
@@ -178,10 +164,6 @@ class ChapterNodeX(
 class SalesInfo(
     val pagesChargedFrom: Int,
 )
-
-private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).apply {
-    timeZone = TimeZone.getTimeZone("UTC")
-}
 
 @Serializable
 class ViewerResponse(
@@ -239,5 +221,3 @@ class LoginResponse(
     @JsonNames("id_token") val idToken: String,
     @JsonNames("refresh_token") val refreshToken: String,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L
