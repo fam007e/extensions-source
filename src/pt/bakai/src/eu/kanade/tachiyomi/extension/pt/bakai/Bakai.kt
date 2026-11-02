@@ -12,6 +12,7 @@ import keiyoushi.network.Fetch
 import keiyoushi.network.get
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
+import keiyoushi.utils.tryParse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.jsoup.nodes.Document
 import kotlin.time.Instant
@@ -151,5 +152,3 @@ abstract class Bakai : KeiSource() {
         }
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -23,5 +23,3 @@ class Dto(
         chapter_number = chapterId.toFloat()
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -26,6 +26,7 @@ import keiyoushi.utils.parseAs
 import keiyoushi.utils.tryParseDate
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonElement
@@ -387,5 +388,3 @@ abstract class Manhuagui :
         private val singleQuoteRegex = Regex("""\\'""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

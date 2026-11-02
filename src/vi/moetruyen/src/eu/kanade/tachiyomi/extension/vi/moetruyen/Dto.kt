@@ -97,7 +97,7 @@ class ImgxPageAccess(
 )
 
 @Serializable
-data class ReaderBootstrapConfig(
+class ReaderBootstrapConfig(
     val requestPath: String,
     val chapterId: Long,
     val bootstrapUrl: String,

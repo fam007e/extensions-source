@@ -131,5 +131,3 @@ abstract class Xiutaku : KeiSource() {
         private val DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm d-M-yyyy", Locale.US)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -204,5 +204,3 @@ abstract class Manhastro :
         private const val ENGLISH_TITLE_PREF = "englishTitlePref"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

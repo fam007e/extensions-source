@@ -9,4 +9,4 @@ import kotlinx.serialization.Serializable
 data class ScanlationGroupDto(override val attributes: ScanlationGroupAttributes? = null) : EntityDto()
 
 @Serializable
-data class ScanlationGroupAttributes(val name: String) : AttributesDto()
+class ScanlationGroupAttributes(val name: String) : AttributesDto()

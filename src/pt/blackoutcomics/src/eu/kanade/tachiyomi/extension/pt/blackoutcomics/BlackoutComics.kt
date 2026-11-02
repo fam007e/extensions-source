@@ -211,5 +211,3 @@ abstract class BlackoutComics : KeiSource() {
         private val PAGE_LIST_REGEX = Regex("""S\s*=\s*(\[[\s\S]*?])""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

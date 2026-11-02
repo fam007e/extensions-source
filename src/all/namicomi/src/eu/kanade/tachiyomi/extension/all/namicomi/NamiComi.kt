@@ -536,9 +536,11 @@ abstract class NamiComi :
 
             if (response.isSuccessful) {
                 val refresh = response.parseAs<RefreshTokenResponse>()
-                token = current.copy(
+                token = Token(
+                    idToken = current.idToken,
                     accessToken = refresh.accessToken,
                     refreshToken = refresh.refreshToken,
+                    scope = current.scope,
                     expiresAt = refresh.expires.epochSeconds,
                     refreshExpiresAt = refresh.refreshExpires?.epochSeconds,
                 )

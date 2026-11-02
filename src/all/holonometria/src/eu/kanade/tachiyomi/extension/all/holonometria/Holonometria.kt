@@ -99,5 +99,3 @@ abstract class Holonometria : KeiSource() {
         private val dateFormat = DateTimeFormatter.ofPattern("[yyyy.M.d][d.M.yyyy]", Locale.ENGLISH)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

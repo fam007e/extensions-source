@@ -150,5 +150,3 @@ abstract class MomonGA : KeiSource() {
         open fun toUriPart() = vals[state].second
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

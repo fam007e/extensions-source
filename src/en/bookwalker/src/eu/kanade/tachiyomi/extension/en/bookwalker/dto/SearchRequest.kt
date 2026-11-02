@@ -6,7 +6,7 @@ import kotlinx.serialization.protobuf.ProtoNumber
 import kotlinx.serialization.protobuf.ProtoOneOf
 
 @Serializable
-data class SearchRequestDto(
+class SearchRequestDto(
     @ProtoNumber(1) val limitOffset: LimitOffsetDto,
     @ProtoNumber(2) val query: String? = null,
     @ProtoNumber(3) val sort: SortDto,

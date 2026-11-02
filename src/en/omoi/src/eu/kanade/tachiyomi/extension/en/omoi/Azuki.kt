@@ -218,5 +218,3 @@ abstract class Azuki :
         private const val XOR_KEY = 174.toByte()
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

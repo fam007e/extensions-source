@@ -134,5 +134,3 @@ abstract class KomikNextGOnline : KeiSource() {
         private val COVER_SUFFIX_REGEX = Regex("""\s+cover$""", RegexOption.IGNORE_CASE)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -214,5 +214,3 @@ abstract class HeavenManga : KeiSource() {
         private const val CHAPTER_LIST_LIMIT = 10000
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

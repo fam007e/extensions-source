@@ -30,7 +30,7 @@ import java.util.Locale
 @Source
 abstract class SunsetManga : KeiSource() {
     private val ajaxUrl get() = "$baseUrl/wp-admin/admin-ajax.php"
-    private val dateFormat = DateTimeFormatter.ofPattern("d MMM yyyy", Locale("tr"))
+    private val dateFormat = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.forLanguageTag("tr"))
     private val nonceRegex = Regex("""sunsetGlobalData\s*=\s*\{[^}]*nonce:\s*"([a-z0-9]+)"""")
     private var nonce: String? = null
 

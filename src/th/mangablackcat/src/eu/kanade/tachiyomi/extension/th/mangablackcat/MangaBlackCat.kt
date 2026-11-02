@@ -290,5 +290,3 @@ abstract class MangaBlackCat : KeiSource() {
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.forLanguageTag("th"))
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

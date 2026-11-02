@@ -3,13 +3,12 @@ package eu.kanade.tachiyomi.extension.vi.otruyen
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.collections.mapIndexed
+import kotlin.time.Instant
 
 @Serializable
 class DataDto<T>(
@@ -110,7 +109,7 @@ class ChapterData(
     fun toSChapter(date: String, mangaUrl: String): SChapter = SChapter.create().apply {
         val chapterId = chapterApiData.substringAfterLast("/")
         name = "Chapter " + chapterName + (chapterTitle?.let { " : $it" } ?: "")
-        date_upload = dateFormat.tryParse(date) // API has no date for chapter → temporarily use updatedAt of entry
+        date_upload = Instant.tryParse(date) // API has no date for chapter → temporarily use updatedAt of entry
         chapter_number = chapterName.toFloatOrNull() ?: 0f
         url = "$chapterId:$mangaUrl"
     }
@@ -150,6 +149,3 @@ class GenreItem(
     val slug: String,
     val name: String,
 )
-private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ROOT)
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

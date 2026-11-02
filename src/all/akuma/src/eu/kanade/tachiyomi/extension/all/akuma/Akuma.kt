@@ -332,5 +332,3 @@ abstract class Akuma :
         private const val PREF_TITLE = "pref_title"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

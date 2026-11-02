@@ -1,8 +1,9 @@
 package eu.kanade.tachiyomi.extension.ar.mangatales
 
 import eu.kanade.tachiyomi.source.model.Filter
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.ResolverStyle
 import java.util.Locale
 
 class TagFilterData(
@@ -23,19 +24,11 @@ abstract class ValidatingTextFilter(name: String) : Filter.Text(name) {
     abstract fun isValid(): Boolean
 }
 
-private val DATE_FITLER_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH).apply {
-    isLenient = false
-}
-
-private fun SimpleDateFormat.isValid(date: String): Boolean = try {
-    parse(date)
-    true
-} catch (e: ParseException) {
-    false
-}
+private val DATE_FILTER_FORMAT = DateTimeFormatter.ofPattern("uuuu/MM/dd", Locale.ENGLISH)
+    .withResolverStyle(ResolverStyle.STRICT)
 
 class DateFilter(val id: String, name: String) : ValidatingTextFilter("(yyyy/MM/dd) $name)") {
-    override fun isValid(): Boolean = DATE_FITLER_FORMAT.isValid(state)
+    override fun isValid(): Boolean = runCatching { LocalDate.parse(state, DATE_FILTER_FORMAT) }.isSuccess
 }
 
 class IntFilter(val id: String, name: String) : ValidatingTextFilter(name) {

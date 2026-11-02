@@ -285,5 +285,3 @@ abstract class Mangack : KeiSource() {
         private val RELATIVE_NUMBER_REGEX = Regex("""^(\d+)""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

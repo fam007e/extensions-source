@@ -3,12 +3,12 @@ package eu.kanade.tachiyomi.extension.vi.mimi
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 
 @Serializable
 class DataDto(
@@ -88,11 +88,11 @@ class ChapterDto(
         url = "$mangaId/$id"
         name = title?.takeIf { it.isNotBlank() } ?: "Chapter $order"
         chapter_number = order.toFloat()
-        date_upload = dateFormat.tryParse(createdAt)
+        date_upload = dateFormat.tryParseDateTime(createdAt, ZoneId.of("Asia/Ho_Chi_Minh"))
     }
 }
 
-private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh") }
+private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)
 
 @Serializable
 class PageDto(
@@ -108,5 +108,3 @@ class ListPages(
     @SerialName("image_url")
     val imageUrl: String,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

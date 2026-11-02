@@ -223,5 +223,3 @@ abstract class Honeytoon :
         private const val PREF_ADULT_KEY = "prefAdultKey"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

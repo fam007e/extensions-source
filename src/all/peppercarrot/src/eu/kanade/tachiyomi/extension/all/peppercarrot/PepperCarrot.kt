@@ -264,5 +264,3 @@ abstract class PepperCarrot :
     private val dateRegex = Regex("""\d{4}-\d{2}-\d{2}""")
     private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT)
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

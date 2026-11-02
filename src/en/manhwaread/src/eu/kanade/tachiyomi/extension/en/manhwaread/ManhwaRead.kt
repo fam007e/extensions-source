@@ -244,5 +244,3 @@ abstract class ManhwaRead : KeiSource() {
         val PATTERN_CHAPTER_DATA = """var\s+chapterData\s*=\s*(\{.*\})""".toRegex()
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

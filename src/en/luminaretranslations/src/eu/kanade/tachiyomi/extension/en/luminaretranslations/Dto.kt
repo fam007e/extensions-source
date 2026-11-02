@@ -78,5 +78,3 @@ class Filters(
     @JsonNames("label") val name: String,
     @JsonNames("value") val slug: String,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

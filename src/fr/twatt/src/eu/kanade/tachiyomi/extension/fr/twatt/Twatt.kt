@@ -12,6 +12,7 @@ import keiyoushi.network.Fetch
 import keiyoushi.network.get
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.parseAs
+import keiyoushi.utils.tryParse
 import okhttp3.OkHttpClient
 import kotlin.time.Instant
 
@@ -85,5 +86,3 @@ abstract class Twatt : KeiSource() {
         }
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

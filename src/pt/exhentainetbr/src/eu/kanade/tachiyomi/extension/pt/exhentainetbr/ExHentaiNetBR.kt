@@ -156,5 +156,3 @@ class AlphabetFilter(
 ) : Filter.Select<String>(displayName, vals.toTypedArray(), state) {
     fun selected() = vals[state]
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

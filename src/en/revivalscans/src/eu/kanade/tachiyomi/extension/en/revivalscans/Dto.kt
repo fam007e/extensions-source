@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.extension.en.revivalscans
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
@@ -97,5 +98,3 @@ class PagesResponseDto(
 class PageDto(
     val url: String,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -79,7 +79,7 @@ abstract class Schlockmercenary : KeiSource() {
         var nextChapter = currentChapter.parent()?.nextElementSibling()?.selectFirst("a")
 
         if (nextChapter == null) {
-            nextChapter = currentChapter.parents()[2]?.nextElementSibling()?.selectFirst("ul.chapters > li:not(ul > li > ul > li) > a")
+            nextChapter = currentChapter.parents()[2].nextElementSibling()?.selectFirst("ul.chapters > li:not(ul > li > ul > li) > a")
         }
 
         val end = nextChapter?.let { LocalDate.parse(it.attr("href").takeLast(10), dateFormat) }
@@ -123,5 +123,3 @@ abstract class Schlockmercenary : KeiSource() {
         private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

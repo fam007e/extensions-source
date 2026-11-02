@@ -131,5 +131,3 @@ abstract class SandraAndWoo : KeiSource() {
         private val CHAPTER_TITLE_REGEX = Regex("""Permanent Link:\s*((?:\[(\d{4})])?\s*(?:\[[^]]*(\d{4})])?.*)""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

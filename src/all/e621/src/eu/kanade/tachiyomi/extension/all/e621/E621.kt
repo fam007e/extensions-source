@@ -542,5 +542,3 @@ abstract class E621 :
         return blacklist
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

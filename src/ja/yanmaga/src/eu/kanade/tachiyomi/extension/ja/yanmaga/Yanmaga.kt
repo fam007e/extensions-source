@@ -238,5 +238,3 @@ abstract class Yanmaga :
         private const val HIDE_LOCKED_PREF_KEY = "hide_locked"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

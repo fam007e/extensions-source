@@ -165,5 +165,3 @@ abstract class RokuHentai :
         return List(size) { i -> Page(i, imageUrl = "$baseUrl/_images/$path/${chapter.url}/$i.jpg") }
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

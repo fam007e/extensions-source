@@ -118,5 +118,3 @@ abstract class OkuToon : KeiSource() {
         GenreFilter(getGenreList()),
     )
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

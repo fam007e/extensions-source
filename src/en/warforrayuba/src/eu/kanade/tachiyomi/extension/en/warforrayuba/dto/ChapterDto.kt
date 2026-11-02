@@ -3,7 +3,7 @@ package eu.kanade.tachiyomi.extension.en.warforrayuba.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChapterDto(
+class ChapterDto(
     val title: String,
     val volume: Int,
     val groups: ChapterGroupDto,
@@ -11,6 +11,6 @@ data class ChapterDto(
 )
 
 @Serializable
-data class ChapterGroupDto(
+class ChapterGroupDto(
     val primary: String,
 )

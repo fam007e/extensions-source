@@ -29,7 +29,7 @@ abstract class Ikuhentai : KeiSource() {
     private val dateFormat = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .appendPattern("MMMM d, yyyy")
-        .toFormatter(Locale("es"))
+        .toFormatter(Locale.forLanguageTag("es"))
 
     override suspend fun getPopularManga(page: Int): MangasPage {
         val pagePath = if (page > 1) "page/$page/" else ""
@@ -186,5 +186,3 @@ abstract class Ikuhentai : KeiSource() {
         GenreList(getGenreList()),
     )
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

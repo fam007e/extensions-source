@@ -16,12 +16,12 @@ import keiyoushi.network.get
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.getPreferencesLazy
+import keiyoushi.utils.tryParseZonedDateTime
 import kotlinx.serialization.json.JsonElement
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.jsoup.nodes.Document
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Source
@@ -212,7 +212,7 @@ abstract class Hentai3 :
         SChapter.create().apply {
             name = "Chapter"
             setUrlWithoutDomain(doc.location())
-            date_upload = dateFormat.tryParse(doc.select("time").attr("datetime"))
+            date_upload = dateFormat.tryParseZonedDateTime(doc.select("time").attr("datetime"))
         },
     )
 
@@ -272,8 +272,6 @@ abstract class Hentai3 :
     companion object {
         private val SHORT_TITLE_REGEX = Regex("""(\[[^]]*]|[({][^)}]*[)}])""")
         private val REMOVE_THUMB_REGEX = Regex("t(?=\\.)")
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.ROOT)
+        private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ROOT)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

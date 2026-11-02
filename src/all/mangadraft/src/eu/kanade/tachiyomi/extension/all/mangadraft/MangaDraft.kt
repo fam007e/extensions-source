@@ -228,5 +228,3 @@ abstract class MangaDraft : KeiSource() {
         private val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.FRENCH)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

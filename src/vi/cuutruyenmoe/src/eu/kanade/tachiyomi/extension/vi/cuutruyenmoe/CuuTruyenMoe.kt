@@ -21,6 +21,7 @@ import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonElement
 import keiyoushi.utils.toJsonRequestBody
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.addJsonObject
@@ -39,10 +40,8 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Parser
 import java.io.IOException
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Source
 abstract class CuuTruyenMoe :
@@ -238,16 +237,15 @@ abstract class CuuTruyenMoe :
             SChapter.create().apply {
                 setUrlWithoutDomain(chapterElement.absUrl("href"))
                 name = chapterName
-                date_upload = dateFormat.tryParse(chapterElement.selectFirst("span.timeago[datetime]")?.attr("datetime"))
+                date_upload = dateFormat.tryParseDateTime(
+                    chapterElement.selectFirst("span.timeago[datetime]")?.attr("datetime"),
+                    ZoneId.of("Asia/Ho_Chi_Minh"),
+                )
             }
         }.distinctBy { it.url }
     }
 
-    private val dateFormat by lazy {
-        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply {
-            timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
-        }
-    }
+    private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     // ============================== Password ===============================
 
@@ -341,5 +339,3 @@ abstract class CuuTruyenMoe :
     private val livewireTokenRegex = Regex("""livewire_token\s*=\s*'([^']+)'""")
     private val defaultPassword = "5"
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -2,24 +2,20 @@ package eu.kanade.tachiyomi.multisrc.ezmanhwa
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 
-internal val EZMANHWA_DATE_FORMAT by lazy {
-    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).apply {
-        timeZone = TimeZone.getTimeZone("UTC")
-    }
-}
+internal val EZMANHWA_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
 
 internal val CHAPTER_PREFIX_REGEX = Regex("^(?i)(chapter|ch\\.?|episode|ep\\.?)\\s*.*")
 
 @Serializable
-data class EZManhwaSeriesListDto(
+class EZManhwaSeriesListDto(
     val data: List<EZManhwaSeriesDto>,
     val totalPages: Int,
     @SerialName("current") val currentPage: Int,
@@ -29,7 +25,7 @@ data class EZManhwaSeriesListDto(
 // Fields absent in the list response deserialize as null and are
 // only populated after mangaDetailsParse sets initialized = true.
 @Serializable
-data class EZManhwaSeriesDto(
+class EZManhwaSeriesDto(
     val slug: String,
     val title: String,
     val cover: String? = null,
@@ -65,17 +61,17 @@ data class EZManhwaSeriesDto(
 }
 
 @Serializable
-data class EZManhwaGenreDto(val name: String)
+class EZManhwaGenreDto(val name: String)
 
 @Serializable
-data class EZManhwaChapterListDto(
+class EZManhwaChapterListDto(
     val data: List<EZManhwaChapterDto>,
     val totalPages: Int = 1,
     @SerialName("current") val currentPage: Int = 1,
 )
 
 @Serializable
-data class EZManhwaChapterDto(
+class EZManhwaChapterDto(
     val slug: String,
     val number: Double? = null,
     val title: String? = null,
@@ -107,20 +103,18 @@ data class EZManhwaChapterDto(
 
         name = prefix + chapterName
         chapter_number = number?.toFloat() ?: -1f
-        date_upload = EZMANHWA_DATE_FORMAT.tryParse(createdAt)
+        date_upload = EZMANHWA_DATE_FORMAT.tryParseDateTime(createdAt, ZoneOffset.UTC)
     }
 
     private fun isChapterTitle(title: String, numStr: String): Boolean = title.contains(numStr) && CHAPTER_PREFIX_REGEX.matches(title)
 }
 
 @Serializable
-data class EZManhwaPageListDto(
+class EZManhwaPageListDto(
     val images: List<EZManhwaImageDto>? = null,
     val requiresPurchase: Boolean? = null,
     val totalImages: Int? = null,
 )
 
 @Serializable
-data class EZManhwaImageDto(val url: String)
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L
+class EZManhwaImageDto(val url: String)

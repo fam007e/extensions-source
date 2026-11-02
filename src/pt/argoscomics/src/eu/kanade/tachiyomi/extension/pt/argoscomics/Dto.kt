@@ -4,11 +4,10 @@ import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParseDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 @Serializable
 class MangasListDto(
@@ -119,12 +118,12 @@ class VolumeChapterDto(
         SChapter.create().apply {
             name = it.number.toString()
             chapter_number = it.number
-            date_upload = DATE_FORMAT.tryParse(it.createdAt)
+            date_upload = DATE_FORMAT.tryParseDate(it.createdAt)
             url = "$pathSegment/capitulo/$chapter_number"
         }
     }
     companion object {
-        private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
+        private val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     }
 }
 
@@ -142,5 +141,3 @@ class PagesDto(
         val src: String,
     )
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -74,5 +74,3 @@ class ListPageDto<T>(val lastPage: Boolean, val list: List<T> = emptyList())
 
 @Serializable
 class ResultDto<T>(val result: T)
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

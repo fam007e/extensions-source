@@ -53,5 +53,3 @@ abstract class Manga18Me : YiiMadara() {
         "Yuri" to "yuri",
     ).map { (name, slug) -> name to "genre/$slug" }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

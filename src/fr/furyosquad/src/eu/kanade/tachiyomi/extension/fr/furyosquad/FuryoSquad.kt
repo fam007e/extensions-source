@@ -212,5 +212,3 @@ abstract class FuryoSquad : KeiSource() {
         private val DATE_EXTRACT_REGEX = Regex("""le (.*)""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

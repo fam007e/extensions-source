@@ -270,5 +270,3 @@ abstract class MangoLibreria : KeiSource() {
         private const val MAX_RETRIES = 3
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

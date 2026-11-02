@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.extension.en.omoi
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
@@ -113,5 +114,3 @@ class PageDataDto(
 class PageDto(
     val image: Image,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -3,13 +3,13 @@ package eu.kanade.tachiyomi.extension.ar.mangadar
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SearchResponse(
+class SearchResponse(
     val success: Boolean = false,
     val data: List<SearchMangaItemDto> = emptyList(),
 )
 
 @Serializable
-data class SearchMangaItemDto(
+class SearchMangaItemDto(
     val id: Int,
     val title: String,
     val url: String,

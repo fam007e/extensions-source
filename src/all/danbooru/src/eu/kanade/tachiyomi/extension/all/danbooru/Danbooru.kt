@@ -244,5 +244,3 @@ abstract class Danbooru :
 }
 
 private const val CHAPTER_LIST_PREF = "prefChapterList"
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

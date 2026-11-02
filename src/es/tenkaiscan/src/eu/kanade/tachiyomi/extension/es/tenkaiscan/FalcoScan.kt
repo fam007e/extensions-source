@@ -256,4 +256,4 @@ abstract class FalcoScan : KeiSource() {
     }
 }
 
-private val dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy", Locale("es"))
+private val dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy", Locale.forLanguageTag("es"))

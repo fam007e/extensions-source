@@ -329,5 +329,3 @@ abstract class NovelCool :
         private const val PREF_API_SEARCH = "pref_use_search_api"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

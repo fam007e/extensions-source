@@ -2,12 +2,13 @@ package eu.kanade.tachiyomi.extension.en.tapastic
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParseDateTime
+import keiyoushi.utils.tryParseZonedDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatterBuilder
 import java.util.Locale
-import java.util.TimeZone
 
 @Serializable
 class Field(
@@ -88,15 +89,18 @@ class ChapterDto(
     fun toSChapter(showEpisodeNumber: Boolean) = SChapter.create().apply {
         val displayTitle = if (showEpisodeNumber) "${scene.toString().removeSuffix(".0")} - $title" else title
         name = if (unlocked || free) displayTitle else "🔒 $displayTitle "
-        date_upload = DATE_FORMAT.tryParse(date)
+        date_upload = DATE_FORMAT.tryParseZonedDateTime(date)
+            .takeIf { it != 0L }
+            ?: DATE_FORMAT.tryParseDateTime(date, ZoneOffset.UTC)
         chapter_number = scene
         url = "/episode/${this@ChapterDto.id}"
     }
     companion object {
-        private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.ROOT).apply {
-            timeZone = TimeZone.getTimeZone("UTC")
-        }
+        private val DATE_FORMAT = DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+            .optionalStart()
+            .appendPattern("XXX")
+            .optionalEnd()
+            .toFormatter(Locale.ROOT)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

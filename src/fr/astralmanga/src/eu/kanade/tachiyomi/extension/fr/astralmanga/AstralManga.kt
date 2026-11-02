@@ -239,5 +239,3 @@ abstract class AstralManga : KeiSource() {
         .addQueryParameter("_", System.currentTimeMillis().toString())
         .build()
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

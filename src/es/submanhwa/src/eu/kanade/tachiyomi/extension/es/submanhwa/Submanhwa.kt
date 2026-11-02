@@ -216,5 +216,3 @@ abstract class Submanhwa : KeiSource() {
         private const val CHAPTERS_PER_PAGE = 50
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

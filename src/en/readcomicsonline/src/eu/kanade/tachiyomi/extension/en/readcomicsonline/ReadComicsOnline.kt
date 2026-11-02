@@ -102,5 +102,3 @@ abstract class ReadComicsOnline : MMRCMS() {
         Page(i, imageUrl = img.imgAttr())
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

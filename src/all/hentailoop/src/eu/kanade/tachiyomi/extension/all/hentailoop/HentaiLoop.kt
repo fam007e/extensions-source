@@ -442,5 +442,3 @@ abstract class HentaiLoop : KeiSource() {
         else -> null
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

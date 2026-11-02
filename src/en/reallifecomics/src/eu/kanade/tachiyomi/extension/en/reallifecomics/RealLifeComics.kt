@@ -118,5 +118,3 @@ abstract class RealLifeComics : KeiSource() {
             get() = LocalDate.now().year
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

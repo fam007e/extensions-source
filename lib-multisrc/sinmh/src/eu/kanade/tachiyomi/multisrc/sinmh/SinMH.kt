@@ -243,5 +243,3 @@ abstract class SinMH : KeiSource() {
             .toFormatter(Locale.ROOT)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

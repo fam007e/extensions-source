@@ -278,5 +278,3 @@ abstract class MyReadingManga : KeiSource() {
         return List(length) { charPool.random() }.joinToString("")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

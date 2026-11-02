@@ -207,5 +207,3 @@ abstract class Mangadusleri : KeiSource() {
         private const val GENRE_PATH = "/genre.php"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

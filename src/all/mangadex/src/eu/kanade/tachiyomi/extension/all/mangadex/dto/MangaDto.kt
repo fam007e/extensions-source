@@ -22,7 +22,7 @@ typealias MangaDto = ResponseDto<MangaDataDto>
 data class MangaDataDto(override val attributes: MangaAttributesDto? = null) : EntityDto()
 
 @Serializable
-data class MangaAttributesDto(
+class MangaAttributesDto(
     val title: LocalizedString,
     val altTitles: List<LocalizedString>,
     val description: LocalizedString,
@@ -85,10 +85,10 @@ enum class StatusDto(val value: String) {
 
 @Serializable
 @SerialName(MDConstants.TAG)
-data class TagDto(override val attributes: TagAttributesDto? = null) : EntityDto()
+class TagDto(override val attributes: TagAttributesDto? = null) : EntityDto()
 
 @Serializable
-data class TagAttributesDto(val group: String) : AttributesDto()
+class TagAttributesDto(val group: String) : AttributesDto()
 
 typealias LocalizedString =
     @Serializable(LocalizedStringSerializer::class)

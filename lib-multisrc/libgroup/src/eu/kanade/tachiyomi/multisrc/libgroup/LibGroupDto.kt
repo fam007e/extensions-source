@@ -89,7 +89,7 @@ class MangaShort(
     val cover: Cover,
 ) {
     @Serializable
-    data class Cover(
+    class Cover(
         val default: String?,
     )
 

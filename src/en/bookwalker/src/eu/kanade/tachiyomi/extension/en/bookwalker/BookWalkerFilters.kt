@@ -82,7 +82,9 @@ object SortFilter :
         Selection(0, true),
     ),
     SearchFilter {
-    override fun process(request: SearchRequestDto): SearchRequestDto = request.copy(
+    override fun process(request: SearchRequestDto): SearchRequestDto = SearchRequestDto(
+        limitOffset = request.limitOffset,
+        query = request.query,
         sort = when (state?.index) {
             0 -> SortDto.RELEVANCE
             1 -> SortDto.POPULAR
@@ -93,6 +95,9 @@ object SortFilter :
         }.let {
             if (state?.ascending == false) it.reverse() else it
         },
+        formats = request.formats,
+        filters = request.filters,
+        searchDomain = request.searchDomain,
     )
 }
 
@@ -108,9 +113,14 @@ object FormatFilter :
         ),
     ),
     SearchFilter {
-    override fun process(request: SearchRequestDto): SearchRequestDto = request.copy(
+    override fun process(request: SearchRequestDto): SearchRequestDto = SearchRequestDto(
+        limitOffset = request.limitOffset,
+        query = request.query,
+        sort = request.sort,
         formats = state.filter { it.state }.map { it.id }
             .takeIf { it.isNotEmpty() } ?: listOf(SeriesFormat.MANGA, SeriesFormat.WEBTOON),
+        filters = request.filters,
+        searchDomain = request.searchDomain,
     )
 }
 
@@ -120,7 +130,11 @@ class TriStateFilter(
     options: List<TaggedTriState<String>>,
 ) : Filter.Group<TaggedTriState<String>>(name, options),
     SearchFilter {
-    override fun process(request: SearchRequestDto): SearchRequestDto = request.copy(
+    override fun process(request: SearchRequestDto): SearchRequestDto = SearchRequestDto(
+        limitOffset = request.limitOffset,
+        query = request.query,
+        sort = request.sort,
+        formats = request.formats,
         filters = request.filters + FilterDto(
             filterType,
             state.mapNotNull {
@@ -134,5 +148,6 @@ class TriStateFilter(
                 )
             },
         ),
+        searchDomain = request.searchDomain,
     )
 }

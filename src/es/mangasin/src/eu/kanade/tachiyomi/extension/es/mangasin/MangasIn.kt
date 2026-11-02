@@ -172,5 +172,3 @@ private val UNESCAPE_REGEX = """\\(.)""".toRegex()
 private val CHAPTER_DATA_REGEX = """\{(?=.*\\"ct\\")(?=.*\\"iv\\")(?=.*\\"s\\").*?\}""".toRegex()
 private val KEY_REGEX = """decrypt\(.*?,\s*(.*?)\s*,.*\)""".toRegex()
 private val SALTED = "Salted__".toByteArray(Charsets.UTF_8)
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

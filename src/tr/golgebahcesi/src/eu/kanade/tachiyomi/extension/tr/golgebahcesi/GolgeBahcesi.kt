@@ -231,5 +231,3 @@ abstract class GolgeBahcesi : KeiSource() {
         private const val PAGE_HOST = "golgebahcesi-pages.local"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

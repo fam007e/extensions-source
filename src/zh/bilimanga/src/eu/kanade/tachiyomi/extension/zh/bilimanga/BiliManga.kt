@@ -15,6 +15,7 @@ import keiyoushi.network.rateLimit
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.getPreferencesLazy
+import keiyoushi.utils.tryParseDate
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -31,9 +32,7 @@ import okhttp3.Response
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.seconds
 
 @Source
@@ -130,7 +129,7 @@ abstract class BiliManga :
         val PAGE_REGEX = Regex("第(\\d+)/(\\d+)页")
         val MANGA_ID_REGEX = Regex("/detail/(\\d+)\\.html")
         val COOKIE_REGEX = Regex("cookie=\"(.*?)\";")
-        val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE)
+        val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-M-d")
     }
 
     private fun getChapterUrlByContext(i: Int, els: Elements) = when (i) {
@@ -242,7 +241,7 @@ abstract class BiliManga :
                 val doc = client.get("$baseUrl/read/${manga.id}/catalog", Fetch.DOCUMENT).asJsoup()
                 val info = doc.selectFirst(".chapter-sub-title")!!.text()
                 val title = doc.selectFirst(".book-title")!!.text()
-                val date = DATE_FORMAT.tryParse(DATE_REGEX.find(info)?.value)
+                val date = DATE_FORMAT.tryParseDate(DATE_REGEX.find(info)?.value)
                 doc.select(".catalog-volume").takeIf(Elements::isNotEmpty)?.flatMap {
                     val bar = it.selectFirst(".chapter-bar")!!.text().substring(title.length + 1)
                     val volume = if (bar.first().isDigit()) "Vol.$bar" else bar.toHalfWidthDigits()
@@ -284,5 +283,3 @@ abstract class BiliManga :
         }
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

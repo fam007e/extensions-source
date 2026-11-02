@@ -264,5 +264,3 @@ abstract class LeerMangaEsp : KeiSource() {
         const val MANGA_PATH_PREFIX = "/info/"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

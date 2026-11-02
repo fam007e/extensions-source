@@ -163,5 +163,3 @@ abstract class BaoBua : KeiSource() {
         private val WP_COM_REPLACE_REGEX = Regex("""https://i\d+\.wp\.com/""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

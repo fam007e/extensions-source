@@ -15,13 +15,13 @@ import keiyoushi.network.rateLimit
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstance
+import keiyoushi.utils.tryParseDate
 import kotlinx.serialization.json.JsonElement
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
 
@@ -106,7 +106,7 @@ abstract class MissKon : KeiSource() {
                 FULL_DATE_REGEX.find(url)?.groupValues?.get(1)
                     ?: YEAR_MONTH_REGEX.find(url)?.groupValues?.get(1)?.let { "$it/01" }
             }
-        val dateUpload = FULL_DATE_FORMAT.tryParse(dateUploadStr)
+        val dateUpload = FULL_DATE_FORMAT.tryParseDate(dateUploadStr)
         val maxPage = document.select("div.page-link:first-of-type a.post-page-numbers").last()?.text()?.toInt() ?: 1
         return (maxPage downTo 1).map { page ->
             SChapter.create().apply {
@@ -152,8 +152,6 @@ abstract class MissKon : KeiSource() {
     companion object {
         private val FULL_DATE_REGEX = Regex("""/(\d{4}/\d{2}/\d{2})/""")
         private val YEAR_MONTH_REGEX = Regex("""/(\d{4}/\d{2})/""")
-        private val FULL_DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+        private val FULL_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy/MM/dd", Locale.US)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

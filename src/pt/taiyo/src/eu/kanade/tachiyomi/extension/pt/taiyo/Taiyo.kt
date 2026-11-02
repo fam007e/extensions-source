@@ -295,5 +295,3 @@ abstract class Taiyo : KeiSource() {
         private val IMG_CDN_HOST = IMG_CDN.toHttpUrl().host
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

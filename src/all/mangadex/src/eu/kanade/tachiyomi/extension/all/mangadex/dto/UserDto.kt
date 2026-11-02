@@ -9,4 +9,4 @@ import kotlinx.serialization.Serializable
 data class UserDto(override val attributes: UserAttributes? = null) : EntityDto()
 
 @Serializable
-data class UserAttributes(val username: String) : AttributesDto()
+class UserAttributes(val username: String) : AttributesDto()

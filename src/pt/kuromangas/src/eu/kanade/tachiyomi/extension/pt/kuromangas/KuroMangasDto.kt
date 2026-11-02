@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.extension.pt.kuromangas
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
@@ -136,5 +137,3 @@ class ChapterPagesResponse(
     val id: Int,
     val pages: List<String>,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

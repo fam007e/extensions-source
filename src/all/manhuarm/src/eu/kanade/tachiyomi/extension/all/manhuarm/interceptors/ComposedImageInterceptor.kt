@@ -63,7 +63,15 @@ class ComposedImageInterceptor(
         val (format, mediaType) = when (url.substringBefore("#").substringAfterLast(".").lowercase()) {
             "png" -> Bitmap.CompressFormat.PNG to "image/png"
             "jpeg", "jpg" -> Bitmap.CompressFormat.JPEG to "image/jpeg"
-            else -> Bitmap.CompressFormat.WEBP to "image/webp"
+            else -> {
+                val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    Bitmap.CompressFormat.WEBP_LOSSY
+                } else {
+                    @Suppress("DEPRECATION")
+                    Bitmap.CompressFormat.WEBP
+                }
+                format to "image/webp"
+            }
         }
 
         val output = Buffer()

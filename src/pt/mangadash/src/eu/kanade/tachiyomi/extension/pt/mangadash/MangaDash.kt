@@ -393,5 +393,3 @@ abstract class MangaDash :
         private val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -216,5 +216,3 @@ abstract class Toon11 : KeiSource() {
         private val imgList2Regex = """img_list_2\s*=\s*(\[.*?])""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -234,5 +234,3 @@ abstract class OnlyTheBestHentai : KeiSource() {
         private val WHITESPACE_REGEX = Regex("\\s+")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

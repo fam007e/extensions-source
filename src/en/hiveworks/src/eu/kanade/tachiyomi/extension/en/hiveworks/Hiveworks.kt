@@ -328,5 +328,3 @@ abstract class Hiveworks : KeiSource() {
         private const val CHAPTER_LIST_SELECTOR = "select[name=comic] option"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

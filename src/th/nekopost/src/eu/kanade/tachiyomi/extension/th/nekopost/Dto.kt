@@ -79,7 +79,7 @@ class RawPageItem(
 )
 
 @Serializable
-data class RawProject(
+class RawProject(
     @SerialName("pid")
     val projectId: Int,
     @SerialName("projectName")

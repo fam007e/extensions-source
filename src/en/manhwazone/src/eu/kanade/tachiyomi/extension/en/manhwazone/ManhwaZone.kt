@@ -197,5 +197,3 @@ abstract class ManhwaZone : KeiSource() {
         private val authorRegex = """"author":\s*\[\s*\{"@type":"Person","name":"([^"]+)"""".toRegex()
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

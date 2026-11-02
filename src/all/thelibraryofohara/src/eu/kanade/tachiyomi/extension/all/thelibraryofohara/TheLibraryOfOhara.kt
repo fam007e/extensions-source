@@ -203,5 +203,3 @@ abstract class TheLibraryOfOhara : KeiSource() {
         private val reverieLangRegex = Regex("""(French|Arabic|Italian|Indonesia|Spanish)""")
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

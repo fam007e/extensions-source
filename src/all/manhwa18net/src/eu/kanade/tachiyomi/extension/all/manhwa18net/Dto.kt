@@ -4,12 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PageDto(
+class PageDto(
     val props: PropsDto,
 )
 
 @Serializable
-data class PropsDto(
+class PropsDto(
     val paginate: PaginateDto? = null,
     val popularManga: PaginateDto? = null,
     val mangas: PaginateDto? = null,
@@ -20,14 +20,14 @@ data class PropsDto(
 )
 
 @Serializable
-data class PaginateDto(
+class PaginateDto(
     val data: List<MangaDto>,
     @SerialName("next_page_url")
     val nextPageUrl: String? = null,
 )
 
 @Serializable
-data class MangaDto(
+class MangaDto(
     val name: String,
     val slug: String,
     @SerialName("cover_url")
@@ -43,18 +43,18 @@ data class MangaDto(
 )
 
 @Serializable
-data class ChapterDto(
+class ChapterDto(
     val name: String,
     val slug: String,
     @SerialName("created_at") val createdAt: String? = null,
 )
 
 @Serializable
-data class GenreDto(
+class GenreDto(
     val name: String,
 )
 
 @Serializable
-data class ArtistDto(
+class ArtistDto(
     val name: String,
 )

@@ -527,5 +527,3 @@ private val CHAPTER_GROUP_REGEX = Regex(
 )
 
 private fun String.clean(removeExtras: Boolean): String = if (removeExtras) this.replace(BRACKET_REGEX, "").trim() else this.trim()
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

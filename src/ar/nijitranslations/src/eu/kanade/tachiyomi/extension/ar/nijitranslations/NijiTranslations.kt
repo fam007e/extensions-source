@@ -7,6 +7,6 @@ import java.util.Locale
 
 @Source
 abstract class NijiTranslations : Madara() {
-    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale("ar"))
+    override val chapterDateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.forLanguageTag("ar"))
     override val chapterMode = ChapterMode.AdminAjax
 }

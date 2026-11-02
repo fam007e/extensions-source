@@ -138,5 +138,3 @@ abstract class Hennojin : KeiSource() {
     private inline val Response.date: Long
         get() = DateTimeFormatter.RFC_1123_DATE_TIME.tryParseZonedDateTime(headers["Last-Modified"])
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -34,9 +34,7 @@ class TranslationInterceptor(
         val translated = runBlocking(Dispatchers.IO) {
             dialogues.map { dialog ->
                 async {
-                    dialog.copy(
-                        textByLanguage = mapOf("text" to engine.translate(language.origin, language.target, dialog.text)),
-                    )
+                    dialog.withText(engine.translate(language.origin, language.target, dialog.text))
                 }
             }.awaitAll()
         }

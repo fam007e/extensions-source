@@ -67,7 +67,7 @@ class BrowseManga(
 )
 
 @Serializable
-data class MangaUrl(
+class MangaUrl(
     val id: String,
     val slug: String,
     val group: Long? = null,

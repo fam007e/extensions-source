@@ -44,7 +44,7 @@ class SortFilter(state: Int = 1) :
     )
 
 @Serializable
-data class Genre(val name: String, val path: String) {
+class Genre(val name: String, val path: String) {
     override fun toString() = name
 }
 

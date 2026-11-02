@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
 
 @Serializable
-data class SearchResponseDto(
+class SearchResponseDto(
     val success: Boolean = false,
     val manga: List<MangaDto> = emptyList(),
     @SerialName("next_cursor") val nextCursor: String? = null,
@@ -13,7 +13,7 @@ data class SearchResponseDto(
 )
 
 @Serializable
-data class MangaDto(
+class MangaDto(
     val id: Long,
     val title: String,
     val permalink: String? = null,
@@ -27,7 +27,7 @@ data class MangaDto(
 )
 
 @Serializable
-data class MangaDetailDto(
+class MangaDetailDto(
     val id: Long,
     val title: String,
     val slug: String,
@@ -46,14 +46,14 @@ data class MangaDetailDto(
 )
 
 @Serializable
-data class NamedDto(
+class NamedDto(
     val id: Long? = null,
     val name: String? = null,
     val slug: String? = null,
 )
 
 @Serializable
-data class ChapterDto(
+class ChapterDto(
     val id: Long,
     @SerialName("chapter_slug") val chapterSlug: String,
     val name: String,
@@ -65,14 +65,14 @@ data class ChapterDto(
 )
 
 @Serializable
-data class ChapterImagesDto(
+class ChapterImagesDto(
     val id: JsonPrimitive? = null,
     val title: String? = null,
     val images: List<ImageItemDto> = emptyList(),
 )
 
 @Serializable
-data class ImageItemDto(
+class ImageItemDto(
     val url: String,
     val alt: String? = null,
 )

@@ -3,6 +3,7 @@ package eu.kanade.tachiyomi.extension.all.toonlook
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.os.Build
 import keiyoushi.lib.imagedecoder.ImageDecoder
 import keiyoushi.utils.readIntBigEndian
 import keiyoushi.utils.sha256
@@ -134,8 +135,12 @@ class ScrambleInterceptor : Interceptor {
         private const val SCRAMBLE_PREFIX = "scramble="
         private const val SEPARATOR = ","
 
-        @Suppress("DEPRECATION")
-        private val WEBP_FORMAT = Bitmap.CompressFormat.WEBP
+        private val WEBP_FORMAT = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSY
+        } else {
+            @Suppress("DEPRECATION")
+            Bitmap.CompressFormat.WEBP
+        }
         private val WEBP_MEDIA_TYPE = "image/webp".toMediaType()
     }
 }

@@ -3,6 +3,7 @@ package eu.kanade.tachiyomi.extension.pt.argosscan
 import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.add
@@ -108,5 +109,3 @@ class Chapter(
 class Image(
     @SerialName("file_url") val fileUrl: String,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

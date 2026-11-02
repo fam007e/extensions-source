@@ -117,5 +117,3 @@ abstract class InsanosScan :
         private const val PREF_SHOW_PAID = "show_paid_chapters"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

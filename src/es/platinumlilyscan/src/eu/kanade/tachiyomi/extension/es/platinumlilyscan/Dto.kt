@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.extension.es.platinumlilyscan
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
@@ -103,5 +104,3 @@ class ChapterDto(
 class PageDto(
     val imageUrl: String,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

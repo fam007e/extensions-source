@@ -181,5 +181,3 @@ abstract class MangaToon : KeiSource() {
         private val JS_ESCAPE_REGEX = """\\(["'])""".toRegex()
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

@@ -156,5 +156,3 @@ abstract class ComicMeteor : KeiSource() {
         val selected get() = options.getOrNull(state - 1)
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

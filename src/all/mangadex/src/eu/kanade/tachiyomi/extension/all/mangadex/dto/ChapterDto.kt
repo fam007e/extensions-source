@@ -13,7 +13,7 @@ typealias ChapterDto = ResponseDto<ChapterDataDto>
 data class ChapterDataDto(override val attributes: ChapterAttributesDto? = null) : EntityDto()
 
 @Serializable
-data class ChapterAttributesDto(
+class ChapterAttributesDto(
     val title: String?,
     val volume: String?,
     val chapter: String?,
