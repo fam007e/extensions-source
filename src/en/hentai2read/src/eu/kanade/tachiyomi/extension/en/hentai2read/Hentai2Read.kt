@@ -8,6 +8,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.SMangaUpdate
 import keiyoushi.annotation.Source
+import keiyoushi.network.Fetch
 import keiyoushi.network.addCookie
 import keiyoushi.network.get
 import keiyoushi.source.KeiSource
@@ -48,7 +49,7 @@ abstract class Hentai2Read : KeiSource() {
         html.substring(start, end)
     }.pageProps()
 
-    private suspend fun getProps(url: String): Hentai2ReadProps = client.get(url).props()
+    private suspend fun getProps(url: String): Hentai2ReadProps = client.get(url, headers, Fetch.DOCUMENT).props()
 
     private fun buildUrl(path: String, page: Int, params: Map<String, String?> = emptyMap()): String {
         val builder = (if (path.startsWith("http")) path else baseUrl + path).toHttpUrl().newBuilder()

@@ -6,7 +6,7 @@ plugins {
 
 keiyoushi {
     name = "Toonily"
-    versionCode = 16
+    versionCode = 19
     contentWarning = ContentWarning.MIXED
     libVersion = "1.6"
     theme = "madara"

@@ -68,8 +68,6 @@ dependencyResolutionManagement {
     }
 }
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 rootProject.name = "Keiyoushi"
 
 /**

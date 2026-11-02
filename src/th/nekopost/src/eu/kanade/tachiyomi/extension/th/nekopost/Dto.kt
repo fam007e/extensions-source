@@ -38,13 +38,17 @@ class ProjectRequestBody(
 )
 
 @Serializable
-class RawChapterInfo(
-    @SerialName("chapterId")
+class ChapterInfoRequest(
+    @SerialName("p")
+    val projectId: Int,
+    @SerialName("c")
     val chapterId: Int,
+)
+
+@Serializable
+class RawChapterInfo(
     @SerialName("pageItem")
     val pageItem: List<RawPageItem>,
-    @SerialName("projectId")
-    val projectId: String,
 )
 
 @Serializable
@@ -68,9 +72,8 @@ class RawLatestChapter(
 @Serializable
 class RawPageItem(
     @SerialName("pageName")
-    val pageName: String? = null,
-    @SerialName("fileName")
-    val fileName: String? = null,
+    val pageName: String,
+    // A JSON number on older projects and a string on newer ones; Int decodes both.
     @SerialName("pageNo")
     val pageNo: Int,
 )

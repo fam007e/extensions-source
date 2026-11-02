@@ -4,9 +4,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
+import kotlin.time.Instant
 
 @Serializable
 class MangaResponseDto<T>(
@@ -79,11 +77,7 @@ class ChapterDto(
         val numberStr = chapterNumber.toString().removeSuffix(".0")
         name = title ?: "Capítulo $numberStr"
         url = "/manga/$mangaSlug/chapter/$numberStr"
-        date_upload = dateFormat.tryParse(releaseDate)
-    }
-
-    companion object {
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ROOT)
+        date_upload = Instant.tryParse(releaseDate)
     }
 }
 

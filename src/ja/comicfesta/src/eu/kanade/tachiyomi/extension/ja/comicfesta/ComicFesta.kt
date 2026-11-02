@@ -2,7 +2,6 @@ package eu.kanade.tachiyomi.extension.ja.comicfesta
 
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
-import eu.kanade.tachiyomi.multisrc.clipstudioreader.ClipStudioReader
 import eu.kanade.tachiyomi.source.ConfigurableSource
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
@@ -11,8 +10,12 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.SMangaUpdate
 import keiyoushi.annotation.Source
+import keiyoushi.lib.clipstudioreader.ClipStudioReaderInterceptor
+import keiyoushi.lib.clipstudioreader.fetchPages
+import keiyoushi.network.Fetch
 import keiyoushi.network.addCookie
 import keiyoushi.network.get
+import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.extractNextJs
 import keiyoushi.utils.getPreferencesLazy
@@ -23,22 +26,23 @@ import org.jsoup.nodes.Document
 
 @Source
 abstract class ComicFesta :
-    ClipStudioReader(),
+    KeiSource(),
     ConfigurableSource {
-
     private val preferences by getPreferencesLazy()
     private val rscHeaders get() = headersBuilder()
         .add("rsc", "1")
         .build()
 
-    override fun OkHttpClient.Builder.configureClient(): OkHttpClient.Builder = addClipStudioInterceptors()
-        .addCookie(listOf("checked_age" to "1", "sp_display" to "1", "cf_checked_age_guest" to "1", "cf_checked_age" to "1"))
+    override fun OkHttpClient.Builder.configureClient() = apply {
+        addInterceptor(ClipStudioReaderInterceptor())
+        addCookie(listOf("checked_age" to "1", "sp_display" to "1", "cf_checked_age_guest" to "1", "cf_checked_age" to "1"))
+    }
 
     override suspend fun getPopularManga(page: Int): MangasPage {
         val url = "$baseUrl/sales_rankings/monthly_general".toHttpUrl().newBuilder()
             .addQueryParameter("page", page.toString())
             .build()
-        val result = client.get(url, rscHeaders).extractNextJs<RankingResponse>()
+        val result = client.get(url, rscHeaders, Fetch.XHR).extractNextJs<RankingResponse>()
         val mangas = result?.titles.orEmpty().map { it.toSManga() }
         return MangasPage(mangas, hasNextPage = page != 2)
     }
@@ -49,7 +53,7 @@ abstract class ComicFesta :
             .addQueryParameter("sort", "release")
             .addQueryParameter("search_form[other_item][]", "new")
             .build()
-        return parseTitleList(client.get(url).asJsoup())
+        return parseTitleList(client.get(url, Fetch.DOCUMENT).asJsoup())
     }
 
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
@@ -59,7 +63,7 @@ abstract class ComicFesta :
             .addQueryParameter("search", query)
             .addQueryParameter("commit", "search")
             .build()
-        return parseTitleList(client.get(url).asJsoup())
+        return parseTitleList(client.get(url, Fetch.DOCUMENT).asJsoup())
     }
 
     private fun parseTitleList(document: Document): MangasPage {
@@ -78,7 +82,7 @@ abstract class ComicFesta :
         if (url.host != baseUrl.toHttpUrl().host || url.pathSegments.firstOrNull() != "titles") return null
         val id = url.pathSegments.getOrNull(1) ?: return null
 
-        return parseDetails(client.get("$baseUrl/titles/$id").asJsoup()).apply { this.url = id }
+        return parseDetails(client.get("$baseUrl/titles/$id", Fetch.DOCUMENT).asJsoup()).apply { this.url = id }
     }
 
     override suspend fun fetchMangaUpdate(
@@ -88,7 +92,7 @@ abstract class ComicFesta :
         fetchChapters: Boolean,
     ): SMangaUpdate {
         // no redirect for r18 content with rsc, so details and chapters are read from the same page
-        val document = client.get(getMangaUrl(manga)).asJsoup()
+        val document = client.get(getMangaUrl(manga), Fetch.DOCUMENT).asJsoup()
 
         val hideLocked = preferences.getBoolean(HIDE_LOCKED_PREF_KEY, false)
         val chapterList = document.extractNextJs<ChapterListResponse>()
@@ -114,13 +118,13 @@ abstract class ComicFesta :
     override fun getChapterUrl(chapter: SChapter) = "$baseUrl/volumes/${chapter.url}"
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
-        val response = client.get(getChapterUrl(chapter), ensureSuccess = false)
+        val response = client.get(getChapterUrl(chapter), Fetch.DOCUMENT, ensureSuccess = false)
         val landingPath = response.request.url.pathSegments.first()
         if (landingPath == "entry" || landingPath == "error") {
             response.close()
             throw Exception("Log in via WebView and purchase this product to read.")
         }
-        return pageListParse(response)
+        return client.fetchPages(response.asJsoup())
     }
 
     override fun setupPreferenceScreen(screen: PreferenceScreen) {

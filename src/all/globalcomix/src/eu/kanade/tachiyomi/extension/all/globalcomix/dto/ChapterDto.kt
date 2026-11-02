@@ -4,10 +4,10 @@ import eu.kanade.tachiyomi.extension.all.globalcomix.GlobalComix.Companion.dateF
 import eu.kanade.tachiyomi.extension.all.globalcomix.LOCK_SYMBOL
 import eu.kanade.tachiyomi.extension.all.globalcomix.RELEASE
 import eu.kanade.tachiyomi.source.model.SChapter
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.ZoneOffset
 
 typealias ChapterDto = ResponseDto<ChapterDataDto>
 typealias ChaptersDto = PaginatedResponseDto<ChapterDataDto>
@@ -57,7 +57,7 @@ class ChapterDataDto(
                 url = key
                 name = chapterName.joinToString(" ")
                 chapter_number = chapter.toFloatOrNull() ?: 0f
-                date_upload = dateFormatter.tryParse(published_time)
+                date_upload = dateFormatter.tryParseDateTime(published_time, ZoneOffset.UTC)
             }
         }
     }
