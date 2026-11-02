@@ -90,7 +90,7 @@ class ChapterDto(
     }
 
     companion object {
-        private val dateFormat = DateTimeFormatter.ofPattern("dd 'de' MMM 'de' yyyy", Locale.of("pt", "BR"))
+        private val dateFormat = DateTimeFormatter.ofPattern("dd 'de' MMM 'de' yyyy", Locale.forLanguageTag("pt-BR"))
     }
 }
 

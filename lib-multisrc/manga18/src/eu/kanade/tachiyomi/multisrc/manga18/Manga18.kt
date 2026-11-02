@@ -46,15 +46,15 @@ abstract class Manga18 : KeiSource() {
     override suspend fun getLatestUpdates(page: Int) = popularMangaParse(client.get("$baseUrl/list-manga/$page").asJsoup())
 
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
+        val selectedTag = filters.firstInstanceOrNull<TagFilter>()?.selected
         val url = baseUrl.toHttpUrl().newBuilder().apply {
-            val tag = filters.firstInstanceOrNull<TagFilter>()
-            if (query.isNotEmpty() || tag?.selected.isNullOrEmpty()) {
+            if (query.isNotEmpty() || selectedTag.isNullOrEmpty()) {
                 addPathSegment("list-manga")
                 addPathSegment(page.toString())
                 addQueryParameter("search", query.trim())
             } else {
                 addPathSegment("manga-list")
-                addPathSegment(tag!!.selected!!)
+                addPathSegment(selectedTag)
                 addPathSegment(page.toString())
                 filters.firstInstanceOrNull<SortFilter>()?.selected?.let {
                     addQueryParameter("order_by", it)

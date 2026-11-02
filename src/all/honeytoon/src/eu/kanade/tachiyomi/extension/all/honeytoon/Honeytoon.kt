@@ -224,15 +224,7 @@ abstract class Honeytoon :
     }
 
     private val dateFormat: SimpleDateFormat by lazy {
-        val locale = when {
-            lang.contains("-") -> {
-                val (lang, country) = lang.split("-")
-                Locale.of(lang, country)
-            }
-
-            else -> Locale.forLanguageTag(lang)
-        }
-        SimpleDateFormat("MMMM dd , yyyy", locale)
+        SimpleDateFormat("MMMM dd , yyyy", Locale.forLanguageTag(lang))
     }
 
     @Serializable
