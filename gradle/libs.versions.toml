@@ -3,7 +3,7 @@ android-gradle = "9.5.0"
 coroutines = "1.11.0"
 serialization = "1.11.0"
 junit = "4.13.2"
-kotlin-gradle = "2.4.10"
+kotlin-gradle = "2.4.21"
 ksp = "2.3.9"
 kotlinpoet = "2.3.0"
 ktlint = "1.8.0"
@@ -27,7 +27,7 @@ tapmoc-gradle = { module = "com.gradleup.tapmoc:tapmoc-gradle-plugin", version.r
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 injekt-core = { module = "com.github.null2264.injekt:injekt-core", version = "4135455a2a" }
-jsoup = { module = "org.jsoup:jsoup", version = "1.22.2" }
+jsoup = { module = "org.jsoup:jsoup", version = "1.23.2" }
 kotlin-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "serialization" }
 kotlin-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "serialization" }
