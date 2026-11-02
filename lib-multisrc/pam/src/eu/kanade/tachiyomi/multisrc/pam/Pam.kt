@@ -37,6 +37,7 @@ import okio.buffer
 import java.io.IOException
 import java.security.MessageDigest
 import java.security.SecureRandom
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
@@ -213,7 +214,7 @@ abstract class Pam :
     }
 
     private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)
-        .withZone(TimeZone.getTimeZone("UTC").toZoneId())
+        .withZone(ZoneOffset.UTC)
 
     override fun setupPreferenceScreen(screen: PreferenceScreen) {
         SwitchPreferenceCompat(screen.context).apply {
