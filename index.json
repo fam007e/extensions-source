@@ -11775,13 +11775,13 @@
         "name": "Hentai2Read",
         "packageName": "eu.kanade.tachiyomi.extension.en.hentai2read",
         "resources": {
-          "apkUrl": "https://github.com/fam007e/extensions-source/releases/download/88467eb-0/tachiyomi-en.hentai2read-v1.6.22.apk",
+          "apkUrl": "https://github.com/fam007e/extensions-source/releases/download/90903da/tachiyomi-en.hentai2read-v1.6.23.apk",
           "iconUrl": "https://cdn.jsdelivr.net/gh/fam007e/extensions-source@main/src/en/hentai2read/res/mipmap-xhdpi/ic_launcher.png",
-          "jarUrl": "https://github.com/fam007e/extensions-source/releases/download/88467eb-0/tachiyomi-en.hentai2read-v1.6.22.jar"
+          "jarUrl": "https://github.com/fam007e/extensions-source/releases/download/90903da/tachiyomi-en.hentai2read-v1.6.23.jar"
         },
         "extensionLib": "1.6",
-        "versionCode": "106022",
-        "versionName": "1.6.22",
+        "versionCode": "106023",
+        "versionName": "1.6.23",
         "contentWarning": "CONTENT_WARNING_NSFW",
         "sources": [
           {
