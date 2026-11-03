@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.os.Build
 import keiyoushi.utils.aesCtr
 import keiyoushi.utils.decodeHex
 import keiyoushi.utils.hmacSha256
