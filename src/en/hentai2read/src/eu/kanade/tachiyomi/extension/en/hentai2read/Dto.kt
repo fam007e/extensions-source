@@ -5,6 +5,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import keiyoushi.utils.tryParseDate
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
@@ -22,6 +23,7 @@ internal class InertiaPageDto(
 internal class Hentai2ReadProps(
     private val books: Hentai2ReadBooks? = null,
     private val book: Hentai2ReadBook? = null,
+    private val chapters: List<Hentai2ReadChapter>? = null,
     private val matchingTags: List<Hentai2ReadTag>? = null,
     private val images: List<String>? = null,
 ) {
@@ -37,7 +39,7 @@ internal class Hentai2ReadProps(
 
     fun bookToManga(): SManga = requireNotNull(book) { "Book data not found" }.toMangaOrThrow()
 
-    fun toChapters(): List<SChapter> = book?.chapters.orEmpty().map { it.toSChapter() }
+    fun toChapters(): List<SChapter> = chapters.orEmpty().map { it.toSChapter() }
 
     fun pageImages(): List<String> = images.orEmpty()
 
@@ -62,7 +64,9 @@ internal class Hentai2ReadBooks(
 
 @Serializable
 internal class Hentai2ReadBook(
-    private val type: String? = null,
+    // Search pages send a plain string; book pages send {"label": ..., "url": ...}
+    private val type: JsonElement? = null,
+    private val isVideo: Boolean? = null,
     private val url: String? = null,
     private val title: String? = null,
     private val cover: String? = null,
@@ -71,12 +75,10 @@ internal class Hentai2ReadBook(
     private val tags: List<Hentai2ReadTag> = emptyList(),
     private val alt: String? = null,
     private val description: String? = null,
-    private val facts: String? = null,
     private val status: Hentai2ReadStatus? = null,
-    val chapters: List<Hentai2ReadChapter> = emptyList(),
 ) {
     fun toManga(): SManga? {
-        if (type == "video" || url == null || title == null) return null
+        if (isVideo == true || (type as? JsonPrimitive)?.content == "video" || url == null || title == null) return null
         val artistName = artist
             ?.takeIf { it.id?.intOrNull != UNKNOWN_ARTIST_ID }
             ?.name
@@ -98,7 +100,7 @@ internal class Hentai2ReadBook(
             .mapNotNull { it.name }
         val sections = buildList {
             alt?.takeIf { it.isNotBlank() && it != "-" }?.let { add("Alternative Title:\n$it") }
-            (description ?: facts)?.takeIf { it.isNotBlank() }?.let(::add)
+            description?.takeIf { it.isNotBlank() }?.let(::add)
             listOf("parody" to "Parody", "character" to "Character", "language" to "Language").forEach { (type, label) ->
                 val names = groupNames(type)
                 if (names.isNotEmpty()) add("$label:\n${names.joinToString()}")
