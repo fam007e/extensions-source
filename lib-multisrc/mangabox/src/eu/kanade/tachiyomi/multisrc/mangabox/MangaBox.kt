@@ -137,7 +137,7 @@ abstract class MangaBox :
                     Bitmap.CompressFormat.WEBP_LOSSLESS
                 } else {
                     @Suppress("DEPRECATION")
-                    Bitmap.CompressFormat.WEBP_LOSSY
+                    Bitmap.CompressFormat.WEBP
                 }
                 return Response.Builder().body(
                     Buffer()

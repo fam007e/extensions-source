@@ -28,7 +28,7 @@ class ImageInterceptor : Interceptor {
             Bitmap.CompressFormat.WEBP_LOSSLESS
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP_LOSSY
+            Bitmap.CompressFormat.WEBP
         }
         val buffer = Buffer()
         result.compress(format, 100, buffer.outputStream())

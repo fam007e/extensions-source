@@ -109,7 +109,7 @@ abstract class MangaBuff :
             Bitmap.CompressFormat.WEBP_LOSSY
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP_LOSSY
+            Bitmap.CompressFormat.WEBP
         }
         original.compress(format, 90, buffer.outputStream())
         original.recycle()
