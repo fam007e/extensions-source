@@ -162,7 +162,7 @@ abstract class YuriGarden :
         val script = readAuthTokenScript.replace("__AUTH_BRIDGE_NAME__", bridgeName)
 
         return runWebView(timeout = 10.seconds) {
-            jsBridge(bridgeName) { value ->
+            webMessageBridge(bridgeName, setOf(baseUrl)) { value ->
                 if (staleToken == null) {
                     resolve(value.ifBlank { null })
                 } else if (value.isNotBlank() && value != staleToken) {

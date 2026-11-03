@@ -1,5 +1,5 @@
 (() => {
-    const done = (value) => window["__AUTH_BRIDGE_NAME__"].post(value || "");
+    const done = (value) => window["__AUTH_BRIDGE_NAME__"].postMessage(value || "");
 
     try {
         const request = indexedDB.open("manga-app");

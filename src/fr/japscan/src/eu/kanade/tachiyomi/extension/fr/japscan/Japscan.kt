@@ -343,11 +343,11 @@ abstract class Japscan :
                     loadWithOverviewMode = false
                 }
 
-                jsBridge("${interfaceName}_savePage") { dataUri ->
+                webMessageBridge("${interfaceName}_savePage", setOf(baseUrl)) { dataUri ->
                     savePage(dataUri, sessionTag, savedPaths.size)?.let(savedPaths::add)
                 }
 
-                jsBridge("${interfaceName}_passDone") {
+                webMessageBridge("${interfaceName}_passDone", setOf(baseUrl)) {
                     done = true
                     resolve(savedPaths)
                 }

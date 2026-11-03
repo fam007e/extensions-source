@@ -115,7 +115,7 @@ internal class SitePages(
                     }
                     heldResponse(released)
                 }
-                jsBridge(bridge) { posted ->
+                webMessageBridge(bridge, setOf("${baseHttpUrl.scheme}://${baseHttpUrl.host}")) { posted ->
                     val message = posted.parseAs<SiteMessage>()
                     synchronized(lock) {
                         when {
