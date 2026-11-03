@@ -261,7 +261,7 @@ object XebpDecoder {
             Bitmap.CompressFormat.WEBP_LOSSLESS
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP
+            Bitmap.CompressFormat.WEBP_LOSSY
         }
         result.compress(format, 100, buffer.outputStream())
         result.recycle()

@@ -31,7 +31,7 @@ class ScrambledImageInterceptor : Interceptor {
             Bitmap.CompressFormat.WEBP_LOSSLESS
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP
+            Bitmap.CompressFormat.WEBP_LOSSY
         }
         image.compress(format, 100, outputStream)
 

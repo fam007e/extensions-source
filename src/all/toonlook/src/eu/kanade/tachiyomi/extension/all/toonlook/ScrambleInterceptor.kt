@@ -139,7 +139,7 @@ class ScrambleInterceptor : Interceptor {
             Bitmap.CompressFormat.WEBP_LOSSY
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP
+            Bitmap.CompressFormat.WEBP_LOSSY
         }
         private val WEBP_MEDIA_TYPE = "image/webp".toMediaType()
     }

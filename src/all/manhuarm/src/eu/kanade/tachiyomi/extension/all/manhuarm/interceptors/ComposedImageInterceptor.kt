@@ -68,7 +68,7 @@ class ComposedImageInterceptor(
                     Bitmap.CompressFormat.WEBP_LOSSY
                 } else {
                     @Suppress("DEPRECATION")
-                    Bitmap.CompressFormat.WEBP
+                    Bitmap.CompressFormat.WEBP_LOSSY
                 }
                 format to "image/webp"
             }

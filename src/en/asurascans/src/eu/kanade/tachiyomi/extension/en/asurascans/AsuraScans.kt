@@ -355,7 +355,7 @@ abstract class AsuraScans :
             Bitmap.CompressFormat.WEBP_LOSSLESS
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP
+            Bitmap.CompressFormat.WEBP_LOSSY
         }
 
         val buffer = Buffer().apply {

@@ -227,7 +227,7 @@ class ImageInterceptor : Interceptor {
             Bitmap.CompressFormat.WEBP_LOSSY
         } else {
             @Suppress("DEPRECATION")
-            Bitmap.CompressFormat.WEBP
+            Bitmap.CompressFormat.WEBP_LOSSY
         }
         compress(format, 100, buffer.outputStream())
         recycle()
