@@ -78,13 +78,15 @@ internal class Hentai2ReadBook(
     private val status: Hentai2ReadStatus? = null,
 ) {
     fun toManga(): SManga? {
-        if (isVideo == true || (type as? JsonPrimitive)?.content == "video" || url == null || title == null) return null
+        if (isVideo == true || (type as? JsonPrimitive)?.content == "video") return null
+        val bookUrl = url ?: return null
+        val bookTitle = title ?: return null
         val artistName = artist
             ?.takeIf { it.id?.intOrNull != UNKNOWN_ARTIST_ID }
             ?.name
         return SManga.create().apply {
-            this.url = url
-            this.title = title
+            this.url = bookUrl
+            this.title = bookTitle
             thumbnail_url = cover
             author = artistName
             artist = artistName
