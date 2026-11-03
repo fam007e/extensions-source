@@ -37,11 +37,11 @@ val date = try {
 ```
 
 ### Modern Locale Construction
-Avoid deprecated `Locale(language, country)` constructors. Use `Locale.of(...)`:
+Avoid deprecated `Locale(language, country)` constructors. Use `Locale.forLanguageTag(...)` (e.g. `Locale.forLanguageTag("pt-BR")` or `Locale.forLanguageTag("en-US")`), as `Locale.of` requires Android API level 36+:
 
 ```kotlin
-// Modern Java 19+ / Android API:
-val locale = Locale.of("en", "US")
+// Android API compatible:
+val locale = Locale.forLanguageTag("en-US")
 ```
 
 ### WebView Interceptor Settings

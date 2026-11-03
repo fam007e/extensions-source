@@ -12,6 +12,7 @@ import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.SMangaUpdate
 import keiyoushi.annotation.Source
+import keiyoushi.network.Fetch
 import keiyoushi.network.get
 import keiyoushi.network.rateLimit
 import keiyoushi.source.KeiSource
@@ -20,6 +21,7 @@ import keiyoushi.utils.getPreferencesLazy
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonElement
 import keiyoushi.utils.toJsonRequestBody
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.addJsonObject
@@ -38,16 +40,13 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Parser
 import java.io.IOException
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Source
 abstract class CuuTruyenMoe :
     KeiSource(),
     ConfigurableSource {
-
     private val preferences: SharedPreferences by getPreferencesLazy()
 
     override fun OkHttpClient.Builder.configureClient() = apply {
@@ -80,7 +79,7 @@ abstract class CuuTruyenMoe :
 
     // ============================== Popular ===============================
 
-    override suspend fun getPopularManga(page: Int): MangasPage = parseMangaPage(client.get("$baseUrl/tim-kiem?sort=-views&filter[status]=2,1&page=$page"))
+    override suspend fun getPopularManga(page: Int): MangasPage = parseMangaPage(client.get("$baseUrl/tim-kiem?sort=-views&filter[status]=2,1&page=$page", Fetch.DOCUMENT))
 
     private fun parseMangaPage(response: Response): MangasPage {
         val document = response.asJsoup()
@@ -102,7 +101,7 @@ abstract class CuuTruyenMoe :
 
     // =============================== Latest ===============================
 
-    override suspend fun getLatestUpdates(page: Int): MangasPage = parseMangaPage(client.get("$baseUrl/tim-kiem?sort=-updated_at&filter[status]=2,1&page=$page"))
+    override suspend fun getLatestUpdates(page: Int): MangasPage = parseMangaPage(client.get("$baseUrl/tim-kiem?sort=-updated_at&filter[status]=2,1&page=$page", Fetch.DOCUMENT))
 
     // =============================== Search ===============================
 
@@ -135,12 +134,12 @@ abstract class CuuTruyenMoe :
             addQueryParameter("page", page.toString())
         }.build()
 
-        return parseMangaPage(client.get(url))
+        return parseMangaPage(client.get(url, Fetch.DOCUMENT))
     }
 
     override val supportsFilterFetching get() = true
 
-    override suspend fun fetchFilterData(): JsonElement = client.get("$baseUrl/tim-kiem").asJsoup()
+    override suspend fun fetchFilterData(): JsonElement = client.get("$baseUrl/tim-kiem", Fetch.DOCUMENT).asJsoup()
         .select("label")
         .mapNotNull { element ->
             val id = genreIdRegex.matchEntire(element.attr("@click"))
@@ -196,7 +195,7 @@ abstract class CuuTruyenMoe :
         fetchDetails: Boolean,
         fetchChapters: Boolean,
     ): SMangaUpdate {
-        val document = client.get("$baseUrl${manga.url}").asJsoup()
+        val document = client.get("$baseUrl${manga.url}", Fetch.DOCUMENT).asJsoup()
         return SMangaUpdate(
             manga = parseMangaDetails(document, manga),
             chapters = parseChapterList(document),
@@ -208,7 +207,7 @@ abstract class CuuTruyenMoe :
     override val supportsRelatedMangas get() = true
 
     override suspend fun fetchRelatedMangaList(manga: SManga): List<SManga> {
-        val document = client.get("$baseUrl${manga.url}").asJsoup()
+        val document = client.get("$baseUrl${manga.url}", Fetch.DOCUMENT).asJsoup()
         val relatedSection = document.select("h5")
             .firstOrNull { it.text() == "Có thể bạn thích" }
             ?.parent()
@@ -238,16 +237,15 @@ abstract class CuuTruyenMoe :
             SChapter.create().apply {
                 setUrlWithoutDomain(chapterElement.absUrl("href"))
                 name = chapterName
-                date_upload = dateFormat.tryParse(chapterElement.selectFirst("span.timeago[datetime]")?.attr("datetime"))
+                date_upload = dateFormat.tryParseDateTime(
+                    chapterElement.selectFirst("span.timeago[datetime]")?.attr("datetime"),
+                    ZoneId.of("Asia/Ho_Chi_Minh"),
+                )
             }
         }.distinctBy { it.url }
     }
 
-    private val dateFormat by lazy {
-        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply {
-            timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
-        }
-    }
+    private val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     // ============================== Password ===============================
 
@@ -308,7 +306,7 @@ abstract class CuuTruyenMoe :
     // =============================== Pages ================================
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
-        val document = client.get("$baseUrl${chapter.url}").asJsoup()
+        val document = client.get("$baseUrl${chapter.url}", Fetch.DOCUMENT).asJsoup()
 
         val imageUrls = document.select("div.text-center > img.max-w-full").mapNotNull { image ->
             image.extractImageUrl()
@@ -341,5 +339,3 @@ abstract class CuuTruyenMoe :
     private val livewireTokenRegex = Regex("""livewire_token\s*=\s*'([^']+)'""")
     private val defaultPassword = "5"
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

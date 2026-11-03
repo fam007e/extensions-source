@@ -18,11 +18,12 @@ buildscript {
     dependencies {
         // Explicit overrides to satisfy Dependabot's scanner for settings.gradle.kts
         classpath("org.jdom:jdom2:2.0.6.1")
-        classpath("org.bitbucket.b_c:jose4j:0.9.6")
-        classpath("org.apache.commons:commons-lang3:3.20.0")
-        classpath("org.apache.httpcomponents:httpclient:4.5.13")
-        classpath("org.bouncycastle:bcpkix-jdk18on:1.85")
-        classpath("org.bouncycastle:bcprov-jdk18on:1.85")
+        classpath("org.bitbucket.b_c:jose4j:0.9.7")
+        classpath("org.apache.commons:commons-lang3:3.21.0")
+        classpath("org.apache.httpcomponents:httpclient:4.5.14")
+        classpath("com.google.guava:guava:33.7.2-jre")
+        classpath("org.bouncycastle:bcpkix-jdk18on:1.86")
+        classpath("org.bouncycastle:bcprov-jdk18on:1.86")
         classpath("org.apache.logging.log4j:log4j-core:2.26.1")
         classpath("org.apache.logging.log4j:log4j-api:2.26.1")
         classpath("io.netty:netty-codec-http2:4.2.17.Final")
@@ -67,8 +68,6 @@ dependencyResolutionManagement {
         }
     }
 }
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Keiyoushi"
 

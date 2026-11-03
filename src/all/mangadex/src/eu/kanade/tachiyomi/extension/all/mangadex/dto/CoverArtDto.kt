@@ -11,7 +11,7 @@ typealias CoverArtListDto = PaginatedResponseDto<CoverArtDto>
 data class CoverArtDto(override val attributes: CoverArtAttributesDto? = null) : EntityDto()
 
 @Serializable
-data class CoverArtAttributesDto(
+class CoverArtAttributesDto(
     val fileName: String? = null,
     val locale: String? = null,
 ) : AttributesDto()

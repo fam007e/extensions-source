@@ -3,27 +3,14 @@ package eu.kanade.tachiyomi.multisrc.moonlighttl
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import keiyoushi.lib.i18n.Intl
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
+import kotlin.time.Instant
 
 @Serializable
 class ResponseDto<T>(
     val response: T,
-)
-
-@Serializable
-class TopSeriesDto(
-    @SerialName("mensual") val topMonthly: List<List<PayloadSeriesDto>>,
-    @SerialName("semanal") val topWeekly: List<List<PayloadSeriesDto>>,
-    @SerialName("diario") val topDaily: List<List<PayloadSeriesDto>>,
-)
-
-@Serializable
-class PayloadSeriesDto(
-    @SerialName("project") val data: SeriesDto,
 )
 
 @Serializable
@@ -41,7 +28,10 @@ class SeriesDto(
     val trending: TrendingDto? = null,
     @SerialName("autors") private val authors: List<AuthorDto> = emptyList(),
     private val artists: List<ArtistDto> = emptyList(),
+    private val type: String? = null,
 ) {
+    val isNovel: Boolean get() = type == "novela"
+
     fun toSManga(seriesPath: String): SManga = SManga.create().apply {
         title = name
         thumbnail_url = thumbnail
@@ -65,6 +55,7 @@ class SeriesDto(
 @Serializable
 class TrendingDto(
     @SerialName("visitas") val views: Int? = 0,
+    @SerialName("mensual") val monthlyViews: Int? = 0,
 )
 
 @Serializable
@@ -87,8 +78,6 @@ class DetailDataNameDto(
     val name: String,
 )
 
-private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-
 @Serializable
 class ChapterDto(
     @SerialName("num") private val number: Float,
@@ -101,9 +90,7 @@ class ChapterDto(
         if (!this@ChapterDto.name.isNullOrBlank()) {
             name += " - ${this@ChapterDto.name}"
         }
-        date_upload = dateFormat.tryParse(date)
+        date_upload = Instant.tryParse(date)
         url = "$seriesPath/$seriesSlug/$slug"
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

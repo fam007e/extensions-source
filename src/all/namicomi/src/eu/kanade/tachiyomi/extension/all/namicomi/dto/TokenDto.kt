@@ -7,7 +7,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
 @Serializable
-data class Token(
+class Token(
     @SerialName("id_token") val idToken: String,
     @SerialName("access_token") val accessToken: String,
     @SerialName("refresh_token") val refreshToken: String,

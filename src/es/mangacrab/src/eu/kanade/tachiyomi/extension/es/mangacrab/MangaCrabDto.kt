@@ -3,13 +3,13 @@ package eu.kanade.tachiyomi.extension.es.mangacrab
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MangaCrabMangasDto(
+class MangaCrabMangasDto(
     val items: List<MangaCrabMangaDto> = emptyList(),
     val pagination: MangaCrabPaginationDto = MangaCrabPaginationDto(),
 )
 
 @Serializable
-data class MangaCrabPaginationDto(
+class MangaCrabPaginationDto(
     val page: Int = 1,
     val per_page: Int = 24,
     val total_items: Int = 0,
@@ -18,7 +18,7 @@ data class MangaCrabPaginationDto(
 )
 
 @Serializable
-data class MangaCrabMangaDto(
+class MangaCrabMangaDto(
     val id: Long,
     val title: String,
     val description: String = "",
@@ -29,27 +29,26 @@ data class MangaCrabMangaDto(
 )
 
 @Serializable
-data class MangaCrabLabelDto(
+class MangaCrabLabelDto(
     val raw: String = "",
     val label: String = "",
 )
 
 @Serializable
-data class MangaCrabGenreDto(
+class MangaCrabGenreDto(
     val id: Long,
     val name: String,
     val slug: String,
 )
 
 @Serializable
-data class MangaCrabChaptersDto(
+class MangaCrabChaptersDto(
     val items: List<MangaCrabChapterDto> = emptyList(),
     val pagination: MangaCrabPaginationDto = MangaCrabPaginationDto(),
 )
 
 @Serializable
-data class MangaCrabChapterDto(
-    val index: Int,
+class MangaCrabChapterDto(
     val title: String,
     val label: String = "",
     val number: String = "",
@@ -66,14 +65,14 @@ data class MangaCrabChapterDto(
 )
 
 @Serializable
-data class MangaCrabSecurityDto(
+class MangaCrabSecurityDto(
     val enabled: Int = 0,
     val mode: String = "",
     val header: String = "",
 )
 
 @Serializable
-data class MangaCrabChapterContentDto(
+class MangaCrabChapterContentDto(
     val type: String = "",
     val pages: List<String> = emptyList(),
 )

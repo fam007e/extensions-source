@@ -23,7 +23,7 @@ class PageDto(
 )
 
 @Serializable
-data class Dialog(
+class Dialog(
     val x: Float,
     val y: Float,
     private val _width: Float,
@@ -34,6 +34,9 @@ data class Dialog(
     var scale: Float = 1F
     val height: Float get() = scale * _height
     val width: Float get() = scale * _width
+    fun withText(text: String) = Dialog(x, y, _width, _height, angle, mapOf("text" to text)).also {
+        it.scale = scale
+    }
 
     val text: String get() = textByLanguage["text"] ?: throw Exception("Dialog not found")
     fun getTextBy(language: Language) = when {
@@ -102,3 +105,9 @@ private object DialogListSerializer :
     private val JsonElement.isObject get() = this is JsonObject
     private val JsonElement.isString get() = this.isObject.not() && this.isArray.not() && this.jsonPrimitive.isString
 }
+
+@Serializable
+class OcrRequestDto(
+    private val cid: String,
+    private val ref: String,
+)

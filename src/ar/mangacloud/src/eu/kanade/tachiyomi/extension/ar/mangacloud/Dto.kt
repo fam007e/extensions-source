@@ -13,18 +13,18 @@ import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.Response
 
 @Serializable
-data class FirestoreListResponse(
+class FirestoreListResponse(
     val documents: List<FirestoreDocument>? = null,
     val nextPageToken: String? = null,
 )
 
 @Serializable
-data class FirestoreDocument(
+class FirestoreDocument(
     val name: String? = null,
     val fields: JsonObject? = null,
 )
 
-data class MangaData(
+class MangaData(
     val smanga: SManga,
     val altTitles: List<String> = emptyList(),
     val genres: List<String> = emptyList(),

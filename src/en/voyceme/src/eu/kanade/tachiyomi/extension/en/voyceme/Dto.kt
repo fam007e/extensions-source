@@ -2,11 +2,12 @@ package eu.kanade.tachiyomi.extension.en.voyceme
 
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParseDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Serializable
@@ -62,13 +63,12 @@ class VoyceMeChapter(
 ) {
     fun toSChapter(comicSlug: String): SChapter = SChapter.create().apply {
         name = title
-        date_upload = runCatching { DATE_FORMATTER.parse(createdAt)?.time }
-            .getOrNull() ?: 0L
+        date_upload = DATE_FORMATTER.tryParseDate(createdAt)
         url = "/series/$comicSlug/$id#comic"
     }
 
     companion object {
-        private val DATE_FORMATTER by lazy { SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH) }
+        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
     }
 }
 

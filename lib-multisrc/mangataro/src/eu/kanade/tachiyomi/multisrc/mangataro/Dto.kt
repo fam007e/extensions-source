@@ -67,7 +67,7 @@ class BrowseManga(
 )
 
 @Serializable
-data class MangaUrl(
+class MangaUrl(
     val id: String,
     val slug: String,
     val group: Long? = null,
@@ -114,6 +114,8 @@ class Rendered(
 @Serializable
 class ChapterList(
     val chapters: List<Chapter>,
+    @SerialName("has_more")
+    val hasMore: Boolean = false,
 )
 
 @Serializable

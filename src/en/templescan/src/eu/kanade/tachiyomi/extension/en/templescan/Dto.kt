@@ -1,39 +1,79 @@
 package eu.kanade.tachiyomi.extension.en.templescan
 
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.firstInstance
+import keiyoushi.utils.firstInstanceOrNull
+import keiyoushi.utils.getStringOrNull
+import keiyoushi.utils.int
+import keiyoushi.utils.obj
+import keiyoushi.utils.parseAs
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Locale
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.intOrNull
+import kotlin.time.Instant
 
-// The site's React Server Components payload renames a fixed subset of field names to
-// deterministic short keys. They are derived in the site's client bundle as
-// FNV-1a("6b3ad0e8a808:<name>:<collision index>") and stay valid as long as that salt is
-// unchanged. If the site ever rotates the salt, recompute this mapping:
-//   title -> pnsk6q, series_slug -> s20a8oj, Chapter -> qmy3ca, chapter_name -> u171tuh,
-//   chapter_slug -> y26ma5t, price -> u1e8nmi, Season -> u2ytwc, images -> nu7315
+/** The site salts these field names per build; they are told apart by value. */
+private fun JsonObject.saltedStrings(plainKeys: Set<String>) = filterKeys { it !in plainKeys }.values
+    .mapNotNull { (it as? JsonPrimitive)?.takeIf(JsonPrimitive::isString)?.content }
+    .also { check(it.size == 2) { UNEXPECTED_ROW } }
+
+private const val UNEXPECTED_ROW = "The site's data has changed"
+
+private val RATING = Regex("""\s*\+18\s*""")
+
+private val SLUG = Regex("[a-z0-9._-]+")
+
+private fun List<String>.slug() = last(SLUG::matches)
+
+private val CATALOG_KEYS = setOf("thumbnail", "badge", "status", "created_at", "alternative_names", "update_chapter")
+
+private val CHAPTER_KEYS = setOf("index", "chapter_title", "chapter_thumbnail", "created_at")
+
 @Serializable
-class BrowseSeries(
-    @SerialName("pnsk6q") val title: String,
-    @SerialName("s20a8oj") val slug: String,
+class TurnstileToken(private val token: String)
+
+@Serializable
+class CatalogFields(
     @SerialName("alternative_names") val alternativeNames: String? = null,
     val thumbnail: String? = null,
     val badge: String? = null,
     val status: String? = null,
-    @SerialName("update_chapter") private val updatedAt: String? = null,
-    @SerialName("created_at") private val createdAt: String? = null,
-    @SerialName("total_views") val views: Long = 0,
-) {
-    val updated: Long by lazy { dateFormat.tryParse(updatedAt) }
+    @SerialName("update_chapter") val updatedAt: String? = null,
+    @SerialName("created_at") val createdAt: String? = null,
+    @SerialName("total_views") val views: Long,
+)
 
-    val created: Long by lazy { dateFormat.tryParse(createdAt) }
+/** A series in the catalog of the comics page. */
+class BrowseSeries(json: JsonObject) {
+    val fields = json.parseAs<CatalogFields>()
+    private val strings = json.saltedStrings(CATALOG_KEYS)
+
+    val slug = strings.slug()
+    val title = strings.firstOrNull { it != slug } ?: slug
+    val updated: Long by lazy { Instant.tryParse(fields.updatedAt) }
+    val created: Long by lazy { Instant.tryParse(fields.createdAt) }
 
     fun toSManga() = SManga.create().apply {
         url = "/comic/$slug"
         title = this@BrowseSeries.title
-        thumbnail_url = thumbnail
+        thumbnail_url = fields.thumbnail
+        status = parseStatus(fields.status)
+        genre = fields.badge?.withoutRating()
     }
+}
+
+fun String.withoutRating() = replace(RATING, " ").trim().ifEmpty { null }
+
+fun parseStatus(status: String?) = when (status?.lowercase()) {
+    "ongoing" -> SManga.ONGOING
+    "hiatus" -> SManga.ON_HIATUS
+    "completed" -> SManga.COMPLETED
+    "canceled", "dropped" -> SManga.CANCELLED
+    else -> SManga.UNKNOWN
 }
 
 /** schema.org `ComicSeries` JSON-LD block embedded in the detail page. */
@@ -53,49 +93,23 @@ class ComicSeriesLd(
     val isSeries: Boolean get() = type == "ComicSeries"
 }
 
+/** The series page's data, its chapters grouped by season. */
 @Serializable
-class SeriesDataWrapper(
-    val seriesData: SeriesData,
-) {
-    @Serializable
-    class SeriesData(
-        @SerialName("u2ytwc") private val seasons: List<Season>? = null,
-    ) {
-        val chapters: List<Chapter> get() = seasons.orEmpty().flatMap { it.chapters }
-
-        @Serializable
-        class Season(
-            @SerialName("qmy3ca") private val items: List<Chapter>? = null,
-        ) {
-            val chapters: List<Chapter> get() = items.orEmpty()
-        }
-
-        @Serializable
-        class Chapter(
-            @SerialName("u171tuh") val name: String,
-            @SerialName("chapter_title") val title: String? = null,
-            @SerialName("y26ma5t") val slug: String,
-            @SerialName("u1e8nmi") val price: Int = 0,
-            @SerialName("created_at") private val createdAt: String? = null,
-        ) {
-            val created: Long by lazy { dateFormat.tryParse(createdAt) }
-        }
-    }
+class SeriesPage(private val seriesData: JsonObject) {
+    val chapters get() = seriesData.values.firstInstanceOrNull<JsonArray>().orEmpty()
+        .sortedByDescending { it.obj["index"]!!.int }
+        .flatMap { season -> season.obj.values.firstInstance<JsonArray>().map { SiteChapter(it.obj) } }
 }
 
-@Serializable
-class PagesList(
-    @SerialName("nu7315") val images: List<String>,
-)
+class SiteChapter(json: JsonObject) {
+    private val strings = json.saltedStrings(CHAPTER_KEYS)
 
-private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+    val slug = strings.slug()
+    val name = strings.firstOrNull { it != slug } ?: slug
+    val title = json.getStringOrNull("chapter_title")
 
-private fun SimpleDateFormat.tryParse(date: String?): Long {
-    date ?: return 0L
-
-    return try {
-        parse(date)?.time ?: 0L
-    } catch (_: ParseException) {
-        0L
-    }
+    val premium = json.filterKeys { it !in CHAPTER_KEYS }.values
+        .mapNotNull { (it as? JsonPrimitive)?.takeUnless(JsonPrimitive::isString)?.intOrNull }
+        .singleOrNull().let { it ?: error(UNEXPECTED_ROW) } > 0
+    val createdAt = Instant.tryParse(json.getStringOrNull("created_at"))
 }

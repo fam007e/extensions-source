@@ -14,12 +14,14 @@ import eu.kanade.tachiyomi.source.model.SMangaUpdate
 import keiyoushi.annotation.Source
 import keiyoushi.lib.randomua.UserAgentType
 import keiyoushi.lib.randomua.setRandomUserAgent
+import keiyoushi.network.Fetch
 import keiyoushi.network.get
 import keiyoushi.network.rateLimit
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.getPreferencesLazy
+import keiyoushi.utils.tryParseDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -32,8 +34,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import org.jsoup.nodes.Document
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
 
@@ -50,10 +51,10 @@ abstract class BuonDua :
     private val preferences by getPreferencesLazy()
 
     // Latest
-    override suspend fun getLatestUpdates(page: Int): MangasPage = parseMangasPage(client.get("$baseUrl/?start=${20 * (page - 1)}"))
+    override suspend fun getLatestUpdates(page: Int): MangasPage = parseMangasPage(client.get("$baseUrl/?start=${20 * (page - 1)}", Fetch.DOCUMENT))
 
     // Popular
-    override suspend fun getPopularManga(page: Int): MangasPage = parseMangasPage(client.get("$baseUrl/hot?start=${20 * (page - 1)}"))
+    override suspend fun getPopularManga(page: Int): MangasPage = parseMangasPage(client.get("$baseUrl/hot?start=${20 * (page - 1)}", Fetch.DOCUMENT))
 
     // Search
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
@@ -64,10 +65,10 @@ abstract class BuonDua :
                     addQueryParameter("search", query)
                     addQueryParameter("start", (20 * (page - 1)).toString())
                 }.build()
-                parseMangasPage(client.get(url))
+                parseMangasPage(client.get(url, Fetch.DOCUMENT))
             }
             tagFilter?.state?.isNotEmpty() == true ->
-                parseMangasPage(client.get("$baseUrl/tag/${tagFilter.state}&start=${20 * (page - 1)}"))
+                parseMangasPage(client.get("$baseUrl/tag/${tagFilter.state}&start=${20 * (page - 1)}", Fetch.DOCUMENT))
             else -> getPopularManga(page)
         }
     }
@@ -105,7 +106,7 @@ abstract class BuonDua :
         fetchDetails: Boolean,
         fetchChapters: Boolean,
     ): SMangaUpdate {
-        val document = client.get(getMangaUrl(manga)).asJsoup()
+        val document = client.get(getMangaUrl(manga), Fetch.DOCUMENT).asJsoup()
         return SMangaUpdate(parseMangaDetails(document), parseChapterList(document))
     }
 
@@ -147,7 +148,7 @@ abstract class BuonDua :
     // Chapters
     private fun parseChapterList(doc: Document): List<SChapter> {
         val dateUploadStr = doc.selectFirst(".article-info > small")?.text()
-        val dateUpload = DATE_FORMAT.tryParse(dateUploadStr)
+        val dateUpload = DATE_FORMAT.tryParseDateTime(dateUploadStr)
 
         val basePageUrl = doc.location()
 
@@ -185,7 +186,7 @@ abstract class BuonDua :
     override val supportsRelatedMangas get() = true
 
     override suspend fun fetchRelatedMangaList(manga: SManga): List<SManga> {
-        val response = client.get(getMangaUrl(manga))
+        val response = client.get(getMangaUrl(manga), Fetch.DOCUMENT)
         return parseMangasPage(response).mangas
     }
 
@@ -193,7 +194,7 @@ abstract class BuonDua :
     private val pageListSelector = ".article-fulltext img"
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
-        val document = client.get(getChapterUrl(chapter)).asJsoup()
+        val document = client.get(getChapterUrl(chapter), Fetch.DOCUMENT).asJsoup()
         return if (preferences.splitPages) {
             pageListParse(document)
         } else {
@@ -218,7 +219,7 @@ abstract class BuonDua :
                             val pageUrl = basePageUrl.toHttpUrl().newBuilder()
                                 .setQueryParameter("page", page.toString())
                                 .build()
-                            client.get(pageUrl).asJsoup()
+                            client.get(pageUrl, Fetch.DOCUMENT).asJsoup()
                         }
                     }
                     doc.select(pageListSelector).map { imgEl ->
@@ -262,10 +263,8 @@ abstract class BuonDua :
         private const val PREF_SPLIT_PAGES = "pref_split_pages"
         private const val DEFAULT_SPLIT_PAGES = true
 
-        private val DATE_FORMAT = SimpleDateFormat("HH:mm dd-MM-yyyy", Locale.US)
+        private val DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy", Locale.US)
 
         private val titlePageRegex by lazy { Regex(""" - \( Page \d+ / \d+ \)""") }
     }
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

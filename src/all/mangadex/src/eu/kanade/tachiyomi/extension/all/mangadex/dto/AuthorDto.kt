@@ -13,4 +13,4 @@ data class AuthorDto(override val attributes: AuthorArtistAttributesDto? = null)
 data class ArtistDto(override val attributes: AuthorArtistAttributesDto? = null) : EntityDto()
 
 @Serializable
-data class AuthorArtistAttributesDto(val name: String) : AttributesDto()
+class AuthorArtistAttributesDto(val name: String) : AttributesDto()

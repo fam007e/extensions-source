@@ -29,10 +29,10 @@ class GenreFilter(genres: List<Genre>) :
     )
 
 @Serializable
-data class GenreDto(val name: String, val slug: String)
+class GenreDto(val name: String, val slug: String)
 
 @Serializable
-data class GenreResponseDto(val genres: List<GenreDto> = emptyList())
+class GenreResponseDto(val genres: List<GenreDto> = emptyList())
 
 fun getGenreList(data: JsonElement? = null): List<Genre> {
     val items = data

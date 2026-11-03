@@ -6,13 +6,16 @@ plugins {
 
 keiyoushi {
     name = "FireCross"
-    versionCode = 0
+    versionCode = 3
     contentWarning = ContentWarning.SAFE
     libVersion = "1.6"
-    theme = "clipstudioreader"
 
     source {
         lang = "ja"
         baseUrl = "https://firecross.jp"
     }
+}
+
+dependencies {
+    implementation(project(":lib:clipstudioreader"))
 }

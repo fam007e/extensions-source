@@ -4,11 +4,13 @@ import eu.kanade.tachiyomi.source.model.SManga
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 const val LISTING_PAGE_SIZE = 20
-val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+private val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
 
 @Serializable
 class LoginResponseDto(val status: String)
@@ -72,7 +74,7 @@ class MangaDto(
     }
 
     fun formatDescription() = description.ifBlank {
-        "時間：${DATE_FORMAT.format(time * 1000)}\n评分：$rating\n" +
+        "時間：${Instant.ofEpochMilli(time * 1000).atZone(ZoneId.systemDefault()).format(DATE_FORMAT)}\n评分：$rating\n" +
             "原作：${oTag?.formatNames() ?: otag?.joinToString()}\n" +
             "角色：${pName?.formatNames() ?: pname?.joinToString()}"
     }

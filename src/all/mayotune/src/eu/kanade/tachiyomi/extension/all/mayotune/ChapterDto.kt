@@ -1,22 +1,17 @@
 package eu.kanade.tachiyomi.extension.all.mayotune
 
-import kotlinx.serialization.Contextual
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.Serializable
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
+import kotlin.time.Instant
 
 @Serializable
-data class ChapterDto(
+class ChapterDto(
     val id: String,
-    val title: String,
+    private val title: String,
     val number: Float,
     val pageCount: Int,
-    val date: String,
+    private val date: String,
 ) {
-    @Contextual
-    private val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-
     fun getChapterURL(chapterEndpoint: String): String = "/api/$chapterEndpoint/chapters?id=$id&number=${this.getNumberStr()}"
 
     fun getNumberStr(): String = if (this.number % 1 == 0f) {
@@ -31,7 +26,5 @@ data class ChapterDto(
         "Chapter ${this.getNumberStr()}"
     }
 
-    fun getDateTimestamp(): Long = this.sdf.tryParse(this.date)
+    fun getDateTimestamp(): Long = Instant.tryParse(this.date)
 }
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L

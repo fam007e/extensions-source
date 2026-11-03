@@ -3,7 +3,7 @@ package eu.kanade.tachiyomi.extension.en.warforrayuba.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RoundDto(
+class RoundDto(
     val title: String,
     val description: String,
     val artist: String,

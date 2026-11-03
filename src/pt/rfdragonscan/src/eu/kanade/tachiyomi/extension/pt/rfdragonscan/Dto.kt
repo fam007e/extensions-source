@@ -3,12 +3,12 @@ package eu.kanade.tachiyomi.extension.pt.rfdragonscan
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import keiyoushi.utils.tryParse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
+import kotlin.time.Instant
 
 @Serializable
 class ProjectsPageDto(
@@ -80,11 +80,11 @@ class ChapterDataDto(
     val isUpcoming: Boolean? = null,
     val hasRestriction: Boolean? = null,
 ) {
-    fun toSChapter(mangaId: String, mangaSlug: String, dateFormat: SimpleDateFormat) = SChapter.create().apply {
+    fun toSChapter(mangaId: String, mangaSlug: String) = SChapter.create().apply {
         val formatTitle = this@ChapterDataDto.title?.contentOrNull?.removeSuffix(".0") ?: ""
         url = "/$mangaId/$mangaSlug/capitulo/$formatTitle"
         name = "Capítulo $formatTitle"
-        date_upload = createdAt?.let { dateFormat.tryParse(it) } ?: 0L
+        date_upload = Instant.tryParse(createdAt)
     }
 }
 
@@ -101,5 +101,3 @@ class PagesDto(
 class PageDataDto(
     val photo: String? = null,
 )
-
-private fun SimpleDateFormat.tryParse(date: String?): Long = date?.let { parse(it, ParsePosition(0))?.time } ?: 0L
