@@ -28,7 +28,7 @@ class ChallengeSolverInterceptor(
     private var clientHintsHeaders: Map<String, String> = mapOf()
 
     @Serializable
-    private data class ErrorResponse(
+    private class ErrorResponse(
         val error: String?,
     )
 
