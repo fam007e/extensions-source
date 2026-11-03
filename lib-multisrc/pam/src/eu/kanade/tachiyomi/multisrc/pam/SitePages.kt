@@ -122,10 +122,10 @@ internal class SitePages(
                             message.reader != null -> readerResult = message.reader
                             message.error != null -> {
                                 if (message.status == 403 || message.status == 429) failed(challenge = false)
-                                return@jsBridge reject(IOException(message.error))
+                                return@webMessageBridge reject(IOException(message.error))
                             }
                             else -> {
-                                val page = message.page ?: return@jsBridge reject(IOException("Missing page data"))
+                                val page = message.page ?: return@webMessageBridge reject(IOException("Missing page data"))
                                 readerV2 = reader && page.parseAs<PageListResponse>().props.readerV2
                                 site = SitePage(page, message.fetched, message.chapters)
                             }
