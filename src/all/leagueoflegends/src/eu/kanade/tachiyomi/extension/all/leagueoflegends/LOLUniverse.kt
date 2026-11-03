@@ -89,11 +89,12 @@ abstract class LOLUniverse : KeiSource() {
 
     private fun String.clean() = replace("</p> ", "</p>").replace("</p>", "\n").replace("<p>", "")
 
-    private fun MangasPage.filter(query: String) = copy(
+    private fun MangasPage.filter(query: String) = MangasPage(
         mangas.filter {
             it.title.contains(query, true) ||
                 it.genre?.contains(query, true) ?: false
         },
+        hasNextPage,
     )
 
     companion object {
