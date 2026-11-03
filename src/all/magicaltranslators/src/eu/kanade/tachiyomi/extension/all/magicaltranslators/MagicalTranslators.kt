@@ -7,14 +7,17 @@ import keiyoushi.annotation.Source
 @Source
 abstract class MagicalTranslators : Guya() {
     override fun filterMangas(mangasPage: MangasPage): MangasPage = when (lang) {
-        "en" -> mangasPage.copy(
-            mangas = mangasPage.mangas.filterNot { it.url.endsWith("-ES") || it.url.endsWith("-PL") },
+        "en" -> MangasPage(
+            mangasPage.mangas.filterNot { it.url.endsWith("-ES") || it.url.endsWith("-PL") },
+            mangasPage.hasNextPage,
         )
-        "es" -> mangasPage.copy(
-            mangas = mangasPage.mangas.filter { it.url.endsWith("-ES") },
+        "es" -> MangasPage(
+            mangasPage.mangas.filter { it.url.endsWith("-ES") },
+            mangasPage.hasNextPage,
         )
-        "pl" -> mangasPage.copy(
-            mangas = mangasPage.mangas.filter { it.url.endsWith("-PL") },
+        "pl" -> MangasPage(
+            mangasPage.mangas.filter { it.url.endsWith("-PL") },
+            mangasPage.hasNextPage,
         )
         else -> throw IllegalArgumentException("Unknown language: $lang")
     }

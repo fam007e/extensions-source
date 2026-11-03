@@ -231,7 +231,7 @@ abstract class DarthsDroids : KeiSource() {
                         name = pageAnchor.text()
                         chapter_number = (i++).toFloat()
                         date_upload = DATE_FMT.tryParseDate(pageData[0].text())
-                        setUrlWithoutDomain(pageAnchor!!.absUrl("href"))
+                        setUrlWithoutDomain(pageAnchor.absUrl("href"))
                     }
                 } else if (!pageData.hasAttr("colspan")) {
                     // Are we in a dateless archive?

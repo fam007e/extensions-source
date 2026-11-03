@@ -264,7 +264,7 @@ abstract class RinkoComics :
 
             SChapter.create().apply {
                 setUrlWithoutDomain(url)
-                this.name = name?.trim().orEmpty()
+                this.name = name.trim().orEmpty()
                 date_upload = dateFormat.tryParseDate(dateText)
 
                 if (locked) {

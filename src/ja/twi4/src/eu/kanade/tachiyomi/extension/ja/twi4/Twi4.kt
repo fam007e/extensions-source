@@ -60,10 +60,11 @@ abstract class Twi4 : KeiSource() {
     // It is possible to implement something rudimentary for search to function
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
         val mp = getPopularManga(page)
-        return mp.copy(
-            mangas = mp.mangas.filter {
+        return MangasPage(
+            mp.mangas.filter {
                 it.title.contains(query, true)
             },
+            mp.hasNextPage,
         )
     }
 

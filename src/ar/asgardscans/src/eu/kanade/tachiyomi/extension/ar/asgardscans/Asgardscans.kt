@@ -98,15 +98,18 @@ abstract class Asgardscans : KeiSource() {
             .firstOrNull { it?.optString("@type") == "CreativeWorkSeries" }
     }
 
-    private fun JSONObject.stringOrArray(key: String): String? = when (val value = opt(key)) {
-        is String -> value.takeIf { it.isNotBlank() }
-        is JSONArray ->
-            (0 until value.length())
-                .mapNotNull { value.optString(it) }
-                .filter { it.isNotBlank() }
-                .joinToString(", ")
-                .takeIf { it.isNotEmpty() }
-        else -> null
+    private fun JSONObject.stringOrArray(key: String): String? {
+        val value = opt(key)
+        return when {
+            value is String -> value.takeIf { it.isNotBlank() }
+            value is JSONArray ->
+                (0 until value.length())
+                    .mapNotNull { value.optString(it) }
+                    .filter { it.isNotBlank() }
+                    .joinToString(", ")
+                    .takeIf { it.isNotEmpty() }
+            else -> null
+        }
     }
 
     private fun String?.toStatus() = when {

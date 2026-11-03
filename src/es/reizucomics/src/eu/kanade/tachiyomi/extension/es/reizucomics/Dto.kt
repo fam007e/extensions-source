@@ -99,7 +99,6 @@ object ContentUrlSerializer : KSerializer<List<String>> {
                     listOf(text).filter(String::isNotBlank)
                 }
             }
-            else -> emptyList()
         }
     }
 

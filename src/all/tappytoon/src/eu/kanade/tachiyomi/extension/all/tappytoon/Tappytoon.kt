@@ -110,7 +110,7 @@ abstract class Tappytoon : KeiSource() {
         val response = client.get(url, apiHeaders(), Fetch.XHR)
         val link = response.headers["Link"]
         nextUrl = link?.substringAfter('<')?.substringBefore('>')
-        return parseComics(response).copy(hasNextPage = link != null)
+        return MangasPage(parseComics(response), link != null)
     }
 
     private fun parseComics(response: Response) = response.parseAs<List<Comic>>().accessible.map {
