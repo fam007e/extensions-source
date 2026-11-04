@@ -40,7 +40,7 @@ internal class Hentai2ReadProps(
 
     fun bookToManga(): SManga = requireNotNull(book) { "Book data not found" }.toMangaOrThrow()
 
-    fun toChapters(): List<SChapter> = chapters.orEmpty().map { it.toSChapter() }
+    fun toChapters(): List<SChapter> = chapters.orEmpty().map { it.toSChapter(book?.bookTitle()) }
 
     fun pageImages(): List<String> = images.orEmpty()
 
@@ -132,6 +132,8 @@ internal class Hentai2ReadBook(
 
     fun bookUrl(): String? = url
 
+    fun bookTitle(): String? = title
+
     private fun groupNames(type: String): List<String> = groups
         .filter { it.type == type }
         .flatMap { it.tags }
@@ -181,14 +183,41 @@ internal class Hentai2ReadChapter(
     private val number: JsonPrimitive? = null,
     private val date: String? = null,
 ) {
-    fun toSChapter(): SChapter {
+    fun toSChapter(bookTitle: String?): SChapter {
         val chapterUrl = requireNotNull(url) { "Chapter URL not found" }
         val chapterNumber = number?.contentOrNull
+        val label = chapterName(bookTitle)
         return SChapter.create().apply {
             url = chapterUrl
-            name = (if (isMembers == true) "\uD83D\uDD12 " else "") + (title ?: "Chapter $chapterNumber")
+            name = (if (isMembers == true) "\uD83D\uDD12 " else "") + label
             chapter_number = chapterNumber?.toFloatOrNull() ?: -1f
             date_upload = chapterDateFormat.tryParseDate(date)
+        }
+    }
+
+    // The site titles chapters "Book Title", "Book Title 2", "Book Title 6+ - extra";
+    // drop the redundant book title so the list reads "Chapter 1", "Chapter 6.5 - extra".
+    private fun chapterName(bookTitle: String?): String {
+        val chapterNumber = number?.contentOrNull.orEmpty()
+        val chapterTitle = title?.trim().orEmpty()
+        if (chapterTitle.isEmpty()) return "Chapter $chapterNumber".trim()
+
+        val bookPrefix = bookTitle?.trim().orEmpty()
+        if (bookPrefix.isEmpty() || !chapterTitle.startsWith(bookPrefix, ignoreCase = true)) return chapterTitle
+        if (chapterTitle.equals(bookPrefix, ignoreCase = true)) return "Chapter $chapterNumber"
+
+        // Site renders ".5" as "+" in titles, e.g. number 6.5 -> "Book Title 6+"
+        val siteNumber = chapterNumber.substringBefore('.') + if ('.' in chapterNumber) "+" else ""
+        val rest = chapterTitle.removeRange(0, bookPrefix.length).trimStart()
+        val suffix = if (siteNumber.isNotEmpty() && rest.startsWith(siteNumber)) {
+            rest.removeRange(0, siteNumber.length).trimStart(' ', '-', ':')
+        } else {
+            rest.trimStart(' ', '-', ':')
+        }
+        return if (suffix.isEmpty() || suffix == siteNumber || suffix == chapterNumber) {
+            "Chapter $chapterNumber"
+        } else {
+            "Chapter $chapterNumber - $suffix"
         }
     }
 
