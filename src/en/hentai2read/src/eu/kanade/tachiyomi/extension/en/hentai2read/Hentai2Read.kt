@@ -13,8 +13,16 @@ import keiyoushi.network.addCookie
 import keiyoushi.network.get
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.firstInstanceOrNull
+import keiyoushi.utils.getArrayOrNull
 import keiyoushi.utils.parseAs
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -75,10 +83,12 @@ abstract class Hentai2Read : KeiSource() {
         val sort = SORT_VALUES.getOrNull(filters.firstInstanceOrNull<SortFilter>()?.state ?: 0)
         val status = STATUS_VALUES.getOrNull(filters.firstInstanceOrNull<StatusFilter>()?.state ?: 0)
 
-        // Tag names -> ids (the site filters by id: with=1,2 is AND, without=3, match=any switches with= to OR)
-        val include = resolveTagIds(filters.firstInstanceOrNull<IncludeTags>()?.state) +
+        // The site filters by tag id: with=1,2 is AND, without=3, match=any switches with= to OR
+        val selected = filters.filterIsInstance<TagGroup>().flatMap { group -> group.state }
+        val include = selected.filter { it.state == Filter.TriState.STATE_INCLUDE }.map { it.id } +
             resolveTagIds(filters.firstInstanceOrNull<ArtistsFilter>()?.state)
-        val exclude = resolveTagIds(filters.firstInstanceOrNull<ExcludeTags>()?.state)
+        val exclude = selected.filter { it.state == Filter.TriState.STATE_EXCLUDE }.map { it.id } +
+            resolveTagIds(filters.firstInstanceOrNull<ExcludeTags>()?.state)
         val matchAny = filters.firstInstanceOrNull<MatchAny>()?.state == true
 
         val url = buildUrl(
@@ -129,6 +139,37 @@ abstract class Hentai2Read : KeiSource() {
         Page(i, imageUrl = imageUrl)
     }
 
+    override val supportsFilterFetching = true
+
+    // /tags/category is one page; /tags/content is 407 tags across ~9 pages
+    private suspend fun fetchTags(path: String): List<Hentai2ReadTag> {
+        val tags = mutableListOf<Hentai2ReadTag>()
+        var page = 1
+        while (true) {
+            val result = getProps(buildUrl(path, page)).tagPage() ?: break
+            tags += result.first
+            if (page++ >= result.second) break
+        }
+        return tags
+    }
+
+    override suspend fun fetchFilterData(): JsonElement {
+        val categories = fetchTags("/tags/category")
+        val content = fetchTags("/tags/content")
+        fun toObjects(tags: List<Hentai2ReadTag>) = JsonArray(
+            tags.map { tag ->
+                buildJsonObject {
+                    put("id", tag.id ?: JsonPrimitive(""))
+                    put("name", tag.name ?: "")
+                }
+            },
+        )
+        return buildJsonObject {
+            put("categories", toObjects(categories))
+            put("content", toObjects(content))
+        }
+    }
+
     private class TypeFilter : Filter.Select<String>("Type", arrayOf("Any", "Original", "Doujinshi", "Image sets"))
     private class SortFilter :
         Filter.Select<String>(
@@ -141,15 +182,50 @@ abstract class Hentai2Read : KeiSource() {
     private class ArtistsFilter : Filter.Text("Artists (comma separated)")
     private class MatchAny : Filter.CheckBox("Match ANY included tag (default: ALL)")
 
-    override fun getFilterList(data: JsonElement?): FilterList = FilterList(
-        TypeFilter(),
-        SortFilter(),
-        StatusFilter(),
-        Filter.Separator(),
-        Filter.Header("Use the exact tag name, e.g. Elf-Elves, Big Breasts, Netorare"),
-        IncludeTags(),
-        ExcludeTags(),
-        ArtistsFilter(),
-        MatchAny(),
-    )
+    private class TagTriState(val id: String, name: String) : Filter.TriState(name)
+    private class TagGroup(name: String, tags: List<TagTriState>) : Filter.Group<TagTriState>(name, tags)
+
+    override fun getFilterList(data: JsonElement?): FilterList {
+        val dataObj = data as? JsonObject
+        val categories = dataObj?.getArrayOrNull("categories")
+        val content = dataObj?.getArrayOrNull("content")
+
+        fun tagGroup(name: String, array: JsonArray): TagGroup = TagGroup(
+            name,
+            array.mapNotNull { element ->
+                val obj = element as? JsonObject ?: return@mapNotNull null
+                val id = obj["id"]?.jsonPrimitive?.contentOrNull ?: return@mapNotNull null
+                val tagName = obj["name"]?.jsonPrimitive?.contentOrNull ?: return@mapNotNull null
+                TagTriState(id, tagName)
+            }.sortedBy { it.name },
+        )
+
+        if (categories.isNullOrEmpty() || content.isNullOrEmpty()) {
+            // Tags not fetched yet (first launch) or fetching failed
+            return FilterList(
+                TypeFilter(),
+                SortFilter(),
+                StatusFilter(),
+                Filter.Separator(),
+                Filter.Header("Tag list loads after the source opens once."),
+                Filter.Header("Until then, use the exact tag name, e.g. Elf-Elves"),
+                IncludeTags(),
+                ExcludeTags(),
+                ArtistsFilter(),
+                MatchAny(),
+            )
+        }
+
+        return FilterList(
+            TypeFilter(),
+            SortFilter(),
+            StatusFilter(),
+            Filter.Separator(),
+            MatchAny(),
+            tagGroup("Categories", categories),
+            tagGroup("Tags", content),
+            Filter.Separator(),
+            ArtistsFilter(),
+        )
+    }
 }

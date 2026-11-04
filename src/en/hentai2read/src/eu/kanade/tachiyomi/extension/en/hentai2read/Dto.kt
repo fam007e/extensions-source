@@ -24,6 +24,7 @@ internal class Hentai2ReadProps(
     private val books: Hentai2ReadBooks? = null,
     private val book: Hentai2ReadBook? = null,
     private val chapters: List<Hentai2ReadChapter>? = null,
+    private val tags: Hentai2ReadTags? = null,
     private val matchingTags: List<Hentai2ReadTag>? = null,
     private val images: List<String>? = null,
 ) {
@@ -42,6 +43,8 @@ internal class Hentai2ReadProps(
     fun toChapters(): List<SChapter> = chapters.orEmpty().map { it.toSChapter() }
 
     fun pageImages(): List<String> = images.orEmpty()
+
+    fun tagPage(): Pair<List<Hentai2ReadTag>, Int>? = tags?.let { it.data to it.lastPage }
 
     fun matchingTagId(name: String): String? {
         val tags = matchingTags.orEmpty()
@@ -149,6 +152,13 @@ internal class Hentai2ReadArtist(
 internal class Hentai2ReadGroup(
     val type: String? = null,
     val tags: List<Hentai2ReadTag> = emptyList(),
+)
+
+@Serializable
+internal class Hentai2ReadTags(
+    val data: List<Hentai2ReadTag> = emptyList(),
+    val page: Int = 1,
+    val lastPage: Int = 1,
 )
 
 @Serializable
