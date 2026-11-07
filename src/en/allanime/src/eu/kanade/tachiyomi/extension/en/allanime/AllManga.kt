@@ -282,7 +282,7 @@ abstract class AllManga :
                             apply(target, thisArg, args) {
                                 const result = Reflect.apply(target, thisArg, args);
                                 if (result && result.chapterPages) {
-                                    window.$interfaceName.postMessage(args[0]);
+                                    window.$interfaceName.postMessage(String(args[0]));
                                 }
                                 return result;
                             }

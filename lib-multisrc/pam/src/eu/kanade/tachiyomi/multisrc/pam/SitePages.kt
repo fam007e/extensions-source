@@ -47,6 +47,7 @@ internal class SitePages(
     private val userAgent: () -> String,
 ) {
     private val baseHttpUrl = baseUrl.toHttpUrl()
+    private val siteOrigins = setOf("${baseHttpUrl.scheme}://${baseHttpUrl.host}")
 
     private val mutex = Mutex()
 
@@ -115,7 +116,7 @@ internal class SitePages(
                     }
                     heldResponse(released)
                 }
-                webMessageBridge(bridge, setOf("${baseHttpUrl.scheme}://${baseHttpUrl.host}")) { posted ->
+                webMessageBridge(bridge, siteOrigins) { posted ->
                     val message = posted.parseAs<SiteMessage>()
                     synchronized(lock) {
                         when {
@@ -134,7 +135,7 @@ internal class SitePages(
                     }
                 }
                 if (readerScript != null) {
-                    injectAtDocumentStart(readerScript, setOf("${baseHttpUrl.scheme}://${baseHttpUrl.host}"))
+                    injectAtDocumentStart(readerScript, siteOrigins)
                 }
                 onReceivedError { webRequest, error ->
                     if (webRequest.isForMainFrame) reject(IOException(error.description.toString()))
