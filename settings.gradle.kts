@@ -22,6 +22,7 @@ buildscript {
         classpath("org.apache.commons:commons-lang3:3.21.0")
         classpath("org.apache.httpcomponents:httpclient:4.5.14")
         classpath("com.google.guava:guava:33.7.2-jre")
+        classpath("org.json:json:20260814")
         classpath("org.bouncycastle:bcpkix-jdk18on:1.86")
         classpath("org.bouncycastle:bcprov-jdk18on:1.86")
         classpath("org.apache.logging.log4j:log4j-core:2.26.1")
