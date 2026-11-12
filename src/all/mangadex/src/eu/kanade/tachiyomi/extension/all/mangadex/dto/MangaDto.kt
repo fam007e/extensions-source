@@ -19,7 +19,7 @@ typealias MangaDto = ResponseDto<MangaDataDto>
 
 @Serializable
 @SerialName(MDConstants.MANGA)
-data class MangaDataDto(override val attributes: MangaAttributesDto? = null) : EntityDto()
+class MangaDataDto(override val attributes: MangaAttributesDto? = null) : EntityDto()
 
 @Serializable
 class MangaAttributesDto(

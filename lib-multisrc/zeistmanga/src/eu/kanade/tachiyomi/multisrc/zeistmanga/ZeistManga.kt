@@ -33,11 +33,15 @@ abstract class ZeistManga : KeiSource() {
 
     protected open val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-    protected open val mangaCategory = "Series"
-
-    open fun apiUrl(feed: String = mangaCategory): HttpUrl.Builder = "$baseUrl/feeds/posts/default/-/".toHttpUrl().newBuilder()
-        .addPathSegment(feed)
-        .addQueryParameter("alt", "json")
+    open fun apiUrl(feed: String = ""): HttpUrl.Builder {
+        val url = "$baseUrl/feeds/posts/default/".toHttpUrl().newBuilder()
+        if (feed.isNotEmpty()) {
+            url.addPathSegment("-")
+            url.addPathSegment(feed)
+        }
+        url.addQueryParameter("alt", "json")
+        return url
+    }
 
     protected val intl = Intl(
         language = lang,
@@ -77,76 +81,98 @@ abstract class ZeistManga : KeiSource() {
             .addQueryParameter("orderby", orderBy)
             .addQueryParameter("max-results", (MAX_MANGA_RESULTS + 1).toString())
             .addQueryParameter("start-index", startIndex.toString())
+            .addCategoryLabels()
             .build().toString()
     }
 
     override suspend fun getLatestUpdates(page: Int) = parseSearchManga(client.get(latestUpdatesUrl(page), Fetch.XHR))
 
-    open fun parseLastestUpdates(response: Response) = parseSearchManga(response)
-
     // Search
     override suspend fun getMangaByUrl(url: HttpUrl): SManga? {
-        if (url.pathSegments.size < 3) return null
-        val doc = client.get(url, Fetch.DOCUMENT).asJsoup()
-        return mangaDetailsParse(doc).apply {
-            if (title.isEmpty()) {
-                title = doc.selectFirst("meta[property='og:title']")!!.attr("content")
-                    .substringBefore("-").trim()
-            }
-            setUrlWithoutDomain(url.toString())
-        }
+        if (url.host.removePrefix("www.") != baseUrl.toHttpUrl().host.removePrefix("www.")) return null
+        if (!POST_PATH_REGEX.matches(url.encodedPath)) return null
+        // Blogger's feed finds a post by its path
+        val postUrl = apiUrl().addQueryParameter("path", url.encodedPath).build()
+        val post = client.get(postUrl, Fetch.XHR).parseAs<ZeistMangaDto>().feed?.entry?.singleOrNull() ?: return null
+        if (post.category.orEmpty().any { it.term in excludedCategories }) return null
+        return post.toSManga(baseUrl)
     }
 
     open fun searchMangaUrl(page: Int, query: String) = apiUrl()
+
+    protected open val includedCategories: List<String> get() = listOf("Series", "Manga", "Manhwa", "Manhua", "Doujinshi", "Web Novel (JP)", "Web Novel (KR)", "Web Novel (CN)")
+
+    protected open val excludedCategories: List<String> get() = listOf("Anime", "Novel", "Novela", chapterCategory)
+
+    private fun HttpUrl.Builder.addCategoryLabels(query: String = "", filterList: FilterList? = null): HttpUrl.Builder = addQueryParameter(
+        "q",
+        buildString {
+            append("{")
+            includedCategories.forEach {
+                append("label:\"$it\" ")
+            }
+            append("}")
+            excludedCategories.forEach {
+                append("-label:\"${it.trim()}\" ")
+            }
+            if (query.isNotBlank()) {
+                append(query.trim())
+            } else {
+                filterList?.forEach { filter ->
+                    when (filter) {
+                        is StatusList -> {
+                            filter.selected.value.trim()
+                                .takeIf { it.isNotEmpty() }
+                                ?.let { append("label:\"$it\" ") }
+                        }
+
+                        is TypeList -> {
+                            filter.selected.value.trim()
+                                .takeIf { it.isNotEmpty() }
+                                ?.let { append("label:\"$it\" ") }
+                        }
+
+                        is LanguageList -> {
+                            filter.selected.value.trim()
+                                .takeIf { it.isNotEmpty() }
+                                ?.let { append("label:\"$it\" ") }
+                        }
+
+                        is GenreList -> {
+                            val selectedGenres = filter.state
+                                .filter { it.state }
+                                .map { it.value.trim() }
+                                .filter { it.isNotEmpty() }
+                                .map { "label:\"$it\"" }
+
+                            if (selectedGenres.isNotEmpty()) {
+                                append(" ")
+                                append(selectedGenres.joinToString(" "))
+                            }
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
+        }.trim(),
+    )
 
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
         val startIndex = MAX_MANGA_RESULTS * (page - 1) + 1
         val url = searchMangaUrl(page, query)
 
-        val searchUrl = if (query.isNotBlank()) {
-            url.addQueryParameter("q", query)
-                .addQueryParameter("max-results", (MAX_MANGA_RESULTS + 1).toString())
-                .addQueryParameter("start-index", startIndex.toString())
-        } else {
-            filters.forEach { filter ->
-                when (filter) {
-                    is StatusList -> {
-                        url.addPathSegment(filter.selected.value)
-                    }
-
-                    is TypeList -> {
-                        url.addPathSegment(filter.selected.value)
-                    }
-
-                    is LanguageList -> {
-                        url.addPathSegment(filter.selected.value)
-                    }
-
-                    is GenreList -> {
-                        filter.state.forEach { genre ->
-                            when (genre.state) {
-                                true -> url.addPathSegment(genre.value)
-                                false -> {}
-                            }
-                        }
-                    }
-
-                    else -> {}
-                }
-            }
-            url
-        }.build().toString().replaceLast("q=", "q=label:$mangaCategory+")
+        val searchUrl = url.addCategoryLabels(query, filters)
+            .addQueryParameter("max-results", (MAX_MANGA_RESULTS + 1).toString())
+            .addQueryParameter("start-index", startIndex.toString())
+            .build()
 
         return parseSearchManga(client.get(searchUrl, Fetch.XHR))
     }
 
-    protected open val excludedCategories: List<String> = listOf("Anime", "Novel", "Novela")
-
     open fun parseSearchManga(response: Response): MangasPage {
         val result = response.parseAs<ZeistMangaDto>()
         val mangas = result.feed?.entry.orEmpty()
-            .filter { it.category.orEmpty().any { category -> category.term == mangaCategory } }
-            .filterNot { it.category.orEmpty().any { category -> excludedCategories.contains(category.term) } }
             .map { it.toSManga(baseUrl) }
 
         val mangalist = mangas.toMutableList()
@@ -528,6 +554,7 @@ abstract class ZeistManga : KeiSource() {
     }
 
     companion object {
+        private val POST_PATH_REGEX = Regex("""/\d{4}/\d{2}/[^/]+\.html""")
         private const val MAX_MANGA_RESULTS = 20
         private const val MAX_CHAPTER_RESULTS = 150
         private const val CHAPTER_CHUNK = 50
