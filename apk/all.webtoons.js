@@ -93,11 +93,11 @@ var source = {
         return out;
     },
 
-    // Series URLs use title_no=<n> (webtoons.com series pages, both webtoon
-    // and canvas paths); mobile viewer links use titleId=<n>.
+    // Series URLs use title_no=<n>; the path is /en/<genre>/<slug>/list —
+    // do NOT anchor on a /webtoon|canvas/ segment, genre paths don't have it.
     _titleInfo: function (url) {
-        var m = url.match(/\/(webtoon|canvas)\/[^?#]*\?(?:[^#]*&)?title_no=(\d+)/i);
-        if (m) return { type: m[1], id: m[2] };
+        var m = url.match(/title_no=(\d+)/i);
+        if (m) return { type: url.indexOf("/canvas/") !== -1 ? "canvas" : "webtoon", id: m[1] };
         m = url.match(/titleId=(\d+)/);
         if (m) {
             var type = url.indexOf("/canvas/") !== -1 ? "canvas" : "webtoon";

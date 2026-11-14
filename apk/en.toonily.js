@@ -119,6 +119,11 @@ function madaraTemplate(cfg) {
         // MadaraNoAjax archivePage: {base}{path}/page/N/?m_orderby=<order>
         _archive: function (page, order) {
             page = page || 1;
+            // Some sites gate adult titles behind a server-side cookie
+            // (e.g. toonily-mature); cfg.matureCookie = ["name", "value"] sets it.
+            if (cfg.matureCookie) {
+                Network.setCookie(cfg.matureCookie[0], cfg.matureCookie[1]);
+            }
             var url = this.baseUrl + this._mangaPath + "/";
             if (page > 1) url += "page/" + page + "/";
             url += "?m_orderby=" + order;
@@ -138,6 +143,9 @@ function madaraTemplate(cfg) {
 
         // htmlSearch: GET ?s=<query>&post_type=wp-manga (single page, like Kotlin page>1 cutoff)
         getSearchManga: function (query) {
+            if (cfg.matureCookie) {
+                Network.setCookie(cfg.matureCookie[0], cfg.matureCookie[1]);
+            }
             var url = this.baseUrl + "/?s=" + encodeURIComponent(query) + "&post_type=wp-manga";
             console.log(this.name + ": search " + url);
             var html = Network.get(url);
@@ -302,7 +310,7 @@ function madaraTemplate(cfg) {
  * name: Toonily
  * pkg: en.toonily
  * version: 1.6.77
- * code: 77
+ * code: 78
  * nsfw: 1
  * template: madara
  */
@@ -315,5 +323,8 @@ var source = madaraTemplate({
     // Toonily.kt: mangaSubString = "serie"
     mangaPath: "/serie",
     // Toonily.kt: mangaDetailsSelectorDescription override
-    descriptionSelector: "div.content-area div.summary__content"
+    descriptionSelector: "div.content-area div.summary__content",
+    // Toonily.kt sets the toonily-mature cookie so the server stops
+    // filtering adult titles out of browse/search results
+    matureCookie: ["toonily-mature", "1"]
 });
