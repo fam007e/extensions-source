@@ -44,9 +44,12 @@ jobs:
             git rm -rf --ignore-unmatch --quiet . || true
           fi
 
-          # exclude .git and the build dir itself — both live inside the
-          # destination, and --delete would otherwise remove them
-          rsync -a --delete --exclude '/.git' --exclude '/build-qt-repo' build-qt-repo/ ./
+          # replace all published content but keep .git; rsync --delete is
+          # not usable here because the destination is the repo root itself
+          # (it would remove .git and the build dir inside it)
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          cp -a build-qt-repo/. ./
+          rm -rf build-qt-repo
           git add -A
           if git diff --cached --quiet; then
             echo "No changes to publish"
