@@ -22,16 +22,18 @@ jobs:
     if: github.repository == 'fam007e/extensions-source'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: '3.x'
+          persist-credentials: false
+
+      # Uses the runner's preinstalled python3 (script is stdlib-only)
 
       - name: Build index and JS packages
-        run: python js/tools/build_js_repo.py --out build-qt-repo
+        run: python3 js/tools/build_js_repo.py --out build-qt-repo
 
       - name: Publish to repo-qt branch
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -56,4 +58,7 @@ jobs:
             exit 0
           fi
           git commit -m "Update Qt extensions repo"
+          # checkout runs with persist-credentials: false, so authenticate
+          # the push through gh's credential helper instead
+          gh auth setup-git
           git push origin repo-qt
