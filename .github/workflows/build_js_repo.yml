@@ -47,7 +47,7 @@ jobs:
           # replace all published content but keep .git; rsync --delete is
           # not usable here because the destination is the repo root itself
           # (it would remove .git and the build dir inside it)
-          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name 'build-qt-repo' -exec rm -rf {} +
           cp -a build-qt-repo/. ./
           rm -rf build-qt-repo
           git add -A
