@@ -1,0 +1,54 @@
+name: Build Qt JS repo
+
+# Publishes the MihonQT JavaScript extension repository to the `repo-qt`
+# branch: index.min.json + apk/<pkg>.js (+ optional icon/<pkg>.png).
+# This is separate from the Android pipeline in build_push.yml, which owns
+# the `repo` branch.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'js/**'
+      - '.github/workflows/build_js_repo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    # Only publish from the fork itself, mirroring build_push.yml's guard
+    if: github.repository == 'fam007e/extensions-source'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Build index and JS packages
+        run: python js/tools/build_js_repo.py --out build-qt-repo
+
+      - name: Publish to repo-qt branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin repo-qt >/dev/null 2>&1; then
+            git fetch origin repo-qt
+            git checkout repo-qt
+          else
+            git checkout --orphan repo-qt
+            git rm -rf --ignore-unmatch --quiet . || true
+          fi
+
+          rsync -a --delete build-qt-repo/ ./
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "Update Qt extensions repo"
+          git push origin repo-qt

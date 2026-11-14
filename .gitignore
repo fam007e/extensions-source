@@ -32,3 +32,4 @@ Thumbs.db
 repo/
 apk/
 .kotlin/
+build-qt-repo/
