@@ -3,7 +3,7 @@
  * name: Webtoons.com
  * pkg: all.webtoons
  * version: 1.6.3
- * code: 4
+ * code: 5
  * nsfw: 0
  * lang: all
  */

@@ -218,6 +218,12 @@ function hiperTemplate(cfg) {
                         JSON.stringify(json).substring(0, 300));
                     return [];
                 }
+                if (json.length === 0) {
+                    // empty list — dump the whole batch response (including
+                    // the auth.me element) to see what the API objected to
+                    console.log(this.name + ": chapters empty, batch response: " +
+                        JSON.stringify(resp).substring(0, 800));
+                }
                 return json;
             } catch (e) {
                 console.log(this.name + ": chapters parse error: " + e.message);

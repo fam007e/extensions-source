@@ -87,6 +87,13 @@ var source = {
         var url = this._api + "/manga" + query;
         console.log("MangaDex: " + url);
         var resp = Network.get(url);
+        // The CDN sometimes answers the first request with an HTML
+        // interstitial; the bootstrap cookies it sets let the next request
+        // through (verified in testing) — retry once.
+        if (typeof resp === "string" && resp.indexOf("<!doctype") === 0) {
+            console.log("MangaDex: got an HTML interstitial, retrying once");
+            resp = Network.get(url);
+        }
         if (!resp || typeof resp !== "object" || resp.error || !resp.data) {
             var detail = resp === undefined ? "undefined" : typeof resp;
             if (detail === "object") detail = resp.error ? ("error: " + resp.error) : ("keys: " + Object.keys(resp).join(","));
