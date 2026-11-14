@@ -3,7 +3,7 @@
  * name: MangaDex
  * pkg: all.mangadex
  * version: 1.6.4
- * code: 5
+ * code: 6
  * nsfw: 1
  * lang: all
  */
@@ -111,7 +111,7 @@ var source = {
             out.push({
                 url: "/manga/" + d.id,
                 title: title,
-                thumbnail_url: cover ? this._cdn + "/covers/" + d.id + "/" + cover + ".256.jpg" : "",
+                thumbnail_url: cover ? this._cdn + "/covers/" + d.id + "/" + cover : "",
                 status: this._status(attrs.status),
                 initialized: false
             });
@@ -159,7 +159,7 @@ var source = {
         if (title) manga.title = title;
 
         var cover = this._coverOf(resp.data.relationships);
-        if (cover) manga.thumbnail_url = this._cdn + "/covers/" + resp.data.id + "/" + cover + ".256.jpg";
+        if (cover) manga.thumbnail_url = this._cdn + "/covers/" + resp.data.id + "/" + cover;
 
         var desc = "";
         var descMap = attrs.description || {};
