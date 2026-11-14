@@ -3,7 +3,7 @@
  * name: Webtoons.com
  * pkg: all.webtoons
  * version: 1.6.3
- * code: 3
+ * code: 4
  * nsfw: 0
  * lang: all
  */
@@ -93,15 +93,17 @@ var source = {
         return out;
     },
 
-    // titleNo (canvas) / titleId (webtoon) extraction from a series URL
+    // Series URLs use title_no=<n> (webtoons.com series pages, both webtoon
+    // and canvas paths); mobile viewer links use titleId=<n>.
     _titleInfo: function (url) {
-        var m = url.match(/\/(webtoon|canvas)\/[^?#]*\?(?:[^#]*&)?titleNo=(\d+)/);
+        var m = url.match(/\/(webtoon|canvas)\/[^?#]*\?(?:[^#]*&)?title_no=(\d+)/i);
         if (m) return { type: m[1], id: m[2] };
         m = url.match(/titleId=(\d+)/);
         if (m) {
             var type = url.indexOf("/canvas/") !== -1 ? "canvas" : "webtoon";
             return { type: type, id: m[1] };
         }
+        console.log("Webtoons: could not extract title id from " + url);
         return null;
     },
 
@@ -201,12 +203,17 @@ var source = {
         var episodes = null;
         if (info) {
             episodes = this._episodesFromApi(info);
-            if (!episodes) {
+            if (episodes) {
+                console.log("Webtoons: API returned " + episodes.length + " episodes");
+            } else {
                 console.log("Webtoons: mobile API failed, falling back to HTML episode list");
             }
         }
         if (!episodes) episodes = this._episodesFromHtml(url);
-        if (!episodes) return [];
+        if (!episodes || episodes.length === 0) {
+            console.log("Webtoons: no episodes found for " + url);
+            return [];
+        }
 
         var out = [];
         // episodeList is newest-first; expose oldest-first like the Kotlin source

@@ -3,7 +3,7 @@
  * name: Hiperdex
  * pkg: en.hiperdex
  * version: 1.6.92
- * code: 92
+ * code: 93
  * nsfw: 1
  * template: hiper
  */
