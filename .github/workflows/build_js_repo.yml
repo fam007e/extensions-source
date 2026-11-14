@@ -44,7 +44,9 @@ jobs:
             git rm -rf --ignore-unmatch --quiet . || true
           fi
 
-          rsync -a --delete build-qt-repo/ ./
+          # exclude the build dir itself — it lives inside the destination,
+          # and --delete would otherwise remove it before transferring
+          rsync -a --delete --exclude '/build-qt-repo' build-qt-repo/ ./
           git add -A
           if git diff --cached --quiet; then
             echo "No changes to publish"
