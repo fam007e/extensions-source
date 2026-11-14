@@ -3,7 +3,7 @@
  * name: MangaDex
  * pkg: all.mangadex
  * version: 1.6.4
- * code: 4
+ * code: 5
  * nsfw: 1
  * lang: all
  */

@@ -92,8 +92,10 @@ function hiperTemplate(cfg) {
             for (var i = 0; i < genres.length; i++) {
                 if (genres[i] && genres[i].name) genreNames.push(genres[i].name);
             }
+            // Absolute URLs: the app derives the cover Referer from the manga
+            // page URL's origin, and hotlink-protected image CDNs need it.
             return {
-                url: (mangaPath || "/manga") + "/" + hit.slug,
+                url: this.baseUrl + (mangaPath || "/manga") + "/" + hit.slug,
                 title: hit.title || "",
                 thumbnail_url: hit.coverUrl || "",
                 description: hit.synopsis || "",
@@ -224,9 +226,11 @@ function hiperTemplate(cfg) {
             var dto = this._detailsBySlug(slug);
             var seriesId = dto ? dto.id : null;
             if (!seriesId) {
-                console.log(this.name + ": could not resolve seriesId for " + slug);
+                console.log(this.name + ": could not resolve seriesId for " + slug +
+                    (dto ? " (dto keys: " + Object.keys(dto).join(",") + ")" : " (no dto)"));
                 return [];
             }
+            console.log(this.name + ": seriesId " + seriesId + " for " + slug);
 
             var out = [];
             var seenNumbers = {};
@@ -234,6 +238,7 @@ function hiperTemplate(cfg) {
             while (page <= 50) {
                 var batch = this._chaptersPage(seriesId, page);
                 if (!batch) break;
+                console.log(this.name + ": chapters page " + page + " -> " + batch.length + " items");
                 for (var i = 0; i < batch.length; i++) {
                     var ch = batch[i];
                     var numStr = this._fmtNumber(ch.number);
@@ -244,7 +249,7 @@ function hiperTemplate(cfg) {
                     var dateUpload = ch.createdAt ? Date.parse(ch.createdAt) : Date.now();
                     if (isNaN(dateUpload)) dateUpload = Date.now();
                     out.push({
-                        url: (cfg.mangaPath || "/manga") + "/" + slug + "/" + chapterPath,
+                        url: this.baseUrl + (cfg.mangaPath || "/manga") + "/" + slug + "/" + chapterPath,
                         name: ch.title && ch.title.trim() ? ch.title.trim() : "Chapter " + numStr,
                         dateUpload: dateUpload,
                         chapterNumber: ch.number || 0,
@@ -295,7 +300,7 @@ function hiperTemplate(cfg) {
  * name: Hiperdex
  * pkg: en.hiperdex
  * version: 1.6.92
- * code: 92
+ * code: 93
  * nsfw: 1
  * template: hiper
  */
