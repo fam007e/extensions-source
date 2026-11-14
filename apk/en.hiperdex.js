@@ -213,10 +213,20 @@ function hiperTemplate(cfg) {
             try {
                 var json = resp[resp.length - 1].result.data.json;
                 if (!Array.isArray(json)) {
-                    // shape mismatch: dump what came back so it can be ported
-                    console.log(this.name + ": chapters json not an array: " +
-                        JSON.stringify(json).substring(0, 300));
-                    return [];
+                    // The engine's QVariant->JS conversion can hand nested
+                    // lists over as array-likes that fail Array.isArray but
+                    // still hold the chapter objects (seen with
+                    // JSON.stringify producing real array notation).
+                    var arr = [];
+                    if (json && typeof json === "object" && typeof json.length === "number") {
+                        for (var i = 0; i < json.length; i++) arr.push(json[i]);
+                    } else if (json && typeof json === "object") {
+                        for (var k in json) {
+                            if (Object.prototype.hasOwnProperty.call(json, k)) arr.push(json[k]);
+                        }
+                    }
+                    console.log(this.name + ": converted non-array chapters container -> " + arr.length + " items");
+                    json = arr;
                 }
                 if (json.length === 0) {
                     // empty list — dump the whole batch response (including
@@ -313,7 +323,7 @@ function hiperTemplate(cfg) {
  * name: Hiperdex
  * pkg: en.hiperdex
  * version: 1.6.92
- * code: 94
+ * code: 95
  * nsfw: 1
  * template: hiper
  */
