@@ -88,8 +88,10 @@ var source = {
         console.log("MangaDex: " + url);
         var resp = Network.get(url);
         if (!resp || typeof resp !== "object" || resp.error || !resp.data) {
-            console.log("MangaDex: list request failed" +
-                (resp && resp.error ? " (" + resp.error + ")" : ""));
+            var detail = resp === undefined ? "undefined" : typeof resp;
+            if (detail === "object") detail = resp.error ? ("error: " + resp.error) : ("keys: " + Object.keys(resp).join(","));
+            if (typeof resp === "string") detail = "string len=" + resp.length + " head=" + resp.substring(0, 120);
+            console.log("MangaDex: list request failed (" + detail + ")");
             return [];
         }
         var out = [];

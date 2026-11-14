@@ -21,14 +21,21 @@ function hiperTemplate(cfg) {
 
         // tRPC batch request builder; input is the exact JSON structure the
         // Kotlin source builds (including the superjson "undefined" markers).
+        // On auth failure (401, like Hiper.kt's AuthInterceptor), fetch the
+        // homepage once to obtain a session cookie, then retry.
         _trpc: function (procs, input) {
             var url = this.baseUrl + "/api/trpc/" + procs.join(",") +
                 "?batch=1&input=" + encodeURIComponent(JSON.stringify(input));
             console.log(this.name + ": trpc " + procs.join(","));
             var resp = Network.get(url);
+            if (resp && typeof resp === "object" && !resp.error) return resp;
+            console.log(this.name + ": tRPC request failed" +
+                (resp && resp.error ? " (" + resp.error + ")" : (typeof resp) + " response") +
+                " - fetching homepage for session cookies, retrying");
+            Network.get(this.baseUrl + "/");
+            resp = Network.get(url);
             if (!resp || typeof resp !== "object" || resp.error) {
-                console.log(this.name + ": tRPC request failed" +
-                    (resp && resp.error ? " (" + resp.error + ")" : ""));
+                console.log(this.name + ": tRPC retry failed");
                 return null;
             }
             return resp;
