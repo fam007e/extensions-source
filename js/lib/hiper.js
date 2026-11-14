@@ -212,8 +212,15 @@ function hiperTemplate(cfg) {
             if (!resp) return null;
             try {
                 var json = resp[resp.length - 1].result.data.json;
-                return Array.isArray(json) ? json : [];
+                if (!Array.isArray(json)) {
+                    // shape mismatch: dump what came back so it can be ported
+                    console.log(this.name + ": chapters json not an array: " +
+                        JSON.stringify(json).substring(0, 300));
+                    return [];
+                }
+                return json;
             } catch (e) {
+                console.log(this.name + ": chapters parse error: " + e.message);
                 return null;
             }
         },

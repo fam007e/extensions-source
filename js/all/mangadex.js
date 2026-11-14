@@ -90,7 +90,7 @@ var source = {
         if (!resp || typeof resp !== "object" || resp.error || !resp.data) {
             var detail = resp === undefined ? "undefined" : typeof resp;
             if (detail === "object") detail = resp.error ? ("error: " + resp.error) : ("keys: " + Object.keys(resp).join(","));
-            if (typeof resp === "string") detail = "string len=" + resp.length + " head=" + resp.substring(0, 120);
+            if (typeof resp === "string") detail = "string len=" + resp.length + " body=" + resp.substring(0, 1500);
             console.log("MangaDex: list request failed (" + detail + ")");
             return [];
         }
