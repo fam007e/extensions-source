@@ -2,8 +2,8 @@
  * MihonQT Extension
  * name: Hiperdex
  * pkg: en.hiperdex
- * version: 1.6.92
- * code: 95
+ * version: 1.6.93
+ * code: 96
  * nsfw: 1
  * template: hiper
  */
@@ -12,5 +12,6 @@ var source = hiperTemplate({
     id: 1002003,
     pkg: "en.hiperdex",
     lang: "en",
-    baseUrl: "https://hiperdex.tv"
+    baseUrl: "https://hiperdex.tv",
+    authHeader: ["x-cfg-auth", "yceqt7qgu004"]
 });

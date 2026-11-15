@@ -19,22 +19,35 @@ function hiperTemplate(cfg) {
 
         _limit: 30,
 
+        _hasAuthError: function (resp) {
+            if (!resp || typeof resp !== "object" || resp.error) return true;
+            if (Array.isArray(resp)) {
+                for (var i = 0; i < resp.length; i++) {
+                    if (resp[i] && resp[i].error) return true;
+                }
+            }
+            return false;
+        },
+
         // tRPC batch request builder; input is the exact JSON structure the
         // Kotlin source builds (including the superjson "undefined" markers).
         // On auth failure (401, like Hiper.kt's AuthInterceptor), fetch the
         // homepage once to obtain a session cookie, then retry.
         _trpc: function (procs, input) {
+            if (cfg.authHeader && Network.setHeader) {
+                Network.setHeader(cfg.authHeader[0], cfg.authHeader[1]);
+            }
             var url = this.baseUrl + "/api/trpc/" + procs.join(",") +
                 "?batch=1&input=" + encodeURIComponent(JSON.stringify(input));
             console.log(this.name + ": trpc " + procs.join(","));
             var resp = Network.get(url);
-            if (resp && typeof resp === "object" && !resp.error) return resp;
+            if (!this._hasAuthError(resp)) return resp;
             console.log(this.name + ": tRPC request failed" +
-                (resp && resp.error ? " (" + resp.error + ")" : (typeof resp) + " response") +
+                (resp && resp.error ? " (" + resp.error + ")" : "") +
                 " - fetching homepage for session cookies, retrying");
             Network.get(this.baseUrl + "/");
             resp = Network.get(url);
-            if (!resp || typeof resp !== "object" || resp.error) {
+            if (this._hasAuthError(resp)) {
                 console.log(this.name + ": tRPC retry failed");
                 return null;
             }
@@ -74,6 +87,22 @@ function hiperTemplate(cfg) {
             } catch (e) {
                 return null;
             }
+        },
+
+        _toArray: function (obj) {
+            if (!obj) return [];
+            if (Array.isArray(obj)) return obj;
+            var arr = [];
+            if (typeof obj === "object" && typeof obj.length === "number") {
+                for (var i = 0; i < obj.length; i++) arr.push(obj[i]);
+                return arr;
+            }
+            if (typeof obj === "object") {
+                var keys = Object.keys(obj);
+                for (var k = 0; k < keys.length; k++) arr.push(obj[keys[k]]);
+                return arr;
+            }
+            return arr;
         },
 
         _status: function (text) {
@@ -212,29 +241,14 @@ function hiperTemplate(cfg) {
             if (!resp) return null;
             try {
                 var json = resp[resp.length - 1].result.data.json;
-                if (!Array.isArray(json)) {
-                    // The engine's QVariant->JS conversion can hand nested
-                    // lists over as array-likes that fail Array.isArray but
-                    // still hold the chapter objects (seen with
-                    // JSON.stringify producing real array notation).
-                    var arr = [];
-                    if (json && typeof json === "object" && typeof json.length === "number") {
-                        for (var i = 0; i < json.length; i++) arr.push(json[i]);
-                    } else if (json && typeof json === "object") {
-                        for (var k in json) {
-                            if (Object.prototype.hasOwnProperty.call(json, k)) arr.push(json[k]);
-                        }
-                    }
-                    console.log(this.name + ": converted non-array chapters container -> " + arr.length + " items");
-                    json = arr;
-                }
-                if (json.length === 0) {
+                var chapters = this._toArray(json);
+                if (chapters.length === 0) {
                     // empty list — dump the whole batch response (including
                     // the auth.me element) to see what the API objected to
                     console.log(this.name + ": chapters empty, batch response: " +
                         JSON.stringify(resp).substring(0, 800));
                 }
-                return json;
+                return chapters;
             } catch (e) {
                 console.log(this.name + ": chapters parse error: " + e.message);
                 return null;
@@ -257,30 +271,25 @@ function hiperTemplate(cfg) {
 
             var out = [];
             var seenNumbers = {};
-            var page = 1;
-            while (page <= 50) {
-                var batch = this._chaptersPage(seriesId, page);
-                if (!batch) break;
-                console.log(this.name + ": chapters page " + page + " -> " + batch.length + " items");
-                for (var i = 0; i < batch.length; i++) {
-                    var ch = batch[i];
-                    var numStr = this._fmtNumber(ch.number);
-                    var unique = !seenNumbers[numStr];
-                    seenNumbers[numStr] = true;
-                    // duplicate chapter numbers get the chapter id in the URL (Kotlin behaviour)
-                    var chapterPath = unique ? numStr : String(ch.id);
-                    var dateUpload = ch.createdAt ? Date.parse(ch.createdAt) : Date.now();
-                    if (isNaN(dateUpload)) dateUpload = Date.now();
-                    out.push({
-                        url: this.baseUrl + (cfg.mangaPath || "/manga") + "/" + slug + "/" + chapterPath,
-                        name: ch.title && ch.title.trim() ? ch.title.trim() : "Chapter " + numStr,
-                        dateUpload: dateUpload,
-                        chapterNumber: ch.number || 0,
-                        scanlator: this.name
-                    });
-                }
-                if (batch.length < 20) break;
-                page++;
+            var batch = this._chaptersPage(seriesId, 1);
+            if (!batch) return [];
+            console.log(this.name + ": chapters -> " + batch.length + " items");
+            for (var i = 0; i < batch.length; i++) {
+                var ch = batch[i];
+                var numStr = this._fmtNumber(ch.number);
+                var unique = !seenNumbers[numStr];
+                seenNumbers[numStr] = true;
+                // duplicate chapter numbers get the chapter id in the URL (Kotlin behaviour)
+                var chapterPath = unique ? numStr : String(ch.id);
+                var dateUpload = ch.createdAt ? Date.parse(ch.createdAt) : Date.now();
+                if (isNaN(dateUpload)) dateUpload = Date.now();
+                out.push({
+                    url: this.baseUrl + (cfg.mangaPath || "/manga") + "/" + slug + "/" + chapterPath,
+                    name: ch.title && ch.title.trim() ? ch.title.trim() : "Chapter " + numStr,
+                    dateUpload: dateUpload,
+                    chapterNumber: ch.number || 0,
+                    scanlator: this.name
+                });
             }
             return out;
         },
@@ -301,15 +310,17 @@ function hiperTemplate(cfg) {
             if (!resp) return [];
             try {
                 var json = resp[resp.length - 1].result.data.json;
-                var pages = Array.isArray(json) ? json : [];
+                var pages = this._toArray(json);
                 pages.sort(function (a, b) { return (a.pageOrder || 0) - (b.pageOrder || 0); });
                 var out = [];
                 for (var i = 0; i < pages.length; i++) {
                     var src = pages[i].avifUrl || pages[i].webpUrl;
                     if (src) out.push(src);
                 }
+                console.log(this.name + ": extracted " + out.length + " page URLs");
                 return out;
             } catch (e) {
+                console.log(this.name + ": getPageList error: " + e.message);
                 return [];
             }
         }

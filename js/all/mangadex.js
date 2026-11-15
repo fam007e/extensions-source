@@ -2,8 +2,8 @@
  * MihonQT Extension
  * name: MangaDex
  * pkg: all.mangadex
- * version: 1.6.4
- * code: 6
+ * version: 1.6.5
+ * code: 7
  * nsfw: 1
  * lang: all
  */
@@ -184,7 +184,7 @@ var source = {
         var m = String(url).match(/\/manga\/([0-9a-f-]{36})/i);
         if (!m) return [];
         var query = "?limit=500&order[chapter]=desc&includeFuturePublishAt=0" +
-            "&includeEmptyPages=0&includeUnavailable=0";
+            "&includeEmptyPages=0&includeUnavailable=0&translatedLanguage[]=en";
         for (var i = 0; i < this._ratings.length; i++) {
             query += "&contentRating[]=" + this._ratings[i];
         }
