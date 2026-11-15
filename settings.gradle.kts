@@ -64,6 +64,41 @@ dependencyResolutionManagement {
                             require("2.26.1")
                         }
                     }
+                    if (it.group == "org.bouncycastle") {
+                        it.version {
+                            require("1.86")
+                        }
+                    }
+                    if (it.group == "com.google.guava" && it.name == "guava") {
+                        it.version {
+                            require("33.7.2-jre")
+                        }
+                    }
+                    if (it.group == "org.json" && it.name == "json") {
+                        it.version {
+                            require("20260814")
+                        }
+                    }
+                    if (it.group == "org.bitbucket.b_c" && it.name == "jose4j") {
+                        it.version {
+                            require("0.9.7")
+                        }
+                    }
+                    if (it.group == "org.jdom" && it.name == "jdom2") {
+                        it.version {
+                            require("2.0.6.1")
+                        }
+                    }
+                    if (it.group == "org.apache.commons" && it.name == "commons-lang3") {
+                        it.version {
+                            require("3.21.0")
+                        }
+                    }
+                    if (it.group == "org.apache.httpcomponents" && it.name == "httpclient") {
+                        it.version {
+                            require("4.5.14")
+                        }
+                    }
                 }
             }
         }
