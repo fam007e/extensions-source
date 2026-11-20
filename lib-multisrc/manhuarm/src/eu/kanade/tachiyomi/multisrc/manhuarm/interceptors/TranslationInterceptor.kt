@@ -1,10 +1,9 @@
 package eu.kanade.tachiyomi.multisrc.manhuarm.interceptors
 
-import eu.kanade.tachiyomi.multisrc.manhuarm.Dialog
 import eu.kanade.tachiyomi.multisrc.manhuarm.Language
-import eu.kanade.tachiyomi.multisrc.manhuarm.Manhuarm.Companion.PAGE_REGEX
+import eu.kanade.tachiyomi.multisrc.manhuarm.PageFragment
+import eu.kanade.tachiyomi.multisrc.manhuarm.pageFragment
 import eu.kanade.tachiyomi.multisrc.manhuarm.translator.TranslatorEngine
-import keiyoushi.utils.parseAs
 import keiyoushi.utils.toJsonString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,29 +19,26 @@ class TranslationInterceptor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val url = request.url.toString()
         val language = settings()
+        val page = request.url.pageFragment()
 
-        if (!PAGE_REGEX.containsMatchIn(url) || language.disableTranslator || language.target == language.origin) {
+        if (page == null || language.disableTranslator || language.target == language.origin) {
             return chain.proceed(request)
         }
 
-        val dialogues = request.url.fragment?.parseAs<List<Dialog>>()
-            ?: return chain.proceed(request)
-
         val engine = translator()
         val translated = runBlocking(Dispatchers.IO) {
-            dialogues.map { dialog ->
+            page.dialogues.map { dialog ->
                 async {
                     dialog.withText(engine.translate(language.origin, language.target, dialog.text))
                 }
             }.awaitAll()
         }
 
-        val newRequest = request.newBuilder()
-            .url("${url.substringBeforeLast("#")}#${translated.toJsonString()}")
+        val url = request.url.newBuilder()
+            .fragment(PageFragment(page.chapter, page.index, translated).toJsonString())
             .build()
 
-        return chain.proceed(newRequest)
+        return chain.proceed(request.newBuilder().url(url).build())
     }
 }
