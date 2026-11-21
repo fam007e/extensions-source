@@ -11,6 +11,17 @@ class LibDataDto(
 )
 
 @Serializable
+class SearchDto(
+    val data: List<SearchMangaDto>,
+)
+
+@Serializable
+class SearchMangaDto(
+    val title: String,
+    @SerialName("title_slug") val titleSlug: String,
+)
+
+@Serializable
 class MangaDto(
     val gambar: String,
     val title: String,
